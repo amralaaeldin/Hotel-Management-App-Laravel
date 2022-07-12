@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Models\User;
 
 /*
@@ -22,8 +23,24 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+// Route::get('/stuff/dashboard', function () {
+//     return view('dashboard');
+// })->name('stuff.dashboard');
+// Route::get('/admin/dashboard', function () {
+//     return view('dashboard');
+// })->name('admin.dashboard');
 
+Route::prefix('stuff')->group(function () {
+require __DIR__.'/auth.php';
+});
+
+
+Route::prefix('admin')->group(function () {
+    require __DIR__.'/admin-auth.php';
+});
+
+
+Route::get('/redirect', [HomeController::class, 'redirect']);
 
 
 Route::get('/test', function () {
@@ -31,3 +48,13 @@ Route::get('/test', function () {
 }
 )
 ;
+
+
+Route::resource('rooms', RoomController::class);
+Route::resource('floors', FloorController::class);
+Route::resource('reservations', ReservationController::class);
+
+Route::resource('managers', ManagerController::class);
+Route::resource('admins', AdminController::class);
+Route::resource('reciptionists', ReciptionistController::class);
+Route::resource('clients', ClientController::class);

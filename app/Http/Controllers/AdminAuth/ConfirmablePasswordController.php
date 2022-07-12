@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\AdminAuth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
@@ -17,7 +17,7 @@ class ConfirmablePasswordController extends Controller
      */
     public function show()
     {
-        return view('auth.stuff.confirm-password');
+        return view('auth.admins.confirm-password');
     }
 
     /**

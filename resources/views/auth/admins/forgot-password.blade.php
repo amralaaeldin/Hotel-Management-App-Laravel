@@ -1,8 +1,9 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
+            <a href="/" style="display: flex;flex-direction: column;align-items: center;">
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                <h3>Admin - Forgot Password</h3>
             </a>
         </x-slot>
 

@@ -100,8 +100,8 @@ class PermissionSeeder extends Seeder
         ]);
 
         $user = User::create([
-            'email' => 'admin@gamil.com',
-            'password' => Hash::make('123456')
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('12345678')
         ]);
 
         $user->assignRole($admin);
