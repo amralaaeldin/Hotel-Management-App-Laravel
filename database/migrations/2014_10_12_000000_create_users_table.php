@@ -13,15 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-        });
+            Schema::create('users', function (Blueprint $table) {
+                $table->id();
+                $table->string('name')->nullable();
+                $table->unsignedInteger('national_id')->unique()->nullable();
+                $table->string('email')->unique();
+                $table->timestamp('email_verified_at')->nullable();
+                $table->string('password');
+                $table->string('avatar')->default('avatars/users_default_avatar.png')->nullable();
+                $table->string('role');
+                $table->unsignedBigInteger('created_by')->nullable();
+                $table->rememberToken();
+                $table->timestamps();
+
+                $table->foreign('created_by')->references('id')->on('users');
+            });
     }
 
     /**
