@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,12 +23,17 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-// Route::get('/stuff/dashboard', function () {
-//     return view('dashboard');
-// })->name('stuff.dashboard');
-// Route::get('/admin/dashboard', function () {
-//     return view('dashboard');
-// })->name('admin.dashboard');
+Route::middleware(['auth:web', 'role:stuff'])->group(function () {
+Route::get('/stuff/dashboard', function () {
+    return view('stuff.dashboard');
+})->name('stuff.dashboard');
+});
+
+Route::middleware(['auth:web', 'role:admin'])->group(function () {
+Route::get('/admin/dashboard', function () {
+        return view('admins.dashboard');
+    })->name('admin.dashboard');
+});
 
 Route::prefix('stuff')->group(function () {
 require __DIR__.'/auth.php';
@@ -41,13 +46,6 @@ Route::prefix('admin')->group(function () {
 
 
 Route::get('/redirect', [HomeController::class, 'redirect']);
-
-
-Route::get('/test', function () {
-    return User::where('id',1)->first()->getRoleNames();
-}
-)
-;
 
 
 Route::resource('rooms', RoomController::class);

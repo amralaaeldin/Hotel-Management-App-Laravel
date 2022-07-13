@@ -99,11 +99,25 @@ class PermissionSeeder extends Seeder
             'view reservations',
         ]);
 
-        $user = User::create([
+        $admin1 = User::create([
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678')
         ]);
 
-        $user->assignRole($admin);
+        $admin1->assignRole($admin);
+
+        $manager1 = User::create([
+            'email' => 'manager@gmail.com',
+            'password' => Hash::make('12345678')
+        ]);
+
+        $manager1->assignRole($manager);
+
+        $receptionist1 = User::create([
+            'email' => 'receptionist@gmail.com',
+            'password' => Hash::make('12345678')
+        ]);
+
+        $receptionist1->assignRole($receptionist);
     }
 }
