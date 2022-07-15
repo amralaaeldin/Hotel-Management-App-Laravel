@@ -15,5 +15,9 @@ class HomeController extends Controller
             }
             return redirect()->route($prefix.'.dashboard');
         }
+
+        if(Auth::guard('client')->check()) {
+            return redirect()->route('client.dashboard');
+        }
     }
 }

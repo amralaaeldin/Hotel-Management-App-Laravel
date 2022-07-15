@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\AdminAuth;
+namespace App\Http\Controllers\ClientAuth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
@@ -17,7 +17,7 @@ class ConfirmablePasswordController extends Controller
      */
     public function show()
     {
-        return view('auth.admin.confirm-password');
+        return view('auth.client.confirm-password');
     }
 
     /**
@@ -28,8 +28,8 @@ class ConfirmablePasswordController extends Controller
      */
     public function store(Request $request)
     {
-        if (! Auth::guard('web')->validate([
-            'email' => $request->user()->email,
+        if (! Auth::guard('client')->validate([
+            'email' => $request->client()->email,
             'password' => $request->password,
         ])) {
             throw ValidationException::withMessages([

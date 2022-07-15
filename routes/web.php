@@ -31,9 +31,15 @@ Route::get('/stuff/dashboard', function () {
 
 Route::middleware(['auth:web', 'role:admin'])->group(function () {
 Route::get('/admin/dashboard', function () {
-        return view('admins.dashboard');
+        return view('admin.dashboard');
     })->name('admin.dashboard');
 });
+Route::middleware(['auth:client'])->group(function () {
+Route::get('/client/dashboard', function () {
+        return view('client.dashboard');
+    })->name('client.dashboard');
+});
+
 
 Route::prefix('stuff')->group(function () {
 require __DIR__.'/auth.php';
@@ -42,6 +48,10 @@ require __DIR__.'/auth.php';
 
 Route::prefix('admin')->group(function () {
     require __DIR__.'/admin-auth.php';
+});
+
+Route::prefix('client')->group(function () {
+    require __DIR__.'/client-auth.php';
 });
 
 
