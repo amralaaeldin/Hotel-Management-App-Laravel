@@ -20,6 +20,40 @@
                 <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
             </div>
 
+            <!-- Mobile Phone -->
+            <div class="mt-4">
+                <x-label for="mobile" value="Mobile Phone" />
+
+                <x-input id="mobile" class="block mt-1 w-full" type="text" name="mobile" :value="old('mobile')" required/>
+            </div>
+
+            <!-- Country -->
+            <div class="mt-4">
+                <x-label for="country" value="Select an option" />
+                <select name="country" required id="country" class="bg-white-50 text-gray-900 text-sm rounded-lg shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block w-full p-2.5">
+                    <option selected>Choose a Country</option>
+                    @foreach ($countries as $country)
+                    <option value="{{ array_keys($countries)[$loop->index] }}" >{{ $country['name'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Avatar -->
+            <div class="mt-4">
+                <x-label for="avatar" value="Upload Image" />
+                <input id="avatar" name="avatar" class="block w-full text-sm text-gray-900 bg-white-50 rounded-lg border shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 cursor-pointer" type="file">
+            </div>
+
+            <!-- Gender -->
+            <div class="mt-4">
+                <x-label for="gender" value="Select an option" />
+                <select name="gender" required id="gender" class="bg-white-50 text-gray-900 text-sm rounded-lg shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block w-full p-2.5">
+                    <option selected>Choose a Gender</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                </select>
+            </div>
+
             <!-- Email Address -->
             <div class="mt-4">
                 <x-label for="email" :value="__('Email')" />

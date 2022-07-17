@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -20,7 +22,7 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        return view('auth.stuff.register');
+        return view('auth.stuff.register', ['roles' => Role::all()->whereNotIn('name', ['admin'])->pluck('name')]);
     }
 
     /**
@@ -35,19 +37,32 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'national_id' => ['required', 'digits:14'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'avatar' => ['image'],
+            'role' => ['required', Rule::in(Role::all()->whereNotIn('name', ['admin'])->pluck('name'))],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // if($request->hasFile('avatar'))
+        // {
+        //     $path = $request->file('avatar')->store('avatars');
+        // }
+
         $user = User::create([
             'name' => $request->name,
+            'national_id' => $request->national_id,
             'email' => $request->email,
+            'avatar' => $request->file('avatar') ? $request->file('avatar')->store('avatars') : 'avatars/users_default_avatar.png',
+            'created_by' => Auth::guard('web')->user()->id,
             'password' => Hash::make($request->password),
         ]);
 
+        $user->assignRole(['name' => $request->role]);
+
         event(new Registered($user));
 
-        Auth::login($user);
+        Auth::guard('web')->login($user);
 
         return redirect(RouteServiceProvider::HOME);
     }

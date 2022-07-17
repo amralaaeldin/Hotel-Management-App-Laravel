@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
+
 
 class RegisteredUserController extends Controller
 {
@@ -20,7 +22,7 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        return view('auth.client.register');
+        return view('auth.client.register', ['countries' => countries()]);
     }
 
     /**
@@ -35,12 +37,20 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'mobile' => ['required', 'min:11', 'numeric'],
+            'country' => ['required', Rule::in(array_keys(countries()))],
+            'avatar' => ['required', 'image'],
+            'gender' => ['required', 'in:M,F'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:clients'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $client = Client::create([
             'name' => $request->name,
+            'mobile' => $request->mobile,
+            'country' => $request->country,
+            'avatar' => $request->file('avatar')->store('avatars/clients'),
+            'gender' => $request->gender,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
