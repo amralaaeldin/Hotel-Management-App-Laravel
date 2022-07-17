@@ -10,7 +10,7 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-        <form method="POST" action="{{ route('client.register') }}">
+        <form method="POST"  enctype="multipart/form-data" action="{{ route('client.register') }}">
             @csrf
 
             <!-- Name -->
