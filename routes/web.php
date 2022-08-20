@@ -4,6 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ReceptionistController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\FloorController;
+use App\Http\Controllers\RoomController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,30 +27,33 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-Route::middleware(['auth:web', 'role:stuff'])->group(function () {
-Route::get('/stuff/dashboard', function () {
-    return view('stuff.dashboard');
-})->name('stuff.dashboard');
-});
-
 Route::middleware(['auth:web', 'role:admin'])->group(function () {
 Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
+        return view('admin.dashboard', ['user' => Auth::guard('web')->user()]);
     })->name('admin.dashboard');
 });
+
+Route::middleware(['auth:web', 'role:manager'])->group(function () {
+Route::get('/manager/dashboard', function () {
+    return view('manager.dashboard', ['user' => Auth::guard('web')->user()]);
+})->name('manager.dashboard');
+});
+
+Route::middleware(['auth:web', 'role:receptionist'])->group(function () {
+Route::get('/receptionist/dashboard', function () {
+    return view('receptionist.dashboard', ['user' => Auth::guard('web')->user()]);
+})->name('receptionist.dashboard');
+});
+
 Route::middleware(['auth:client'])->group(function () {
 Route::get('/client/dashboard', function () {
-        return view('client.dashboard');
+        return view('client.dashboard', ['user' => Auth::guard('client')->user()]);
     })->name('client.dashboard');
 });
 
 
 Route::prefix('stuff')->group(function () {
-require __DIR__.'/auth.php';
+    require __DIR__.'/auth.php';
 });
 
 
@@ -57,12 +68,46 @@ Route::prefix('client')->group(function () {
 
 Route::get('/redirect', [HomeController::class, 'redirect']);
 
-
 Route::resource('rooms', RoomController::class);
 Route::resource('floors', FloorController::class);
-Route::resource('reservations', ReservationController::class);
+Route::resource('reservations', ReservationController::class)->only(['index', 'create', 'store',]);
 
-Route::resource('managers', ManagerController::class);
-Route::resource('admins', AdminController::class);
-Route::resource('reciptionists', ReciptionistController::class);
-Route::resource('clients', ClientController::class);
+Route::resource('managers', ManagerController::class)->except(['create', 'store', 'show']);
+Route::resource('receptionists', ReceptionistController::class)->except(['create', 'store', 'show']);
+Route::resource('clients', ClientController::class)->except(['create', 'store', 'show']);
+Route::put('clients/approve/{id}', [ClientController::class, 'approve'])->name('clients.approve');
+
+
+Route::prefix('admin/')->middleware(['auth:web', 'role:admin'])->group(function () {
+    Route::get('managers', [ManagerController::class, 'index']);
+    Route::get('receptionists', [ReceptionistController::class, 'index']);
+    Route::get('clients', [ClientController::class, 'index']);
+    Route::get('floors', [FloorController::class, 'index']);
+    Route::get('rooms', [RoomController::class, 'index']);
+    Route::get('reservations', [ReservationController::class, 'index']);
+});
+
+Route::prefix('manager/')->middleware(['auth:web', 'role:manager'])->group(function () {
+    Route::get('receptionists', [ReceptionistController::class, 'index']);
+    Route::get('clients', [ClientController::class, 'index']);
+    Route::get('floors', [FloorController::class, 'index']);
+    Route::get('rooms', [RoomController::class, 'index']);
+    Route::get('reservations', [ReservationController::class, 'index']);
+});
+
+Route::prefix('receptionist/')->middleware(['auth:web', 'role:receptionist'])->group(function () {
+    Route::get('clients', [ClientController::class, 'index']);
+    Route::get('reservations', [ReservationController::class, 'getAcceptedClientsReservations']);
+});
+
+Route::prefix('client/')->middleware(['auth:client'])->group(function () {
+    Route::get('reservations', [ReservationController::class, 'getClientReservations']);
+});
+
+
+
+
+// test
+Route::get('/test', function () {
+    return view('manager.create');
+});

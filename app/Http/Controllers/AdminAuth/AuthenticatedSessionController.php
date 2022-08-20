@@ -29,10 +29,14 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
         $request->authenticate();
-
-        $request->session()->regenerate();
-
-        return redirect()->intended(RouteServiceProvider::HOME);
+        if (Auth::guard('web')->user()->getRoleNames()[0] === 'admin') {
+            $request->session()->regenerate();
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
+        else {
+            Auth::guard('web')->logout();
+            return redirect()->route('admin.login')->with('fail', 'Wrong Credentials');
+        }
     }
 
     /**
@@ -49,6 +53,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/admin/login');
     }
 }

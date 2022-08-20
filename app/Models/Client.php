@@ -26,9 +26,16 @@ class Client extends Authenticatable
         'approved_by',
     ];
 
+    public function getCountry() {
+        return countries()["$this->country"]['name'];
+    }
+    public function getGender() {
+        return $this->gender === 'M' ? 'Male' : 'Female';
+    }
+
     public function approver()
     {
-        return $this->belongsTo(User::class, 'created_by', 'id');
+        return $this->belongsTo(User::class, 'approved_by', 'id');
     }
 
     /**

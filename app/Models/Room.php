@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use  App\Models\User;
 use  App\Models\Floor;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 
 class Room extends Model
@@ -20,6 +21,14 @@ class Room extends Model
         'created_by',
         'reserved',
     ];
+
+    protected function price(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => $value/100,
+            set: fn ($value) => $value*100,
+        );
+    }
 
 
     public function creator()

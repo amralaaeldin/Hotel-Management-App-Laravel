@@ -7,17 +7,19 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function redirect () {
+
+    private function getPrefix () {
         if(Auth::guard('web')->check()) {
-            $prefix = Auth::guard('web')->user()->getRoleNames()[0];
-            if (in_array($prefix, ['manager', 'receptionist'])) {
-                $prefix = 'stuff';
-            }
-            return redirect()->route($prefix.'.dashboard');
+            return Auth::guard('web')->user()->getRoleNames()[0];
         }
 
         if(Auth::guard('client')->check()) {
-            return redirect()->route('client.dashboard');
+            return 'client';
         }
     }
+
+    public function redirect () {
+        return redirect()->route($this->getPrefix().'.dashboard');
+    }
+
 }

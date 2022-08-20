@@ -80,6 +80,11 @@ class PermissionSeeder extends Seeder
             'view reservations',
         ]);
         $manager->syncPermissions([
+            'view clients',
+            'add clients',
+            'edit clients',
+            'delete clients',
+
             'view rooms',
             'add rooms',
             'edit rooms',

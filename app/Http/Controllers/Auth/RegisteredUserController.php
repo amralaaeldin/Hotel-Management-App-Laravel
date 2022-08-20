@@ -20,9 +20,9 @@ class RegisteredUserController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create($role)
     {
-        return view('auth.stuff.register', ['roles' => Role::all()->whereNotIn('name', ['admin'])->pluck('name')]);
+        return view($role. '.create');
     }
 
     /**
@@ -33,21 +33,15 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request, $role)
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'national_id' => ['required', 'digits:14'],
+            'national_id' => ['required', 'digits:14', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'avatar' => ['image'],
-            'role' => ['required', Rule::in(Role::all()->whereNotIn('name', ['admin'])->pluck('name'))],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
-        // if($request->hasFile('avatar'))
-        // {
-        //     $path = $request->file('avatar')->store('avatars');
-        // }
 
         $user = User::create([
             'name' => $request->name,
@@ -58,12 +52,10 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $user->assignRole(['name' => $request->role]);
+        $user->assignRole(['name' => $role]);
 
         event(new Registered($user));
 
-        Auth::guard('web')->login($user);
-
-        return redirect(RouteServiceProvider::HOME);
+        return redirect('/'.Auth::guard('web')->user()->getRoleNames()[0].'/'.$role.'s')->with('success', 'Added Successfully!');
     }
 }

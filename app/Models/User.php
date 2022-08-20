@@ -11,6 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 use App\Models\Client;
 use App\Models\Room;
 use App\Models\Floor;
+use Carbon\Carbon;
 
 
 class User extends Authenticatable
@@ -50,6 +51,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getCreatedAt() {
+        return Carbon::create($this->created_at)->format('l jS \\of F Y h:i:s A');
+    }
 
     public function creator()
     {

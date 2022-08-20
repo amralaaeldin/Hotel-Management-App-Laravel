@@ -3,9 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Reservation;
+use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
 {
+
+    public function __construct()
+{
+    $this->middleware('auth:client')->only(['create', 'store', 'getClientReservations']);
+    $this->middleware(['role:admin|manager'])->only('index');
+    $this->middleware(['role:receptionist'])->only('getAcceptedClientsReservations');
+}
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +22,17 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.dashboard', ['reservations'=> Reservation::all('id', 'client_id', 'floor_number','room_number', 'duration', 'price_paid_per_day', 'accompany_number')]);
+    }
+
+    public function getClientReservations()
+    {
+        return view('client.dashboard', ['reservations'=> Auth::guard('client')->user()->reservations]);
+    }
+
+    public function getAcceptedClientsReservations()
+    {
+        return view('receptionist.dashboard', ['reservations'=> Auth::guard('web')->user()->clients->pluck('reservations')[0]]);
     }
 
     /**
@@ -33,51 +52,6 @@ class ReservationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
     {
         //
     }
