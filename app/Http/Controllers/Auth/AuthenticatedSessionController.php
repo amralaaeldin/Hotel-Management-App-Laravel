@@ -17,7 +17,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-        return view('auth.stuff.login');
+        return view('auth.staff.login');
     }
 
     /**
@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
         }
         else {
             Auth::guard('web')->logout();
-            return redirect()->route('stuff.login')->with('fail', 'Wrong Credentials');
+            return redirect()->route('staff.login')->with('fail', 'Wrong Credentials');
         }
     }
 
@@ -53,6 +53,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/stuff/login');
+        return redirect('/staff/login');
     }
 }

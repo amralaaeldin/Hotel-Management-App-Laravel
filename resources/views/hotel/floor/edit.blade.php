@@ -5,7 +5,7 @@
 
 
 @section('form-attributes', 'method=POST')
-@section('route', route('floors.update'))
+@section('route', route('floors.update', $floor->number))
 @section('fields')
     @method('PUT')
 

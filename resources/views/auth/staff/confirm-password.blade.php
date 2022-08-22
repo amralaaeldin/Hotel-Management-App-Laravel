@@ -3,7 +3,7 @@
         <x-slot name="logo">
             <a href="/" style="display: flex;flex-direction: column;align-items: center;">
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                <h3>Stuff - Confirm Password</h3>
+                <h3>Staff - Confirm Password</h3>
             </a>
         </x-slot>
 
@@ -14,17 +14,15 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-        <form method="POST" action="{{ route('stuff.password.confirm') }}">
+        <form method="POST" action="{{ route('staff.password.confirm') }}">
             @csrf
 
             <!-- Password -->
             <div>
                 <x-label for="password" :value="__('Password')" />
 
-                <x-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
+                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required
+                    autocomplete="current-password" />
             </div>
 
             <div class="flex justify-end mt-4">

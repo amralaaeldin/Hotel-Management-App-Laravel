@@ -22,7 +22,7 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard', ['reservations'=> Reservation::all('id', 'client_id', 'floor_number','room_number', 'duration', 'price_paid_per_day', 'accompany_number')]);
+        return view('dashboard', ['reservations'=> Reservation::all('id', 'client_id', 'floor_number','room_number', 'duration', 'price_paid_per_day', 'accompany_number')]);
     }
 
     public function getClientReservations()
@@ -32,7 +32,7 @@ class ReservationController extends Controller
 
     public function getAcceptedClientsReservations()
     {
-        return view('receptionist.dashboard', ['reservations'=> Auth::guard('web')->user()->clients->pluck('reservations')[0]]);
+        return view('dashboard', ['reservations'=> Auth::guard('web')->user()->clients->pluck('reservations')[0]]);
     }
 
     /**

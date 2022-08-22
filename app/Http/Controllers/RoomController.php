@@ -15,8 +15,8 @@ class RoomController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:web');
-        $this->middleware(['role:admin|manager']);
+        $this->middleware('auth:web')->except('getUnreservedRooms');
+        $this->middleware(['role:admin|manager'])->except('getUnreservedRooms');
     }
 
     /**
@@ -26,7 +26,12 @@ class RoomController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard', ['rooms'=> Room::all(['id', 'number', 'capacity', 'price', 'created_by', 'floor_number'])]);
+        return view('dashboard', ['rooms'=> Room::all(['id', 'number', 'capacity', 'price', 'created_by', 'floor_number'])]);
+    }
+
+    public function getUnreservedRooms()
+    {
+        return view('client.dashboard', ['rooms'=> Room::where('reserved', false)->get()]);
     }
 
     /**
@@ -76,7 +81,11 @@ class RoomController extends Controller
      */
     public function edit($id)
     {
-        return view('hotel.room.edit', ['room' => Room::where('id',$id)->first(), 'floors'=> Floor::all(['name', 'number'])]);
+        $res = $this->ensureIsOwner($id);
+        if ($res[0]) {
+            return view('hotel.room.edit', ['room' => $res[2], 'floors'=> Floor::all(['name', 'number'])]);
+        }
+        return redirect('/'.$res[1]->getRoleNames()[0].'/rooms')->with('fail', 'Action is not allowed');
     }
 
     /**
@@ -88,15 +97,20 @@ class RoomController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Room::find($id)
-        ->update($request->validate([
+        $res = $this->ensureIsOwner($id);
+
+        if ($res[0]) {
+            $res[2]
+            ->update($request->validate([
             'number' => ['required', 'numeric', Rule::unique('rooms','number')->ignore($id)],
             'floor_number'=> ['required', 'numeric', Rule::in(Floor::pluck('number')->all())],
             'capacity'=> ['required', 'numeric', 'max:30'],
             'price'=> ['required', 'numeric','lt:1000000'],
             ]));
 
-        return redirect('/'.Auth::guard('web')->user()->getRoleNames()[0].'/rooms')->with('success', 'Updated Successfully!');
+            return redirect('/'.$res[1]->getRoleNames()[0].'/rooms')->with('success', 'Updated Successfully!');
+        }
+        return redirect('/'.$res[1]->getRoleNames()[0].'/rooms')->with('fail', 'Action is not allowed');
     }
 
     /**
@@ -107,11 +121,24 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
-        if (!Room::find($id)->first()->reserved) {
-            Room::find($id)->delete();
-            return redirect('/'.Auth::guard('web')->user()->getRoleNames()[0].'/rooms')->with('success', 'Deleted Successfully!');
-        } else {
-            return redirect('/'.Auth::guard('web')->user()->getRoleNames()[0].'/rooms')->with('fail', 'Can\'t Delete Reserved Room!');
+        $res = $this->ensureIsOwner($id);
+        if ($res[0]) {
+            if (!$res[1]->reserved) {
+                $res[1]->delete();
+                return redirect('/'.$res[1]->getRoleNames()[0].'/rooms')->with('success', 'Deleted Successfully!');
+            } else {
+                return redirect('/'.$res[1]->getRoleNames()[0].'/rooms')->with('fail', 'Can\'t Delete Reserved Room!');
+            }
         }
+        return redirect('/'.$res[1]->getRoleNames()[0].'/rooms')->with('fail', 'Action is not allowed');
+    }
+
+    protected function ensureIsOwner($id) {
+        $user = Auth::guard('web')->user();
+        $room = Room::where('id',$id)->first();
+        if ($user->getRoleNames()[0] == 'manager' && $user->id != $room->created_by) {
+            return [false, $user];
+        }
+        return [true, $user, $room];
     }
 }

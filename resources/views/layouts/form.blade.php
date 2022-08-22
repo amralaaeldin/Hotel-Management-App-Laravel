@@ -16,7 +16,7 @@
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
             <div class="image">
-                <img src="{{ asset(Auth::guard('web')->user()->avatar) }}" class="img-circle elevation-2" alt="User Image">
+                <img style="width:60px; height:60px; object-fit:center;" src="{{ asset(Auth::guard('web')->user()->avatar) }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <a href="#" class="d-block">{{ Auth::guard('web')->user()->name }}</a>
@@ -27,8 +27,8 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
-                                                                                                                                                                                                                                                                                                                               with font-awesome or any other icon font library -->
-                <li class="nav-header">STUFF</li>
+                                                                                                                                                                                                                                                                                                                                   with font-awesome or any other icon font library -->
+                <li class="nav-header">staff</li>
                 @can('view managers', 'web')
                     <li class="nav-item has-treeview">
                         <a href="/admin/managers" class="nav-link">

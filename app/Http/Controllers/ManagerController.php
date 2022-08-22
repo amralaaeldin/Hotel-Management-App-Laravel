@@ -24,7 +24,7 @@ class ManagerController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard', ['managers'=> User::role('manager')->get(['id', 'name', 'national_id', 'email', 'avatar', 'created_by'])]);
+        return view('dashboard', ['managers'=> User::role('manager')->get(['id', 'name', 'national_id', 'email', 'avatar', 'created_by'])]);
     }
 
     /**

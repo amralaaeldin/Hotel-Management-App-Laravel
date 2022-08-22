@@ -3,7 +3,7 @@
         <x-slot name="logo">
             <a href="/" style="display: flex;flex-direction: column;align-items: center;">
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                <h3>Stuff - Forgot Password</h3>
+                <h3>Staff - Forgot Password</h3>
             </a>
         </x-slot>
 
@@ -17,14 +17,15 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-        <form method="POST" action="{{ route('stuff.password.email') }}">
+        <form method="POST" action="{{ route('staff.password.email') }}">
             @csrf
 
             <!-- Email Address -->
             <div>
                 <x-label for="email" :value="__('Email')" />
 
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
+                    required autofocus />
             </div>
 
             <div class="flex items-center justify-end mt-4">

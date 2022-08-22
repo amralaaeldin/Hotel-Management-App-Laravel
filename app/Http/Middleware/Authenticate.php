@@ -17,7 +17,7 @@ class Authenticate extends Middleware
         if (! $request->expectsJson()) {
             $prefix = explode('/', $request->getRequestUri())[1];
             if (in_array($prefix, ['manager', 'receptionist'])) {
-                $prefix = 'stuff';
+                $prefix = 'staff';
             }
             return route($prefix.'.login');
         }

@@ -23,7 +23,12 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard', ['clients'=> Client::all(['id', 'name', 'email', 'mobile', 'gender', 'country', 'avatar', 'approved'])]);
+        return view('dashboard', ['clients'=> Client::all(['id', 'name', 'email', 'mobile', 'gender', 'country', 'avatar', 'approved'])]);
+    }
+
+    public function getNotAcceptedYet()
+    {
+        return view('dashboard', ['clients'=> Client::where('approved', false)->get()]);
     }
 
     /**
@@ -46,6 +51,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         Client::find($id)
         ->update(
             $request->validate(
@@ -75,9 +81,9 @@ class ClientController extends Controller
     }
 
 
-    public function approve($id)
+    public function approve($client)
     {
-        Client::find($id)->update([
+        Client::find($client)->update([
             'approved' => true,
             'approved_by' => Auth::guard('web')->user()->id
         ]);

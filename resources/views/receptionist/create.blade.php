@@ -5,7 +5,7 @@
 
 
 @section('form-attributes', 'method=POST enctype=multipart/form-data')
-@section('route', route('stuff.store', 'receptionist'))
+@section('route', route('staff.store', 'receptionist'))
 @section('fields')
     <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
 

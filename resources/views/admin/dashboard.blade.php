@@ -4,7 +4,7 @@ $prefix = Auth::guard('web')
     ->user()
     ->getRoleNames()[0];
 if (in_array($prefix, ['manager', 'receptionist'])) {
-    $prefix = 'stuff';
+    $prefix = 'staff';
 }
 // }
 // if (Auth::guard('client')->check()) {
@@ -57,8 +57,8 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
         <div class="sidebar mb-3 mt-2">
             <!-- Sidebar user panel (optional) -->
             <div class="image">
-                <img width="60" src="{{ asset(Auth::guard('web')->user()->avatar) }}" class="img-circle elevation-2"
-                    alt="User Image">
+                <img style="width:60px; height:60px; object-fit:center;"
+                    src="{{ asset(Auth::guard('web')->user()->avatar) }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info mt-2">
                 <a href="#" class="d-block">{{ Auth::guard('web')->user()->name }}</a>
@@ -69,13 +69,11 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
         <nav class="mt-2">
             <ul style="position:relative; min-height: 75vh;" class="nav nav-pills nav-sidebar flex-column"
                 data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   with font-awesome or any other icon font library -->
-                <li class="nav-header">STUFF</li>
+                <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+                <li class="nav-header">Staff</li>
                 @can('view managers', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/managers"
-                            class="nav-link">
+                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/managers" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Managers
@@ -85,8 +83,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                 @endcan
                 @can('view receptionists', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/receptionists"
-                            class="nav-link">
+                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/receptionists" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Receptionists
@@ -96,8 +93,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                 @endcan
                 @can('view clients', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/clients"
-                            class="nav-link">
+                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/clients" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Clients
@@ -108,8 +104,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                 <li class="nav-header">HOTEL</li>
                 @can('view floors', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/floors"
-                            class="nav-link">
+                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/floors" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Floors
@@ -119,8 +114,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                 @endcan
                 @can('view rooms', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/rooms"
-                            class="nav-link">
+                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/rooms" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Rooms
@@ -130,8 +124,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                 @endcan
                 @can('view reservations', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/reservations"
-                            class="nav-link">
+                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/reservations" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Client Reservations
@@ -140,9 +133,10 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                     </li>
                 @endcan
                 <li style="cursor:pointer; bottom:10px; margin-top:auto; width:100%;" class="nav-item has-treeview">
-                    <form class="nav-link" action="{{ route($prefix . '.logout') }}" method="POST">
+                    <form action="{{ route($prefix . '.logout') }}" method="POST">
                         @csrf
-                        <button onmouseout="this.style.color='#6c757d'" onmouseover="this.style.color='#fff'"
+                        <button class="nav-link" onmouseout="this.style.color='#6c757d'"
+                            onmouseover="this.style.color='#fff'"
                             style="width:100%; text-align:left; border:none; outline:none; background:transparent; color:#6c757d;"
                             type="submit">
                             <i class="nav-icon fas fa-cog"></i>
@@ -190,7 +184,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
         @can('view managers', 'web')
             @if (isset($managers))
                 <div class="container">
-                    <a href="{{ route('stuff.register', 'manager') }}" type="button"
+                    <a href="{{ route('staff.register', 'manager') }}" type="button"
                         class="mr-1 btn m-0 mb-4 btn-success btn-lg">Add Manager</a>
                     @if (!empty($managers))
                         <x-data-table>
@@ -330,7 +324,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
         @can('view receptionists', 'web')
             @if (isset($receptionists))
                 <div class="container">
-                    <a href="{{ route('stuff.register', 'receptionist') }}" type="button"
+                    <a href="{{ route('staff.register', 'receptionist') }}" type="button"
                         class="mr-1 btn m-0 mb-4 btn-success btn-lg">Add Receptionist</a>
                     @if (!empty($receptionists))
                         <x-data-table>
@@ -389,50 +383,56 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                                             @endrole
                                             <td style="height:42px;"
                                                 class="d-md-flex align-items-center justify-content-center">
-                                                @can('edit receptionists', 'web')
-                                                    <a href="{{ route('receptionists.edit', $receptionist->id) }}"
-                                                        style="width:60px;" type="button"
-                                                        class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
-                                                @endcan
-                                                @can('delete receptionists', 'web')
-                                                    <button type="button" style="width:60px;"
-                                                        class="mr-1 btn btn-block m-0 btn-xs btn-danger" data-toggle="modal"
-                                                        data-target="#modal{{ $receptionist->id }}">
-                                                        Delete
-                                                    </button>
-                                                    <div class="modal fade" id="modal{{ $receptionist->id }}"
-                                                        style="display: none; padding-right: 14px;" aria-modal="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h4 class="modal-title">Delete Receptionist</h4>
-                                                                    <button type="button" class="close" data-dismiss="modal"
-                                                                        aria-label="Close">
-                                                                        <span aria-hidden="true">×</span>
-                                                                    </button>
+                                                @if (Auth::guard('web')->user()->id == $receptionist->creator->id ||
+                                                    Auth::guard('web')->user()->getRoleNames()[0] == 'admin')
+                                                    @can('edit receptionists', 'web')
+                                                        <a href="{{ route('receptionists.edit', $receptionist->id) }}"
+                                                            style="width:60px;" type="button"
+                                                            class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
+                                                    @endcan
+                                                    @can('delete receptionists', 'web')
+                                                        <button type="button" style="width:60px;"
+                                                            class="mr-1 btn btn-block m-0 btn-xs btn-danger" data-toggle="modal"
+                                                            data-target="#modal{{ $receptionist->id }}">
+                                                            Delete
+                                                        </button>
+                                                        <div class="modal fade" id="modal{{ $receptionist->id }}"
+                                                            style="display: none; padding-right: 14px;" aria-modal="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title">Delete Receptionist</h4>
+                                                                        <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">×</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div style="text-align:left;" class="modal-body">
+                                                                        <p>You Sure you want to
+                                                                            delete this ?</p>
+                                                                    </div>
+                                                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-default"
+                                                                            data-dismiss="modal">Close</button>
+                                                                        <form style="display: inline"
+                                                                            action="{{ route('receptionists.destroy', $receptionist->id) }}"
+                                                                            method="POST">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit"
+                                                                                class="btn btn-block m-0 btn-danger">Delete</button>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
-                                                                <div style="text-align:left;" class="modal-body">
-                                                                    <p>You Sure you want to
-                                                                        delete this ?</p>
-                                                                </div>
-                                                                <div class="modal-footer justify-content-between">
-                                                                    <button type="button" class="btn btn-default"
-                                                                        data-dismiss="modal">Close</button>
-                                                                    <form style="display: inline"
-                                                                        action="{{ route('receptionists.destroy', $receptionist->id) }}"
-                                                                        method="POST">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit"
-                                                                            class="btn btn-block m-0 btn-danger">Delete</button>
-                                                                    </form>
-                                                                </div>
+                                                                <!-- /.modal-content -->
                                                             </div>
-                                                            <!-- /.modal-content -->
+                                                            <!-- /.modal-dialog -->
                                                         </div>
-                                                        <!-- /.modal-dialog -->
-                                                    </div>
-                                                @endcan
+                                                    @endcan
+                                                @else
+                                                    No actions allowed
+                                                @endif
+
                                             </td>
                                         </tr>
                                     @endforeach
@@ -553,49 +553,57 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                                             </td>
                                             <td
                                                 class="dt-body-right dtr-hidden d-md-flex align-items-center justify-content-center">
-                                                @can('edit clients', 'web')
-                                                    <a href="{{ route('clients.edit', $client->id) }}" style="width:60px;"
-                                                        type="button" class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
-                                                @endcan
-                                                @can('delete clients', 'web')
-                                                    <button type="button" style="width:60px;"
-                                                        class="mr-1 btn btn-block m-0 btn-xs btn-danger" data-toggle="modal"
-                                                        data-target="#modal{{ $client->id }}">
-                                                        Delete
-                                                    </button>
-                                                    <div class="modal fade" id="modal{{ $client->id }}"
-                                                        style="display: none; padding-right: 14px;" aria-modal="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h4 class="modal-title">Delete Client</h4>
-                                                                    <button type="button" class="close" data-dismiss="modal"
-                                                                        aria-label="Close">
-                                                                        <span aria-hidden="true">×</span>
-                                                                    </button>
+                                                @if (Auth::guard('web')->user()->id == $client->approver?->id ||
+                                                    in_array(
+                                                        Auth::guard('web')->user()->getRoleNames()[0],
+                                                        ['admin', 'manager']))
+                                                    @can('edit clients', 'web')
+                                                        <a href="{{ route('clients.edit', $client->id) }}" style="width:60px;"
+                                                            type="button" class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
+                                                    @endcan
+                                                    @can('delete clients', 'web')
+                                                        <button type="button" style="width:60px;"
+                                                            class="mr-1 btn btn-block m-0 btn-xs btn-danger" data-toggle="modal"
+                                                            data-target="#modal{{ $client->id }}">
+                                                            Delete
+                                                        </button>
+                                                        <div class="modal fade" id="modal{{ $client->id }}"
+                                                            style="display: none; padding-right: 14px;" aria-modal="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title">Delete Client</h4>
+                                                                        <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">×</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div style="text-align:left;" class="modal-body">
+                                                                        <p>You Sure you want to
+                                                                            delete this ?</p>
+                                                                    </div>
+                                                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-default"
+                                                                            data-dismiss="modal">Close</button>
+                                                                        <form style="display: inline"
+                                                                            action="{{ route('clients.destroy', $client->id) }}"
+                                                                            method="POST">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit"
+                                                                                class="btn btn-block m-0 btn-danger">Delete</button>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
-                                                                <div style="text-align:left;" class="modal-body">
-                                                                    <p>You Sure you want to
-                                                                        delete this ?</p>
-                                                                </div>
-                                                                <div class="modal-footer justify-content-between">
-                                                                    <button type="button" class="btn btn-default"
-                                                                        data-dismiss="modal">Close</button>
-                                                                    <form style="display: inline"
-                                                                        action="{{ route('clients.destroy', $client->id) }}"
-                                                                        method="POST">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit"
-                                                                            class="btn btn-block m-0 btn-danger">Delete</button>
-                                                                    </form>
-                                                                </div>
+                                                                <!-- /.modal-content -->
                                                             </div>
-                                                            <!-- /.modal-content -->
+                                                            <!-- /.modal-dialog -->
                                                         </div>
-                                                        <!-- /.modal-dialog -->
-                                                    </div>
-                                                @endcan
+                                                    @endcan
+                                                @else
+                                                    No actions allowed
+                                                @endif
+
                                             </td>
                                         </tr>
                                     @endforeach
@@ -690,49 +698,54 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                                             @endrole
                                             <td
                                                 class="dt-body-right dtr-hidden d-md-flex align-items-center justify-content-center">
-                                                @can('edit floors', 'web')
-                                                    <a href="{{ route('floors.edit', $floor->number) }}" style="width:60px;"
-                                                        type="button" class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
-                                                @endcan
-                                                @can('delete floors', 'web')
-                                                    <button type="button" style="width:60px;"
-                                                        class="mr-1 btn btn-block m-0 btn-xs btn-danger" data-toggle="modal"
-                                                        data-target="#modal{{ $floor->number }}">
-                                                        Delete
-                                                    </button>
-                                                    <div class="modal fade" id="modal{{ $floor->number }}"
-                                                        style="display: none; padding-right: 14px;" aria-modal="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h4 class="modal-title">Delete Floor</h4>
-                                                                    <button type="button" class="close" data-dismiss="modal"
-                                                                        aria-label="Close">
-                                                                        <span aria-hidden="true">×</span>
-                                                                    </button>
+                                                @if (Auth::guard('web')->user()->id == $floor->creator->id ||
+                                                    Auth::guard('web')->user()->getRoleNames()[0] == 'admin')
+                                                    @can('edit floors', 'web')
+                                                        <a href="{{ route('floors.edit', $floor->number) }}" style="width:60px;"
+                                                            type="button" class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
+                                                    @endcan
+                                                    @can('delete floors', 'web')
+                                                        <button type="button" style="width:60px;"
+                                                            class="mr-1 btn btn-block m-0 btn-xs btn-danger" data-toggle="modal"
+                                                            data-target="#modal{{ $floor->number }}">
+                                                            Delete
+                                                        </button>
+                                                        <div class="modal fade" id="modal{{ $floor->number }}"
+                                                            style="display: none; padding-right: 14px;" aria-modal="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title">Delete Floor</h4>
+                                                                        <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">×</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div style="text-align:left;" class="modal-body">
+                                                                        <p>You Sure you want to
+                                                                            delete this ?</p>
+                                                                    </div>
+                                                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-default"
+                                                                            data-dismiss="modal">Close</button>
+                                                                        <form style="display: inline"
+                                                                            action="{{ route('floors.destroy', $floor->number) }}"
+                                                                            method="POST">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit"
+                                                                                class="btn btn-block m-0 btn-danger">Delete</button>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
-                                                                <div style="text-align:left;" class="modal-body">
-                                                                    <p>You Sure you want to
-                                                                        delete this ?</p>
-                                                                </div>
-                                                                <div class="modal-footer justify-content-between">
-                                                                    <button type="button" class="btn btn-default"
-                                                                        data-dismiss="modal">Close</button>
-                                                                    <form style="display: inline"
-                                                                        action="{{ route('floors.destroy', $floor->number) }}"
-                                                                        method="POST">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit"
-                                                                            class="btn btn-block m-0 btn-danger">Delete</button>
-                                                                    </form>
-                                                                </div>
+                                                                <!-- /.modal-content -->
                                                             </div>
-                                                            <!-- /.modal-content -->
+                                                            <!-- /.modal-dialog -->
                                                         </div>
-                                                        <!-- /.modal-dialog -->
-                                                    </div>
-                                                @endcan
+                                                    @endcan
+                                                @else
+                                                    No actions allowed
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -830,49 +843,54 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                                             @endrole
                                             <td
                                                 class="dt-body-right dtr-hidden d-md-flex align-items-center justify-content-center">
-                                                @can('edit rooms', 'web')
-                                                    <a href="{{ route('rooms.edit', $room->id) }}" style="width:60px;"
-                                                        type="button" class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
-                                                @endcan
-                                                @can('delete rooms', 'web')
-                                                    <button type="button" style="width:60px;"
-                                                        class="mr-1 btn btn-block m-0 btn-xs btn-danger" data-toggle="modal"
-                                                        data-target="#modal{{ $room->id }}">
-                                                        Delete
-                                                    </button>
-                                                    <div class="modal fade" id="modal{{ $room->id }}"
-                                                        style="display: none; padding-right: 14px;" aria-modal="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h4 class="modal-title">Delete Room</h4>
-                                                                    <button type="button" class="close" data-dismiss="modal"
-                                                                        aria-label="Close">
-                                                                        <span aria-hidden="true">×</span>
-                                                                    </button>
+                                                @if (Auth::guard('web')->user()->id == $room->creator->id ||
+                                                    Auth::guard('web')->user()->getRoleNames()[0] == 'admin')
+                                                    @can('edit rooms', 'web')
+                                                        <a href="{{ route('rooms.edit', $room->id) }}" style="width:60px;"
+                                                            type="button" class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
+                                                    @endcan
+                                                    @can('delete rooms', 'web')
+                                                        <button type="button" style="width:60px;"
+                                                            class="mr-1 btn btn-block m-0 btn-xs btn-danger" data-toggle="modal"
+                                                            data-target="#modal{{ $room->id }}">
+                                                            Delete
+                                                        </button>
+                                                        <div class="modal fade" id="modal{{ $room->id }}"
+                                                            style="display: none; padding-right: 14px;" aria-modal="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title">Delete Room</h4>
+                                                                        <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">×</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div style="text-align:left;" class="modal-body">
+                                                                        <p>You Sure you want to
+                                                                            delete this ?</p>
+                                                                    </div>
+                                                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-default"
+                                                                            data-dismiss="modal">Close</button>
+                                                                        <form style="display: inline"
+                                                                            action="{{ route('rooms.destroy', $room->id) }}"
+                                                                            method="POST">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit"
+                                                                                class="btn btn-block m-0 btn-danger">Delete</button>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
-                                                                <div style="text-align:left;" class="modal-body">
-                                                                    <p>You Sure you want to
-                                                                        delete this ?</p>
-                                                                </div>
-                                                                <div class="modal-footer justify-content-between">
-                                                                    <button type="button" class="btn btn-default"
-                                                                        data-dismiss="modal">Close</button>
-                                                                    <form style="display: inline"
-                                                                        action="{{ route('rooms.destroy', $room->id) }}"
-                                                                        method="POST">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit"
-                                                                            class="btn btn-block m-0 btn-danger">Delete</button>
-                                                                    </form>
-                                                                </div>
+                                                                <!-- /.modal-content -->
                                                             </div>
-                                                            <!-- /.modal-content -->
+                                                            <!-- /.modal-dialog -->
                                                         </div>
-                                                        <!-- /.modal-dialog -->
-                                                    </div>
-                                                @endcan
+                                                    @endcan
+                                                @else
+                                                    No actions allowed
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

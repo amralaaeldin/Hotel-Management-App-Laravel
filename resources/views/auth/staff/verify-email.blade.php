@@ -3,7 +3,7 @@
         <x-slot name="logo">
             <a href="/" style="display: flex;flex-direction: column;align-items: center;">
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                <h3>Stuff - Verify Email</h3>
+                <h3>Staff - Verify Email</h3>
             </a>
         </x-slot>
 
@@ -18,7 +18,7 @@
         @endif
 
         <div class="mt-4 flex items-center justify-between">
-            <form method="POST" action="{{ route('stuff.verification.send') }}">
+            <form method="POST" action="{{ route('staff.verification.send') }}">
                 @csrf
 
                 <div>
@@ -28,7 +28,7 @@
                 </div>
             </form>
 
-            <form method="POST" action="{{ route('stuff.logout') }}">
+            <form method="POST" action="{{ route('staff.logout') }}">
                 @csrf
 
                 <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900">

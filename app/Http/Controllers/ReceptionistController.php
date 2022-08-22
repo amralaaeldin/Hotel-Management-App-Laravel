@@ -23,7 +23,7 @@ class ReceptionistController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard', ['receptionists'=> User::role('receptionist')->get(['id', 'name', 'email','created_by'])]);
+        return view('dashboard', ['receptionists'=> User::role('receptionist')->get(['id', 'name', 'email','created_by'])]);
     }
 
     /**
@@ -34,7 +34,11 @@ class ReceptionistController extends Controller
      */
     public function edit($id)
     {
-        return view('receptionist.edit', ['receptionist' => User::where('id',$id)->first()]);
+        $res = $this->ensureIsOwner($id);
+        if ($res[0]) {
+            return view('receptionist.edit', ['receptionist' => $res[2]]);
+        }
+        return redirect('/'.$res[1]->getRoleNames()[0].'/receptionists')->with('fail', 'Action is not allowed');
     }
 
     /**
@@ -46,8 +50,10 @@ class ReceptionistController extends Controller
      */
     public function update(Request $request, $id)
     {
-        User::find($id)
-        ->update(
+        $res = $this->ensureIsOwner($id);
+        if ($res[0]) {
+            $res[2]
+            ->update(
             $request->validate(
             [
                 'name' => ['required', 'string', 'max:255'],
@@ -55,9 +61,11 @@ class ReceptionistController extends Controller
                 'avatar' => ['image'],
                 'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users','email')->ignore($id)],
             ]
-        ));
+            ));
 
-        return redirect('/'.Auth::guard('web')->user()->getRoleNames()[0].'/receptionists')->with('success', 'Updated Successfully!');
+            return redirect('/'.$res[1]->getRoleNames()[0].'/receptionists')->with('success', 'Updated Successfully!');
+        }
+        return redirect('/'.$res[1]->getRoleNames()[0].'/receptionists')->with('fail', 'Action is not allowed');
     }
 
     /**
@@ -68,7 +76,21 @@ class ReceptionistController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
-        return redirect('/'.Auth::guard('web')->user()->getRoleNames()[0].'/receptionists')->with('success', 'Deleted Successfully!');
+        $res = $this->ensureIsOwner($id);
+        if ($res[0]) {
+            $res[2]->delete();
+            return redirect('/'.$res[1]->getRoleNames()[0].'/receptionists')->with('success', 'Deleted Successfully!');
+        }
+        return redirect('/'.$res[1]->getRoleNames()[0].'/receptionists')->with('fail', 'Action is not allowed');
     }
+
+    protected function ensureIsOwner($id) {
+        $user = Auth::guard('web')->user();
+        $receptionist = User::where('id',$id)->first();
+        if ($user->getRoleNames()[0] == 'manager' && $user->id != $receptionist->created_by) {
+            return [false, $user];
+        }
+        return [true, $user, $receptionist];
+    }
+
 }

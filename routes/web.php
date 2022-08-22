@@ -29,19 +29,19 @@ Route::get('/', function () {
 
 Route::middleware(['auth:web', 'role:admin'])->group(function () {
 Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard', ['user' => Auth::guard('web')->user()]);
+        return view('dashboard', ['user' => Auth::guard('web')->user()]);
     })->name('admin.dashboard');
 });
 
 Route::middleware(['auth:web', 'role:manager'])->group(function () {
 Route::get('/manager/dashboard', function () {
-    return view('manager.dashboard', ['user' => Auth::guard('web')->user()]);
+    return view('dashboard', ['user' => Auth::guard('web')->user()]);
 })->name('manager.dashboard');
 });
 
 Route::middleware(['auth:web', 'role:receptionist'])->group(function () {
 Route::get('/receptionist/dashboard', function () {
-    return view('receptionist.dashboard', ['user' => Auth::guard('web')->user()]);
+    return view('dashboard', ['user' => Auth::guard('web')->user()]);
 })->name('receptionist.dashboard');
 });
 
@@ -52,7 +52,7 @@ Route::get('/client/dashboard', function () {
 });
 
 
-Route::prefix('stuff')->group(function () {
+Route::prefix('staff')->group(function () {
     require __DIR__.'/auth.php';
 });
 
@@ -66,7 +66,7 @@ Route::prefix('client')->group(function () {
 });
 
 
-Route::get('/redirect', [HomeController::class, 'redirect']);
+Route::get('/redirect', [HomeController::class, 'redirect'])->name('redirect');
 
 Route::resource('rooms', RoomController::class);
 Route::resource('floors', FloorController::class);
@@ -75,7 +75,7 @@ Route::resource('reservations', ReservationController::class)->only(['index', 'c
 Route::resource('managers', ManagerController::class)->except(['create', 'store', 'show']);
 Route::resource('receptionists', ReceptionistController::class)->except(['create', 'store', 'show']);
 Route::resource('clients', ClientController::class)->except(['create', 'store', 'show']);
-Route::put('clients/approve/{id}', [ClientController::class, 'approve'])->name('clients.approve');
+Route::put('clients/approve/{client}', [ClientController::class, 'approve'])->name('clients.approve');
 
 
 Route::prefix('admin/')->middleware(['auth:web', 'role:admin'])->group(function () {
@@ -96,11 +96,12 @@ Route::prefix('manager/')->middleware(['auth:web', 'role:manager'])->group(funct
 });
 
 Route::prefix('receptionist/')->middleware(['auth:web', 'role:receptionist'])->group(function () {
-    Route::get('clients', [ClientController::class, 'index']);
+    Route::get('clients', [ClientController::class, 'getNotAcceptedYet']);
     Route::get('reservations', [ReservationController::class, 'getAcceptedClientsReservations']);
 });
 
 Route::prefix('client/')->middleware(['auth:client'])->group(function () {
+    Route::get('rooms', [RoomController::class, 'getUnreservedRooms']);
     Route::get('reservations', [ReservationController::class, 'getClientReservations']);
 });
 
