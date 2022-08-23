@@ -105,10 +105,3 @@ Route::prefix('client/')->middleware(['auth:client'])->group(function () {
     Route::get('reservations', [ReservationController::class, 'getClientReservations']);
 });
 
-
-
-
-// test
-Route::get('/test', function () {
-    return view('manager.create');
-});

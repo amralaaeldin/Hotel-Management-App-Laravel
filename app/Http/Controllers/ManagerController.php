@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 class ManagerController extends Controller
@@ -45,18 +46,23 @@ class ManagerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $manager)
     {
-        User::find($id)
+        if($request->hasFile('avatar') && $manager->avatar != 'avatars/users_default_avatar.png')
+        {
+            Storage::delete("$manager->avatar");
+        }
+        $manager
         ->update(
-            $request->validate(
+            [$request->validate(
             [
                 'name' => ['required', 'string', 'max:255'],
-                'national_id' => ['required', 'digits:14', Rule::unique('users','national_id')->ignore($id)],
+                'national_id' => ['required', 'digits:14', Rule::unique('users','national_id')->ignore($manager->id)],
                 'avatar' => ['image'],
-                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users','email')->ignore($id) ],
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users','email')->ignore($manager->id) ],
             ]
-        ));
+            ), 'avatar' => $request->file('avatar') ? $request->file('avatar')->store('avatars') : $manager->avatar,
+        ]);
 
         return redirect('/'.Auth::guard('web')->user()->getRoleNames()[0].'/managers')->with('success', 'Updated Successfully!');
     }

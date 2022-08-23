@@ -1,3 +1,12 @@
+@php
+$prefix = Auth::guard('web')
+    ->user()
+    ->getRoleNames()[0];
+if (in_array($prefix, ['manager', 'receptionist'])) {
+    $prefix = 'staff';
+}
+@endphp
+
 @extends('layouts.adminlte')
 
 
@@ -16,7 +25,8 @@
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
             <div class="image">
-                <img style="width:60px; height:60px; object-fit:center;" src="{{ asset(Auth::guard('web')->user()->avatar) }}" class="img-circle elevation-2" alt="User Image">
+                <img style="width:60px; height:60px; object-fit:center;"
+                    src="{{ asset(Auth::guard('web')->user()->avatar) }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <a href="#" class="d-block">{{ Auth::guard('web')->user()->name }}</a>
@@ -25,13 +35,13 @@
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-                                                                                                                                                                                                                                                                                                                                   with font-awesome or any other icon font library -->
-                <li class="nav-header">staff</li>
+            <ul style="position:relative; min-height: 75vh;" class="nav nav-pills nav-sidebar flex-column"
+                data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+                <li class="nav-header">Staff</li>
                 @can('view managers', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/admin/managers" class="nav-link">
+                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/managers" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Managers
@@ -41,7 +51,7 @@
                 @endcan
                 @can('view receptionists', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/admin/receptionists" class="nav-link">
+                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/receptionists" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Receptionists
@@ -51,7 +61,7 @@
                 @endcan
                 @can('view clients', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/admin/clients" class="nav-link">
+                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/clients" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Clients
@@ -62,7 +72,7 @@
                 <li class="nav-header">HOTEL</li>
                 @can('view floors', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/admin/floors" class="nav-link">
+                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/floors" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Floors
@@ -72,7 +82,7 @@
                 @endcan
                 @can('view rooms', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/admin/rooms" class="nav-link">
+                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/rooms" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Rooms
@@ -82,7 +92,7 @@
                 @endcan
                 @can('view reservations', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/admin/reservations" class="nav-link">
+                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/reservations" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Client Reservations
@@ -90,7 +100,18 @@
                         </a>
                     </li>
                 @endcan
-
+                <li style="cursor:pointer; bottom:10px; margin-top:auto; width:100%;" class="nav-item has-treeview">
+                    <form action="{{ route($prefix . '.logout') }}" method="POST">
+                        @csrf
+                        <button class="nav-link" onmouseout="this.style.color='#6c757d'"
+                            onmouseover="this.style.color='#fff'"
+                            style="width:100%; text-align:left; border:none; outline:none; background:transparent; color:#6c757d;"
+                            type="submit">
+                            <i class="nav-icon fas fa-cog"></i>
+                            Logout
+                        </button>
+                    </form>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

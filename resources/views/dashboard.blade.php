@@ -27,7 +27,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
 @endsection
 
 @section('title')
-{{ ucfirst(Auth::guard('web')->user()->getRoleNames()[0]) }} - Dashboard
+    {{ ucfirst(Auth::guard('web')->user()->getRoleNames()[0]) }} - Dashboard
 @endsection
 @section('navbar')
     <!-- Navbar -->
@@ -52,7 +52,9 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
         <a href="index3.html" class="brand-link">
             <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
                 class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span style="font-size:0.92em;" class="brand-text font-weight-light">{{ ucfirst(Auth::guard('web')->user()->getRoleNames()[0]) }} - Dashboard</span>
+            <span style="font-size:0.92em;"
+                class="brand-text font-weight-light">{{ ucfirst(Auth::guard('web')->user()->getRoleNames()[0]) }} -
+                Dashboard</span>
         </a>
 
         <!-- Sidebar -->
@@ -152,7 +154,6 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
         </div>
         <!-- /.sidebar -->
     </aside>
-
 @endsection
 @section('content')
     <div class="content-wrapper pt-4">
@@ -553,7 +554,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                                                     </form>
                                                 @endif
                                             </td>
-                                            <td
+                                            <td style="height:42px;"
                                                 class="dt-body-right dtr-hidden d-md-flex align-items-center justify-content-center">
                                                 @if (Auth::guard('web')->user()->id == $client->approver?->id ||
                                                     in_array(
@@ -698,7 +699,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                                                     {{ $floor->creator->name }}
                                                 </td>
                                             @endrole
-                                            <td
+                                            <td style="height:42px;"
                                                 class="dt-body-right dtr-hidden d-md-flex align-items-center justify-content-center">
                                                 @if (Auth::guard('web')->user()->id == $floor->creator->id ||
                                                     Auth::guard('web')->user()->getRoleNames()[0] == 'admin')
@@ -843,7 +844,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                                                     {{ $room->creator->name }}
                                                 </td>
                                             @endrole
-                                            <td
+                                            <td style="height:42px;"
                                                 class="dt-body-right dtr-hidden d-md-flex align-items-center justify-content-center">
                                                 @if (Auth::guard('web')->user()->id == $room->creator->id ||
                                                     Auth::guard('web')->user()->getRoleNames()[0] == 'admin')
@@ -1035,7 +1036,6 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                         </x-data-table>
                     @endif
                 </div>
-
             @endif
         @endcan
 

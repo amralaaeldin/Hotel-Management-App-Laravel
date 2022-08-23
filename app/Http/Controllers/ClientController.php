@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\Client;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 class ClientController extends Controller
@@ -49,21 +50,25 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Client $client)
     {
-
-        Client::find($id)
+        if($request->hasFile('avatar') && $client->avatar != 'avatars/clients/clients_default_avatar.png')
+        {
+            Storage::delete("$client->avatar");
+        }
+        $client
         ->update(
-            $request->validate(
+            [$request->validate(
             [
                 'name' => ['required', 'string', 'max:255'],
                 'mobile' => ['required', 'min:11', 'numeric'],
                 'country' => ['required', Rule::in(array_keys(countries()))],
                 'avatar' => ['image'],
                 'gender' => ['required', 'in:M,F'],
-                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('clients','email')->ignore($id) ],
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('clients','email')->ignore($client->id) ],
             ]
-        ));
+            ), 'avatar' => $request->file('avatar') ? $request->file('avatar')->store('avatars/clients') : $client->avatar,
+        ]);
 
         return redirect('/'.Auth::guard('web')->user()->getRoleNames()[0].'/clients')->with('success', 'Updated Successfully!');
     }

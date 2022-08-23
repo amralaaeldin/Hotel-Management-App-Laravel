@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 
 class ReceptionistController extends Controller
@@ -32,9 +33,9 @@ class ReceptionistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $receptionist)
     {
-        $res = $this->ensureIsOwner($id);
+        $res = $this->ensureIsOwner($receptionist);
         if ($res[0]) {
             return view('receptionist.edit', ['receptionist' => $res[2]]);
         }
@@ -48,20 +49,24 @@ class ReceptionistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $receptionist)
     {
-        $res = $this->ensureIsOwner($id);
+        if($request->hasFile('avatar') && $receptionist->avatar != 'avatars/users_default_avatar.png')
+        {
+            Storage::delete("$receptionist->avatar");
+        }
+        $res = $this->ensureIsOwner($receptionist->id);
         if ($res[0]) {
             $res[2]
             ->update(
-            $request->validate(
+            [$request->validate(
             [
                 'name' => ['required', 'string', 'max:255'],
-                'national_id' => ['required', 'digits:14', Rule::unique('users','national_id')->ignore($id)],
+                'national_id' => ['required', 'digits:14', Rule::unique('users','national_id')->ignore($receptionist->id)],
                 'avatar' => ['image'],
-                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users','email')->ignore($id)],
-            ]
-            ));
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users','email')->ignore($receptionist->id)],
+            ]), 'avatar' => $request->file('avatar') ? $request->file('avatar')->store('avatars') : $receptionist->avatar,
+        ]);
 
             return redirect('/'.$res[1]->getRoleNames()[0].'/receptionists')->with('success', 'Updated Successfully!');
         }
@@ -74,9 +79,9 @@ class ReceptionistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $receptionist)
     {
-        $res = $this->ensureIsOwner($id);
+        $res = $this->ensureIsOwner($receptionist);
         if ($res[0]) {
             $res[2]->delete();
             return redirect('/'.$res[1]->getRoleNames()[0].'/receptionists')->with('success', 'Deleted Successfully!');
@@ -84,13 +89,11 @@ class ReceptionistController extends Controller
         return redirect('/'.$res[1]->getRoleNames()[0].'/receptionists')->with('fail', 'Action is not allowed');
     }
 
-    protected function ensureIsOwner($id) {
+    protected function ensureIsOwner($receptionist) {
         $user = Auth::guard('web')->user();
-        $receptionist = User::where('id',$id)->first();
         if ($user->getRoleNames()[0] == 'manager' && $user->id != $receptionist->created_by) {
             return [false, $user];
         }
         return [true, $user, $receptionist];
     }
-
 }
