@@ -60,10 +60,12 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
         <!-- Sidebar -->
         <div class="sidebar mb-3 mt-2">
             <!-- Sidebar user panel (optional) -->
+            @if (Auth::guard('web')->user()->avatar)
             <div class="image">
                 <img style="width:60px; height:60px; object-fit:center;"
                     src="{{ asset(Auth::guard('web')->user()->avatar) }}" class="img-circle elevation-2" alt="User Image">
             </div>
+            @endif
             <div class="info mt-2">
                 <a href="#" class="d-block">{{ Auth::guard('web')->user()->name }}</a>
             </div>
