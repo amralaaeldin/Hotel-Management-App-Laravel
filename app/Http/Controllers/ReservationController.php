@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Reservation;
+use App\Models\Room;
 use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
@@ -40,9 +41,9 @@ class ReservationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Room $room)
     {
-        //
+        return view('reservation.create', ['room' => $room]);
     }
 
     /**

@@ -42,13 +42,25 @@
         <!-- Sidebar -->
         <div class="sidebar mb-3 mt-2">
             <!-- Sidebar user panel (optional) -->
-            <div class="image">
-                <img style="width:60px; height:60px; object-fit:center;" src="{{ asset(Auth::guard('client')->user()->avatar) }}" class="img-circle elevation-2"
-                    alt="User Image">
-            </div>
-            <div class="info mt-2">
-                <a href="#" class="d-block">{{ Auth::guard('client')->user()->name }}</a>
-            </div>
+            @if (Auth::guard('client')->check())
+                <div class="image">
+                    <img style="width:60px; height:60px; object-fit:center;"
+                        src="{{ asset(Auth::guard('client')->user()->avatar) }}" class="img-circle elevation-2"
+                        alt="User Image">
+                </div>
+                <div class="info mt-2">
+                    <a href="#" class="d-block">{{ Auth::guard('client')->user()->name }}</a>
+                </div>
+            @else
+                <div class="image">
+                    <img style="width:60px; height:60px; object-fit:center;"
+                        src="{{ asset('avatars/clients/clients_default_avatar.png') }}" class="img-circle elevation-2"
+                        alt="User Image">
+                </div>
+                <div class="info mt-2">
+                    <a href="#" class="d-block">Guest</a>
+                </div>
+            @endif
         </div>
 
         <!-- Sidebar Menu -->
@@ -57,32 +69,46 @@
                 data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                 <li class="nav-item has-treeview">
-                    <a href="/client/rooms" class="nav-link">
+                    <a href="/rooms" class="nav-link">
                         <i class="nav-icon fas fa-circle"></i>
                         <p>
                             Rooms
                         </p>
                     </a>
                 </li>
-                <li class="nav-item has-treeview">
-                    <a href="/client/reservations" class="nav-link">
-                        <i class="nav-icon fas fa-circle"></i>
-                        <p>
-                            Client Reservations
-                        </p>
-                    </a>
-                </li>
-                <li style="cursor:pointer; bottom:10px; margin-top:auto; width:100%;" class="nav-item has-treeview">
-                    <form action="{{ route('client.logout') }}" method="POST">
-                        @csrf
-                        <button class="nav-link" onmouseout="this.style.color='#6c757d'" onmouseover="this.style.color='#fff'"
-                            style="width:100%; text-align:left; border:none; outline:none; background:transparent; color:#6c757d;"
-                            type="submit">
+                @if (Auth::guard('client')->check())
+                    <li class="nav-item has-treeview">
+                        <a href="/client/reservations" class="nav-link">
+                            <i class="nav-icon fas fa-circle"></i>
+                            <p>
+                                Client Reservations
+                            </p>
+                        </a>
+                    </li>
+                @endif
+                @if (Auth::guard('client')->check())
+                    <li style="cursor:pointer; bottom:10px; margin-top:auto; width:100%;" class="nav-item has-treeview">
+                        <form action="{{ route('client.logout') }}" method="POST">
+                            @csrf
+                            <button class="nav-link" onmouseout="this.style.color='#6c757d'"
+                                onmouseover="this.style.color='#fff'"
+                                style="width:100%; text-align:left; border:none; outline:none; background:transparent; color:#6c757d;"
+                                type="submit">
+                                <i class="nav-icon fas fa-cog"></i>
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                @else
+                    <li style="cursor:pointer; bottom:10px; margin-top:auto; width:100%;" class="nav-item has-treeview">
+                        <a href="/client/login" class="nav-link">
                             <i class="nav-icon fas fa-cog"></i>
-                            Logout
-                        </button>
-                    </form>
-                </li>
+                            <p>
+                                Login
+                            </p>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
@@ -142,13 +168,13 @@
                                         aria-label="Name: activate to sort column descending">
                                         Floor Name
                                     </th>
-                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1"
-                                        colspan="1" style="width: 105px" aria-sort="ascending"
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="example"
+                                        rowspan="1" colspan="1" style="width: 105px" aria-sort="ascending"
                                         aria-label="Name: activate to sort column descending">
                                         Capacity
                                     </th>
-                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1"
-                                        colspan="1" style="width: 105px" aria-sort="ascending"
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="example"
+                                        rowspan="1" colspan="1" style="width: 105px" aria-sort="ascending"
                                         aria-label="Name: activate to sort column descending">
                                         Price
                                     </th>
@@ -171,11 +197,9 @@
                                         <td>{{ $room->price }}</td>
                                         <td
                                             class="dt-body-right dtr-hidden d-md-flex align-items-center justify-content-start">
-                                            @if (Auth::guard('client')->check())
-                                                <a href="{{ route('reservations.create', $room->id) }}"
-                                                    style="width:fit-content;" type="button"
-                                                    class="mr-1 btn btn-block m-0 btn-info btn-xs">Make Reservation</a>
-                                            @endif
+                                            <a href="{{ route('reservations.create', $room->id) }}"
+                                                style="width:fit-content;" type="button"
+                                                class="mr-1 btn btn-block m-0 btn-info btn-xs">Make Reservation</a>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -70,7 +70,10 @@ Route::get('/redirect', [HomeController::class, 'redirect'])->name('redirect');
 
 Route::resource('rooms', RoomController::class);
 Route::resource('floors', FloorController::class);
-Route::resource('reservations', ReservationController::class)->only(['index', 'create', 'store',]);
+Route::resource('reservations', ReservationController::class)->only(['index', 'store']);
+Route::get('reservations/{room}', [ReservationController::class, 'create'])->name('reservations.create');
+Route::post('reservations/{room}', [ReservationController::class, 'store'])->name('reservations.store');
+
 
 Route::resource('managers', ManagerController::class)->except(['create', 'store', 'show']);
 Route::resource('receptionists', ReceptionistController::class)->except(['create', 'store', 'show']);
@@ -100,8 +103,8 @@ Route::prefix('receptionist/')->middleware(['auth:web', 'role:receptionist'])->g
     Route::get('reservations', [ReservationController::class, 'getAcceptedClientsReservations']);
 });
 
-Route::prefix('client/')->middleware(['auth:client'])->group(function () {
-    Route::get('rooms', [RoomController::class, 'getUnreservedRooms']);
-    Route::get('reservations', [ReservationController::class, 'getClientReservations']);
+Route::get('rooms', [RoomController::class, 'getUnreservedRooms']);
+Route::prefix('client/')->group(function () {
+    Route::get('reservations', [ReservationController::class, 'getClientReservations'])->middleware(['auth:client']);
 });
 
