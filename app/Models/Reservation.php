@@ -7,36 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 use  App\Models\Client;
 use  App\Models\Floor;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Reservation extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'client_id', // auto get // done
-        'room_number', // auto get // done
-        'floor_number', // auto get // done
+        'client_id',
+        'room_number',
+        'floor_number',
         'duration',
-        'price', // auto get // done
+        'price_paid_per_day',
         'accompany_number',
         'st_date',
-        'end_date', // auto cal // done
-        // total price => auto cal, price per day * duration // done
-        // end_date => auto cal, st_date + duration // done
-        // check auth client,  else login // done
-        // Field ajax (js) to cal end_date // (won't)
-        // Field ajax (js) to cal total ? and send it to payment gate ?? // backend, not input value // done
-
-        // room not reserved // done
-        // accompany number is between 0 & room max --- max 30 // done
-        // duration to be rational - max 30 // done
-
-
-        // make reservation in db  // done
-        // make room reserved // done
-
-
-        // paper of planning
+        'end_date',
     ];
 
     /**
@@ -57,7 +42,16 @@ class Reservation extends Model
     public function getStDate() {
         return Carbon::create($this->st_date)->format('l jS \\of F Y h:i:s A');
     }
+
     public function getEndDate() {
         return Carbon::create($this->end_date)->format('l jS \\of F Y h:i:s A');
+    }
+
+    protected function pricePaidPerDay(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => $value/100,
+            set: fn ($value) => $value*100,
+        );
     }
 }

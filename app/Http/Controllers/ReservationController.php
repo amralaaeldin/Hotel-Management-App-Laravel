@@ -58,13 +58,9 @@ class ReservationController extends Controller
      */
     public function store(Room $room, Request $request)
     {
-        // Check in happens at 2:00 PM
-        $request->st_date = Carbon::createFromFormat('Y-m-d H', $request->st_date . ' 14')->toDateTimeString();
-
         $request->validate([
             'duration' => ['required', 'numeric', 'max:30'],
-            'accompany_number' => ['required', 'numeric', 'min:1', 'max:30'],
-            // 'st_date' => ['required', 'date', "after_or_equal:" . Carbon::createFromFormat('Y-m-d H', date('Y-m-d 14'))->toDateTimeString() . ""],
+            'accompany_number' => ['required', 'numeric', 'min:1', 'max:30', "lte:$room->capacity"],
             'st_date' => ['required', 'date',  new FutureDate],
             'price_paid_per_day' => ['required', 'numeric', "size:$room->price"],
             "total_price" => ['required', 'numeric', "size:" . $room->price * $request->duration . ""],
@@ -84,6 +80,9 @@ class ReservationController extends Controller
             "price_paid_per_day" => $room->price,
         ];
 
+        // Check in happens at 2:00 PM
+        $request->st_date = Carbon::createFromFormat('Y-m-d H', $request->st_date . ' 14')->toDateTimeString();
+
         try {
             $charge = Stripe::charges()->create([
                 'amount' => $room->price * $request->duration,
@@ -94,7 +93,8 @@ class ReservationController extends Controller
                 'metadata' => [
                     'name' => "Room no. $room->number in Floor {$room->floor->name}",
                     'name_on_card' => $request->name_on_card,
-                    'contents' => json_encode([...$content, "total_price" => $room->price * $request->duration]),
+                    'contents' => json_encode(
+                        array_merge($content,[ "total_price" => $room->price * $request->duration]))
                 ],
             ]);
 
