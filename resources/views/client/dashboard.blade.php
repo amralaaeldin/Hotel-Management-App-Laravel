@@ -81,7 +81,7 @@
                         <a href="/client/reservations" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
-                                Client Reservations
+                                My Reservations
                             </p>
                         </a>
                     </li>

@@ -13,27 +13,28 @@ class Reservation extends Model
     use HasFactory;
 
     protected $fillable = [
-        'client_id', // auto get
-        'room_number', // auto get
-        'floor_number', // auto get
+        'client_id', // auto get // done
+        'room_number', // auto get // done
+        'floor_number', // auto get // done
         'duration',
-        'price_paid_per_day', // auto get
+        'price', // auto get // done
         'accompany_number',
         'st_date',
-        'end_date', // auto cal
-        // total price => auto cal, price per day * duration
-        // end_date => auto cal, st_date + duration
+        'end_date', // auto cal // done
+        // total price => auto cal, price per day * duration // done
+        // end_date => auto cal, st_date + duration // done
         // check auth client,  else login // done
-        // Field ajax to cal end_date
-        // Field ajax to cal total ? and send it to payment gate ?? // backend, not input value
+        // Field ajax (js) to cal end_date // (won't)
+        // Field ajax (js) to cal total ? and send it to payment gate ?? // backend, not input value // done
 
-        // room not reserved
-        // accompany number is between 0 & room max --- max 30
-        // duration to be rational - max 30
+        // room not reserved // done
+        // accompany number is between 0 & room max --- max 30 // done
+        // duration to be rational - max 30 // done
 
 
-        // make reservation in db
-        // make room reserved
+        // make reservation in db  // done
+        // make room reserved // done
+
 
         // paper of planning
     ];

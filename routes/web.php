@@ -28,41 +28,41 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:web', 'role:admin'])->group(function () {
-Route::get('/admin/dashboard', function () {
+    Route::get('/admin/dashboard', function () {
         return view('dashboard', ['user' => Auth::guard('web')->user()]);
     })->name('admin.dashboard');
 });
 
 Route::middleware(['auth:web', 'role:manager'])->group(function () {
-Route::get('/manager/dashboard', function () {
-    return view('dashboard', ['user' => Auth::guard('web')->user()]);
-})->name('manager.dashboard');
+    Route::get('/manager/dashboard', function () {
+        return view('dashboard', ['user' => Auth::guard('web')->user()]);
+    })->name('manager.dashboard');
 });
 
 Route::middleware(['auth:web', 'role:receptionist'])->group(function () {
-Route::get('/receptionist/dashboard', function () {
-    return view('dashboard', ['user' => Auth::guard('web')->user()]);
-})->name('receptionist.dashboard');
+    Route::get('/receptionist/dashboard', function () {
+        return view('dashboard', ['user' => Auth::guard('web')->user()]);
+    })->name('receptionist.dashboard');
 });
 
 Route::middleware(['auth:client'])->group(function () {
-Route::get('/client/dashboard', function () {
+    Route::get('/client/dashboard', function () {
         return view('client.dashboard', ['user' => Auth::guard('client')->user()]);
     })->name('client.dashboard');
 });
 
 
 Route::prefix('staff')->group(function () {
-    require __DIR__.'/auth.php';
+    require __DIR__ . '/auth.php';
 });
 
 
 Route::prefix('admin')->group(function () {
-    require __DIR__.'/admin-auth.php';
+    require __DIR__ . '/admin-auth.php';
 });
 
 Route::prefix('client')->group(function () {
-    require __DIR__.'/client-auth.php';
+    require __DIR__ . '/client-auth.php';
 });
 
 
@@ -71,6 +71,7 @@ Route::get('/redirect', [HomeController::class, 'redirect'])->name('redirect');
 Route::resource('rooms', RoomController::class);
 Route::resource('floors', FloorController::class);
 Route::resource('reservations', ReservationController::class)->only(['index', 'store']);
+Route::get('reservations/success', [ReservationController::class, 'confirm'])->name('reservations.confirm');
 Route::get('reservations/{room}', [ReservationController::class, 'create'])->name('reservations.create');
 Route::post('reservations/{room}', [ReservationController::class, 'store'])->name('reservations.store');
 
@@ -107,4 +108,3 @@ Route::get('rooms', [RoomController::class, 'getUnreservedRooms']);
 Route::prefix('client/')->group(function () {
     Route::get('reservations', [ReservationController::class, 'getClientReservations'])->middleware(['auth:client']);
 });
-
