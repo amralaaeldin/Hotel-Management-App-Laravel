@@ -61,7 +61,7 @@ class ReservationController extends Controller
         $request->validate([
             'duration' => ['required', 'numeric', 'max:30'],
             'accompany_number' => ['required', 'numeric', 'min:1', 'max:30', "lte:$room->capacity"],
-            'st_date' => ['required', 'date',  new FutureDate],
+            'st_date' => ['required', 'date', new FutureDate],
             'price_paid_per_day' => ['required', 'numeric', "size:$room->price"],
             "total_price" => ['required', 'numeric', "size:" . $room->price * $request->duration . ""],
             'name_on_card' => ['required', 'string', 'max:255'],
@@ -94,7 +94,7 @@ class ReservationController extends Controller
                     'name' => "Room no. $room->number in Floor {$room->floor->name}",
                     'name_on_card' => $request->name_on_card,
                     'contents' => json_encode(
-                        array_merge($content,[ "total_price" => $room->price * $request->duration]))
+                        array_merge($content, ["total_price" => $room->price * $request->duration])),
                 ],
             ]);
 
@@ -108,8 +108,6 @@ class ReservationController extends Controller
                     'floor_number' => $room->floor_number,
                 ]
             ));
-
-            // queue job after period to return it as not reserved
 
             return redirect()->route('reservations.confirm')->with('success', 'Thank you! Your payment has been successfully accepted!');
         } catch (CardErrorException $e) {

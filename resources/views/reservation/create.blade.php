@@ -55,31 +55,9 @@
                         <h3>Payment</h3>
                         <div class="form-group">
                             <label for="name_on_card">Name on Card</label>
-                            <input type="text" class="form-control" id="name_on_card" name="name_on_card" value="">
+                            <input type="text" value="{{ Auth::guard('client')->user()->name }}" class="form-control"
+                                id="name_on_card" name="name_on_card" value="">
                         </div>
-                        {{-- <div class='form-group'>
-                            <label class='control-label'>Card Number</label>
-                            <div class='col-xs-12 form-group card required'>
-                                <input autocomplete='off' placeholder="1234 1234 1234 1234" class='form-control card-number'
-                                    size='20' type='number' name="card_no">
-                            </div>
-                            <div class='form-row'>
-                                <div class='col-6 form-group expiration required'>
-                                    <label class='control-label'>Expiration</label>
-                                    <div>
-                                        <input class='col-5 d-inline form-control card-expiry-month' placeholder='MM'
-                                            size='4' type='number' name="ccExpiryMonth">
-                                        <input class='col-5 d-inline form-control card-expiry-year' placeholder='YYYY'
-                                            size='4' type='number' name="ccExpiryYear">
-                                    </div>
-                                </div>
-                                <div class='col-6 form-group cvc required'>
-                                    <label class='control-label'>CVV</label>
-                                    <input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311'
-                                        size='4' type='text' name="cvvNumber">
-                                </div>
-                            </div>
-                        </div> --}}
                         <div class="form-group">
                             <label for="card-element">
                                 Credit or debit card
@@ -87,36 +65,14 @@
                             <div id="card-element">
                                 <!-- a Stripe Element will be inserted here. -->
                             </div>
-
                             <!-- Used to display form errors -->
                             <div id="card-errors" role="alert"></div>
                         </div>
 
-                        {{-- <button type="submit"  class="button-primary full-width">Complete Order</button> --}}
-
-
-
-
                         <button type="submit" id="complete-order" class="btn btn-info">Proceed to Payment</button>
                         <div class='form-row mt-3'>
-                            {{-- <div class='col-md-12 error form-group hide'>
-                                <div class='text-danger'>
-                                    Please correct the errors and try again.
-                                </div>
-                            </div> --}}
                         </div>
                     </div>
-                    {{-- <div class="card-footer">
-                        <h3>Payment</h3>
-                        <div id="payment-element">
-                            <!--Stripe.js injects the Payment Element-->
-                        </div>
-                        <button class="btn btn-info" id="submit">
-                            <div class="spinner hidden" id="spinner"></div>
-                            <span id="button-text">Pay now</span>
-                        </button>
-                        <div id="payment-message" class="hidden"></div>
-                    </div> --}}
                 </form>
             </div>
         </div>
@@ -211,10 +167,6 @@
 
                 var options = {
                     name: document.getElementById('name_on_card').value,
-                    // address_line1: document.getElementById('address').value,
-                    // address_city: document.getElementById('city').value,
-                    // address_state: document.getElementById('province').value,
-                    // address_zip: document.getElementById('postalcode').value
                 }
 
                 stripe.createToken(card, options).then(function(result) {
