@@ -4,6 +4,8 @@ namespace App\Jobs;
 
 use App\Models\Reservation;
 use App\Models\Room;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -15,21 +17,13 @@ class FreeRoom implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * The podcast instance.
-     *
-     * @var \App\Models\Podcast
-     */
-    public $room;
-
-    /**
      * Create a new job instance.
      *
      * @param  App\Models\Room  $room
      * @return void
      */
-    public function __construct(Room $Room)
+    public function __construct()
     {
-        $this->room = $room;
     }
 
     /**
@@ -56,7 +50,7 @@ class FreeRoom implements ShouldQueue
         $rooms = $filtered->pluck('room_number');
 
         $updatedRooms = DB::table('rooms')
-            ->whereIn('room_number', $rooms->all())
+            ->whereIn('number', $rooms->all())
             ->update(['reserved' => false]);
     }
 }

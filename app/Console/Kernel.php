@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(new FreeRoom)->daily();
+        $schedule->call(new FreeRoom)->dailyAt('13:00');;
     }
 
     /**
