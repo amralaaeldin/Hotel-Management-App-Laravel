@@ -5,13 +5,12 @@ namespace App\Http\Controllers\ClientAuth;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rules; 
 use Illuminate\Validation\Rule;
-
+use App\Events\Registered;
 
 class RegisteredUserController extends Controller
 {
@@ -55,7 +54,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($client));
+        (new Registered($client))->handle();
 
         Auth::guard('client')->login($client);
 
