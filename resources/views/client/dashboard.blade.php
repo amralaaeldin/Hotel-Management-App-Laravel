@@ -87,7 +87,15 @@
                     </li>
                 @endif
                 @if (Auth::guard('client')->check())
-                    <li style="cursor:pointer; bottom:10px; margin-top:auto; width:100%;" class="nav-item has-treeview">
+                    <li style="cursor:pointer; margin-top:auto; bottom:10px; width:100%;" class="nav-item has-treeview">
+                        <a href="{{ route('clients.edit', Auth::guard('client')->user()->id) }}" class="nav-link">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>
+                                Edit Profile
+                            </p>
+                        </a>
+                    </li>
+                    <li style="cursor:pointer; bottom:10px; width:100%;" class="nav-item has-treeview">
                         <form action="{{ route('client.logout') }}" method="POST">
                             @csrf
                             <button class="nav-link" onmouseout="this.style.color='#6c757d'"
@@ -163,8 +171,8 @@
                                         aria-label="Name: activate to sort column descending">
                                         Number
                                     </th>
-                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1"
-                                        colspan="1" style="width: 105px" aria-sort="ascending"
+                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="example"
+                                        rowspan="1" colspan="1" style="width: 105px" aria-sort="ascending"
                                         aria-label="Name: activate to sort column descending">
                                         Floor Name
                                     </th>

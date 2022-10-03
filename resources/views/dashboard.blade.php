@@ -61,10 +61,11 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
         <div class="sidebar mb-3 mt-2">
             <!-- Sidebar user panel (optional) -->
             @if (Auth::guard('web')->user()->avatar)
-            <div class="image">
-                <img style="width:60px; height:60px; object-fit:center;"
-                    src="{{ asset(Auth::guard('web')->user()->avatar) }}" class="img-circle elevation-2" alt="User Image">
-            </div>
+                <div class="image">
+                    <img style="width:60px; height:60px; object-fit:center;"
+                        src="{{ asset(Auth::guard('web')->user()->avatar) }}" class="img-circle elevation-2"
+                        alt="User Image">
+                </div>
             @endif
             <div class="info mt-2">
                 <a href="#" class="d-block">{{ Auth::guard('web')->user()->name }}</a>
@@ -138,7 +139,18 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                         </a>
                     </li>
                 @endcan
-                <li style="cursor:pointer; bottom:10px; margin-top:auto; width:100%;" class="nav-item has-treeview">
+                @if ($prefix != 'admin')
+                <li style="cursor:pointer; margin-top:auto; bottom:10px; width:100%;" class="nav-item has-treeview">
+                    <a href="{{ route(Auth::guard('web')->user()->getRoleNames()[0] .'s' .'.edit',Auth::guard('web')->user()->id) }}"
+                        class="nav-link">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>
+                            Edit Profile
+                        </p>
+                    </a>
+                </li>
+                @endif
+                <li style="cursor:pointer; @if ($prefix === 'admin') margin-top:auto; @endif bottom:10px;  width:100%;" class="nav-item has-treeview">
                     <form action="{{ route($prefix . '.logout') }}" method="POST">
                         @csrf
                         <button class="nav-link" onmouseout="this.style.color='#6c757d'"
@@ -201,8 +213,8 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                                             aria-label="Name: activate to sort column descending">
                                             #
                                         </th>
-                                        <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1"
-                                            colspan="1" style="width: 105px" aria-sort="ascending"
+                                        <th class="sorting sorting_asc" tabindex="0" aria-controls="example"
+                                            rowspan="1" colspan="1" style="width: 105px" aria-sort="ascending"
                                             aria-label="Name: activate to sort column descending">
                                             Name
                                         </th>

@@ -14,17 +14,17 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (! $request->expectsJson()) {
-            $prefix = explode('/', $request->getRequestUri())[1];
+        if (!$request->expectsJson()) {
+            $prefix = rtrim(explode('/', $request->getRequestUri())[1], "s");
             switch ($prefix) {
                 case in_array($prefix, ['manager', 'receptionist']):
                     $prefix = 'staff';
                     break;
-                case 'reservations':
+                case 'reservation':
                     $prefix = 'client';
                     break;
-                }
-            return route($prefix.'.login');
+            }
+            return route($prefix . '.login');
         }
     }
 }

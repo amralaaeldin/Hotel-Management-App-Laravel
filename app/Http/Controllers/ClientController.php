@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\ApprovedClient;
+use App\Http\Middleware\EnsureYourself;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +14,10 @@ class ClientController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:web');
-        $this->middleware(['role:admin|manager'])->only(['edit', 'update', 'destroy']);
+        $this->middleware(['auth:web'])->except(['edit', 'update']);
+        $this->middleware(['auth:web,client'])->only(['edit', 'update']);
+        $this->middleware(EnsureYourself::class)->only(['edit', 'update']);
+        $this->middleware(['role:admin|manager'])->only(['destroy']);
     }
 
     /**
@@ -57,7 +60,7 @@ class ClientController extends Controller
         }
         $client
             ->update(
-                [$request->validate(
+                array_merge($request->validate(
                     [
                         'name' => ['required', 'string', 'max:255'],
                         'mobile' => ['required', 'min:11', 'numeric'],
@@ -66,10 +69,13 @@ class ClientController extends Controller
                         'gender' => ['required', 'in:M,F'],
                         'email' => ['required', 'string', 'email', 'max:255', Rule::unique('clients', 'email')->ignore($client->id)],
                     ]
-                ), 'avatar' => $request->file('avatar') ? $request->file('avatar')->store('avatars/clients') : $client->avatar,
-                ]);
-
-        return redirect('/' . Auth::guard('web')->user()->getRoleNames()[0] . '/clients')->with('success', 'Updated Successfully!');
+                ), ['avatar' => $request->file('avatar') ? $request->file('avatar')->store('avatars/clients') : $client->avatar])
+            );
+        if (Auth::guard('web')->check()) {
+            return redirect('/' . Auth::guard('web')->user()->getRoleNames()[0] . '/clients')->with('success', 'Updated Successfully!');
+        } else {
+            return redirect()->route('client.dashboard')->with('success', 'Updated Successfully!');
+        }
     }
 
     /**
