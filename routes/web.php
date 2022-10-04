@@ -100,6 +100,7 @@ Route::prefix('manager/')->middleware(['auth:web', 'role:manager'])->group(funct
 });
 
 Route::prefix('receptionist/')->middleware(['auth:web', 'role:receptionist'])->group(function () {
+    Route::get('my-clients', [ClientController::class, 'getMyAccepted']);
     Route::get('clients', [ClientController::class, 'getNotAcceptedYet']);
     Route::get('reservations', [ReservationController::class, 'getAcceptedClientsReservations']);
 });

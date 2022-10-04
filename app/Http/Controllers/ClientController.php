@@ -35,6 +35,11 @@ class ClientController extends Controller
         return view('dashboard', ['clients' => Client::where('approved', false)->get()]);
     }
 
+    public function getMyAccepted()
+    {
+        return view('dashboard', ['clients' => Client::where('approved_by', Auth::guard('web')->user()->id)->get()]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

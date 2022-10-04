@@ -69,6 +69,16 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                         </a>
                     </li>
                 @endcan
+                @role('receptionist', 'web')
+                    <li class="nav-item has-treeview">
+                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/my-clients" class="nav-link">
+                            <i class="nav-icon fas fa-circle"></i>
+                            <p>
+                                My Clients
+                            </p>
+                        </a>
+                    </li>
+                @endrole
                 <li class="nav-header">HOTEL</li>
                 @can('view floors', 'web')
                     <li class="nav-item has-treeview">
@@ -100,7 +110,19 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                         </a>
                     </li>
                 @endcan
-                <li style="cursor:pointer; bottom:10px; margin-top:auto; width:100%;" class="nav-item has-treeview">
+                @if ($prefix != 'admin')
+                    <li style="cursor:pointer; margin-top:auto; bottom:10px; width:100%;" class="nav-item has-treeview">
+                        <a href="{{ route(Auth::guard('web')->user()->getRoleNames()[0] .'s' .'.edit',Auth::guard('web')->user()->id) }}"
+                            class="nav-link">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>
+                                Edit Profile
+                            </p>
+                        </a>
+                    </li>
+                @endif
+                <li style="cursor:pointer; @if ($prefix === 'admin') margin-top:auto; @endif bottom:10px;  width:100%;"
+                    class="nav-item has-treeview">
                     <form action="{{ route($prefix . '.logout') }}" method="POST">
                         @csrf
                         <button class="nav-link" onmouseout="this.style.color='#6c757d'"
