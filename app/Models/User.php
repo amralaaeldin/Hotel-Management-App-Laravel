@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Client;
+use App\Models\Floor;
+use App\Models\Room;
+use App\Notifications\AdminResetPassword as AdminResetPasswordNotification;
+use App\Notifications\StaffResetPassword as StaffResetPasswordNotification;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-use App\Models\Client;
-use App\Models\Room;
-use App\Models\Floor;
-use Carbon\Carbon;
-
 
 class User extends Authenticatable
 {
@@ -51,7 +51,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getCreatedAt() {
+    public function getCreatedAt()
+    {
         return Carbon::create($this->created_at)->format('l jS \\of F Y h:i:s A');
     }
 
@@ -83,5 +84,14 @@ class User extends Authenticatable
     public function subordinates()
     {
         return $this->hasMany($this, 'created_by', 'id');
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        if (explode('/', request()->route()->uri)[0] === 'staff') {
+            $this->notify(new StaffResetPasswordNotification($token));
+        } else {
+            $this->notify(new AdminResetPasswordNotification($token));
+        }
     }
 }
