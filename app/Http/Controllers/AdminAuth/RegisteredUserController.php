@@ -13,6 +13,13 @@ use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth:web']);
+        $this->middleware(['role:admin']);
+    }
+
     /**
      * Display the registration view.
      *

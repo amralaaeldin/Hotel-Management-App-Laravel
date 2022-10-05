@@ -15,6 +15,20 @@ use Spatie\Permission\Models\Role;
 
 class RegisteredUserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth:web']);
+        if (request()->role === 'manager') 
+        {
+            $this->middleware(['role:admin']);
+        }
+        if (request()->role === 'receptionist') 
+        {
+            $this->middleware(['role:admin|manager']);
+        }
+    }
+
     /**
      * Display the registration view.
      *
