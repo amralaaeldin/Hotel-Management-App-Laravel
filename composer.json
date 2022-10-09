@@ -9,15 +9,15 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "cartalyst/stripe-laravel": "^14.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
-        "laravel/sanctum": "^2.14.1",
+        "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "nesbot/carbon": "^2.59",
         "rinvex/countries": "^8.1",
         "spatie/laravel-permission": "^5.5",
-        "yajra/laravel-datatables": "9.0",
-        "cartalyst/stripe-laravel": "^14.0"
+        "yajra/laravel-datatables": "9.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
