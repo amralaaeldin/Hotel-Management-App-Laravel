@@ -8,15 +8,17 @@ use App\Models\Room;
 use App\Notifications\AdminResetPassword as AdminResetPasswordNotification;
 use App\Notifications\StaffResetPassword as StaffResetPasswordNotification;
 use Carbon\Carbon;
+use Cog\Contracts\Ban\Bannable as BannableContract;
+use Cog\Laravel\Ban\Traits\Bannable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements BannableContract
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, Bannable;
 
     /**
      * The attributes that are mass assignable.

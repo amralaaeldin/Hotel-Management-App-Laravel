@@ -413,6 +413,17 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                                                 class="d-md-flex align-items-center justify-content-center">
                                                 @if (Auth::guard('web')->user()->id == $receptionist->creator->id ||
                                                     Auth::guard('web')->user()->getRoleNames()[0] == 'admin')
+                                                    @can('ban receptionists', 'web')
+                                                        <a href="{{ route('receptionists.ban', $receptionist->id) }}"
+                                                            style="width:60px;" type="button"
+                                                            class="mr-1 btn btn-block m-0 btn-dark btn-xs">
+                                                            @if ($receptionist->banned_at)
+                                                                Unban
+                                                            @else
+                                                                Ban
+                                                            @endif
+                                                        </a>
+                                                    @endcan
                                                     @can('edit receptionists', 'web')
                                                         <a href="{{ route('receptionists.edit', $receptionist->id) }}"
                                                             style="width:60px;" type="button"

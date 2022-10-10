@@ -25,7 +25,7 @@ class ReceptionistController extends Controller
      */
     public function index()
     {
-        return view('dashboard', ['receptionists' => User::role('receptionist')->get(['id', 'name', 'email', 'created_by'])]);
+        return view('dashboard', ['receptionists' => User::role('receptionist')->get(['id', 'name', 'email', 'created_by','banned_at'])]);
     }
 
     /**
@@ -96,6 +96,21 @@ class ReceptionistController extends Controller
         return redirect('/' . $res[1]->getRoleNames()[0] . '/receptionists')->with('fail', 'Action is not allowed');
     }
 
+    public function ban(User $receptionist)
+    {
+        $res = $this->ensureIsOwner($receptionist);
+        if ($res[0]) {
+            if ($res[2]->isBanned()) {
+                $res[2]->unban();
+                return redirect('/' . $res[1]->getRoleNames()[0] . '/receptionists')->with('success', 'Unbanned Successfully!');
+            } else {
+                $res[2]->ban();
+                return redirect('/' . $res[1]->getRoleNames()[0] . '/receptionists')->with('success', 'Banned Successfully!');
+            }
+        }
+        return redirect('/' . $res[1]->getRoleNames()[0] . '/receptionists')->with('fail', 'Action is not allowed');
+    }
+
     protected function ensureIsOwner($receptionist)
     {
         $user = Auth::guard('web')->user();
@@ -104,4 +119,5 @@ class ReceptionistController extends Controller
         }
         return [true, $user, $receptionist];
     }
+
 }

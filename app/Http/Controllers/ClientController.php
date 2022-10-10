@@ -18,6 +18,7 @@ class ClientController extends Controller
         $this->middleware(['auth:web,client'])->only(['edit', 'update']);
         $this->middleware(EnsureYourself::class)->only(['edit', 'update']);
         $this->middleware(['role:admin|manager'])->only(['destroy']);
+        $this->middleware(['forbid-banned-user'])->only(['getNotAcceptedYet', 'approve']);
     }
 
     /**
