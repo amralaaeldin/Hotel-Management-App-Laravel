@@ -43,6 +43,7 @@ return [
         'client' => [
             'driver' => 'session',
             'provider' => 'clients',
+            'remember' => 14400
         ],
     ],
 

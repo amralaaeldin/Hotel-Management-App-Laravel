@@ -32,7 +32,7 @@ class ApprovedClient
     public function handle()
     {
         Mail::send('emails.approved', ['name' => $this->client->name], function ($message) {
-            $message->to($this->client->email, $this->client->name)->subject('Approved to Hotel website ');
+            $message->to($this->client->email, $this->client->name)->subject('Approved to Hotel website');
         });
     }
 

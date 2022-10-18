@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Jobs\FreeRoom;
+use App\Jobs\RemindClient;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,7 +17,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(new FreeRoom)->dailyAt('13:00');;
+        $schedule->job(new FreeRoom)->dailyAt('13:00');
+        $schedule->job(new RemindClient)->dailyAt('00:00');
     }
 
     /**

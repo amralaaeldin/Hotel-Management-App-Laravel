@@ -26,6 +26,7 @@ class Client extends Authenticatable
         'avatar',
         'approved',
         'approved_by',
+        'last_login_at'
     ];
 
     public function getCountry() {
