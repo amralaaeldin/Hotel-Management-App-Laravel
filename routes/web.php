@@ -70,14 +70,13 @@ Route::get('floors/{floor:number}/edit', [FloorController::class, 'edit'])->name
 Route::put('floors/{floor:number}', [FloorController::class, 'update'])->name('floors.update');
 Route::delete('floors/{floor:number}', [FloorController::class, 'destroy'])->name('floors.destroy');
 
-Route::get('reservations', [ReservationController::class, 'index'])->name('reservations.index');
 Route::get('reservations/success', [ReservationController::class, 'confirm'])->name('reservations.confirm')->middleware(['auth:client', 'verified']);
 Route::get('reservations/{room}', [ReservationController::class, 'create'])->name('reservations.create')->middleware(['auth:client', 'verified']);
 Route::post('reservations/{room}', [ReservationController::class, 'store'])->name('reservations.store')->middleware(['auth:client', 'verified']);
 
-Route::resource('managers', ManagerController::class)->except(['create', 'store', 'show']);
+Route::resource('managers', ManagerController::class)->except(['index', 'create', 'store', 'show']);
 Route::resource('receptionists', ReceptionistController::class)->except(['create', 'store', 'show']);
-Route::resource('clients', ClientController::class)->except(['create', 'store', 'show']);
+Route::resource('clients', ClientController::class)->except(['index', 'create', 'store', 'show']);
 Route::put('clients/approve/{client}', [ClientController::class, 'approve'])->name('clients.approve');
 
 Route::prefix('admin/')->middleware(['auth:web', 'role:admin'])->group(function () {
@@ -90,7 +89,6 @@ Route::prefix('admin/')->middleware(['auth:web', 'role:admin'])->group(function 
 });
 
 Route::prefix('manager/')->middleware(['auth:web', 'role:manager'])->group(function () {
-    Route::get('receptionists', [ReceptionistController::class, 'index']);
     Route::get('receptionists/{receptionist}', [ReceptionistController::class, 'ban'])->name('receptionists.ban');
     Route::get('clients', [ClientController::class, 'index']);
     Route::get('floors', [FloorController::class, 'index']);

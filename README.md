@@ -33,62 +33,54 @@
 - `root` <br />
   GET   |     `/` ............................................ root welcome page of laravel   
 - `admin` <br />
-  GET        |  `admin/register` ..... admin.register › AdminAuth\RegisteredUserController@create  
-  GET        |  `admin/login` ..... admin.login › AdminAuth\AuthenticatedSessionController@create  
-  POST       |  `admin/logout` .. admin.logout › AdminAuth\AuthenticatedSessionController@destroy  
-  GET        |  `admin/dashboard` ............................................... admin.dashboard  
-  GET        |  `admin/managers` ........................................ ManagerController@index  
-  GET        |  `admin/receptionists` .............................. ReceptionistController@index  
-  GET        |  `admin/clients` .......................................... ClientController@index  
-  GET        |  `admin/floors` ............................................ FloorController@index  
-  GET        |  `admin/rooms` .............................................. RoomController@index  
-  GET        |  `admin/reservations` ................................ ReservationController@index 
+  GET        |  `admin/register` ..................... enables admin to add another admin  
+  GET        |  `admin/login` ........................ admin login  
+  POST       |  `admin/logout` ....................... admin logout  
+  GET        |  `admin/dashboard` .................... admin dashboard  
+  GET        |  `admin/managers` ..................... gets managers of hotel  
+  GET        |  `admin/receptionists` ................ gets receptionists of hotel  
+  GET        |  `admin/clients` ...................... gets clients of hotel  
+  GET        |  `admin/floors` ....................... gets floors of hotel  
+  GET        |  `admin/rooms` ........................ gets rooms of hotel  
+  GET        |  `admin/reservations` ................. gets placed reservations 
 - `client` <br />
-  GET        |  `client/register` .. client.register › ClientAuth\RegisteredUserController@create  
-  GET        |  `client/login` .. client.login › ClientAuth\AuthenticatedSessionController@create  
-  POST       |  `client/logout` client.logout › ClientAuth\AuthenticatedSessionController@destroy  
-  GET        |  `client/dashboard` ............................................. client.dashboard  
-  GET        |  `client/reservations` ............... ReservationController@getClientReservations  
-  GET        |  `clients` ................................ clients.index › ClientController@index  
-  PUT        |  `clients/approve/{client}` ........... clients.approve › ClientController@approve  
-  GET        |  `clients/{client}/edit` .................... clients.edit › ClientController@edit  
-  PUT|PATCH  |  `clients/{client}` ..................... clients.update › ClientController@update  
-  DELETE     |  `clients/{client}` ................... clients.destroy › ClientController@destroy 
+  GET        |  `client/register` ............................. client register  
+  GET        |  `client/login` ................................ client login  
+  POST       |  `client/logout` ............................... client logout  
+  GET        |  `client/dashboard` ............................ client dashboard  
+  GET        |  `client/reservations` ......................... gets logged in client reservations  
+  PUT        |  `clients/approve/{client}` .................... approve client  
+  GET        |  `clients/{client}/edit` ....................... form to edit client   
+  DELETE     |  `clients/{client}` ............................ delete client 
 - `floor` <br />
-  GET        |  `floors` ................................. get floors of the hotel  
+  GET        |  `floors` ................................. gets floors of the hotel  
   GET        |  `floors/create` .......................... form to create floor  
   GET        |  `floors/{floor}/edit` .................... form to edit floor  
-  DELETE     |  `floors/{floor}` ......................... form to delete floor 
+  DELETE     |  `floors/{floor}` ......................... delete floor 
 - `room` <br />
-  GET        |  `rooms` .................................. get rooms of the hotel  
+  GET        |  `rooms` .................................. gets rooms of the hotel  
   GET        |  `rooms/create` ........................... form to create room  
   GET        |  `rooms/{room}/edit` ...................... form to edit room  
-  DELETE     |  `rooms/{room}` ........................... form to delete room 
+  DELETE     |  `rooms/{room}` ........................... delete room 
 - `manager` <br />
-  GET        |  `manager/dashboard` ........................................... manager.dashboard  
-  GET        |  `manager/clients` ........................................ ClientController@index  
-  GET        |  `manager/floors` .......................................... FloorController@index  
-  GET        |  `manager/receptionists` ............................ ReceptionistController@index  
-  GET        |  `manager/receptionists/{receptionist}` receptionists.ban › ReceptionistControlle…  
-  GET        |  `manager/reservations` .............................. ReservationController@index  
-  GET        |  `manager/rooms` ............................................ RoomController@index  
-  GET        |  `managers` ............................. managers.index › ManagerController@index  
-  GET        |  `managers/{manager}/edit` ................ managers.edit › ManagerController@edit  
-  PUT|PATCH  |  `managers/{manager}` ................. managers.update › ManagerController@update  
-  DELETE     |  `managers/{manager}` ............... managers.destroy › ManagerController@destroy 
+  GET        |  `manager/dashboard` ................................ manager dashboard  
+  GET        |  `manager/clients` .................................. gets clients  
+  GET        |  `manager/receptionists` ............................ gets receptionists in the hotel  
+  GET        |  `manager/receptionists/{receptionist}` ............. ban a receptionist   
+  GET        |  `manager/reservations` ............................. gets placed reservations  
+  GET        |  `manager/floors` ................................... gets floors of the hotel   
+  GET        |  `manager/rooms` .................................... gets rooms of the hotel  
+  GET        |  `managers/{manager}/edit` .......................... form to edit manager  
+  DELETE     |  `managers/{manager}` ............................... delete manager 
 - `receptionist` <br />
-  GET        |   `receptionist/dashboard` ................................. receptionist.dashboard  
-  GET        |   `receptionist/clients` ....................... ClientController@getNotAcceptedYet  
-  GET        |   `receptionist/my-clients` ........................ ClientController@getMyAccepted  
-  GET        |   `receptionist/reservations` ReservationController@getAcceptedClientsReservations   
-  GET        |   `receptionists` .............. receptionists.index › ReceptionistController@index  
-  GET        |   `receptionists/{receptionist}/edit` receptionists.edit › ReceptionistController@…  
-  PUT|PATCH  |   `receptionists/{receptionist}` receptionists.update › ReceptionistController@upd…  
-  DELETE     |   `receptionists/{receptionist}` receptionists.destroy › ReceptionistController@de… 
-- `reservations` <br />
-  GET        |   `reservations` ............. gets placed reservations   
+  GET        |   `receptionist/dashboard` ................ receptionist dashboard  
+  GET        |   `receptionist/clients` .................. gets not accepted clients so far  
+  GET        |   `receptionist/my-clients` ............... gets clients of logged in receptionist   
+  GET        |   `receptionist/reservations` ............. get reservations of clients of the receptionist  
+  GET        |   `receptionists/{receptionist}/edit` ..... form to edit receptionist  
+  DELETE     |   `receptionists/{receptionist}` .......... delete receptionist  
 - `staff` <br />
-  GET        |   `staff/register/{role}` .... form to add manager or receptionist
+  GET        |   `staff/register/{role}` .... form to create manager or receptionist
 - `api` <br />
   POST       |   `api/tokens/create` ........ receives [email, password, token_name] and generates token to access `api/staff` endpoint <br />
   GET        |   `api/staff` ................ gets staff of the hotel  
