@@ -1,64 +1,78 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Hotel Management App - Laravel 
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Description
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## To run it
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Endpoints
+- `root`
+ GET|HEAD        / .............................................................................   
 
-## Learning Laravel
+- `admin`
+GET|HEAD        admin/register ..... admin.register › AdminAuth\RegisteredUserController@create  
+GET|HEAD        admin/login ..... admin.login › AdminAuth\AuthenticatedSessionController@create  
+POST            admin/logout .. admin.logout › AdminAuth\AuthenticatedSessionController@destroy  
+GET|HEAD        admin/dashboard ............................................... admin.dashboard  
+GET|HEAD        admin/managers ........................................ ManagerController@index  
+GET|HEAD        admin/receptionists .............................. ReceptionistController@index  
+GET|HEAD        admin/clients .......................................... ClientController@index  
+GET|HEAD        admin/floors ............................................ FloorController@index  
+GET|HEAD        admin/rooms .............................................. RoomController@index  
+GET|HEAD        admin/reservations ................................ ReservationController@index  
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- `client`
+GET|HEAD        client/register .. client.register › ClientAuth\RegisteredUserController@create  
+GET|HEAD        client/login .. client.login › ClientAuth\AuthenticatedSessionController@create  
+POST            client/logout client.logout › ClientAuth\AuthenticatedSessionController@destroy  
+GET|HEAD        client/dashboard ............................................. client.dashboard  
+GET|HEAD        client/reservations ............... ReservationController@getClientReservations  
+GET|HEAD        clients ................................ clients.index › ClientController@index  
+PUT             clients/approve/{client} ........... clients.approve › ClientController@approve  
+GET|HEAD        clients/{client}/edit .................... clients.edit › ClientController@edit  
+PUT|PATCH       clients/{client} ..................... clients.update › ClientController@update  
+DELETE          clients/{client} ................... clients.destroy › ClientController@destroy  
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- `floor`
+GET|HEAD        floors ................................... floors.index › FloorController@index  
+POST            floors ................................... floors.store › FloorController@store  
+GET|HEAD        floors/create .......................... floors.create › FloorController@create  
+GET|HEAD        floors/{floor}/edit ........................ floors.edit › FloorController@edit  
+PUT             floors/{floor} ......................... floors.update › FloorController@update  
+DELETE          floors/{floor} ....................... floors.destroy › FloorController@destroy  
 
-## Laravel Sponsors
+- `manager`
+GET|HEAD        manager/dashboard ........................................... manager.dashboard  
+GET|HEAD        manager/clients ........................................ ClientController@index  
+GET|HEAD        manager/floors .......................................... FloorController@index  
+GET|HEAD        manager/receptionists ............................ ReceptionistController@index  
+GET|HEAD        manager/receptionists/{receptionist} receptionists.ban › ReceptionistControlle…  
+GET|HEAD        manager/reservations .............................. ReservationController@index  
+GET|HEAD        manager/rooms ............................................ RoomController@index  
+GET|HEAD        managers ............................. managers.index › ManagerController@index  
+GET|HEAD        managers/{manager}/edit ................ managers.edit › ManagerController@edit  
+PUT|PATCH       managers/{manager} ................. managers.update › ManagerController@update  
+DELETE          managers/{manager} ............... managers.destroy › ManagerController@destroy  
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- `receptionist`
+GET|HEAD        receptionist/dashboard ................................. receptionist.dashboard  
+GET|HEAD        receptionist/clients ....................... ClientController@getNotAcceptedYet  
+GET|HEAD        receptionist/my-clients ........................ ClientController@getMyAccepted  
+GET|HEAD        receptionist/reservations ReservationController@getAcceptedClientsReservations   
+GET|HEAD        receptionists .............. receptionists.index › ReceptionistController@index  
+GET|HEAD        receptionists/{receptionist}/edit receptionists.edit › ReceptionistController@…  
+PUT|PATCH       receptionists/{receptionist} receptionists.update › ReceptionistController@upd…  
+DELETE          receptionists/{receptionist} receptionists.destroy › ReceptionistController@de…  
 
-### Premium Partners
+- `reservations`
+GET|HEAD        reservations ................. reservations.index › ReservationController@index  
+GET|HEAD        reservations/success ..... reservations.confirm › ReservationController@confirm  
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+- `staff`
+GET|HEAD        staff/register/{role} ... staff.register › Auth\RegisteredUserController@create
+POST            staff/register/{role} ....... staff.store › Auth\RegisteredUserController@store
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- `api`
+GET|HEAD        api/staff ........................................... Api\StaffController@index  
+POST            api/tokens/create .............................................................  
