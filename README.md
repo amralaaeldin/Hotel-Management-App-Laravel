@@ -33,61 +33,60 @@
 - `root` <br />
   GET   |     `/` .............................................................................   
 - `admin` <br />
-  GET   |     `admin/register` ..... admin.register › AdminAuth\RegisteredUserController@create  
-  GET   |     `admin/login` ..... admin.login › AdminAuth\AuthenticatedSessionController@create  
-  POST  |     `admin/logout` .. admin.logout › AdminAuth\AuthenticatedSessionController@destroy  
-  GET   |     `admin/dashboard` ............................................... admin.dashboard  
-  GET   |     `admin/managers` ........................................ ManagerController@index  
-  GET   |     `admin/receptionists` .............................. ReceptionistController@index  
-  GET   |     `admin/clients` .......................................... ClientController@index  
-  GET   |     `admin/floors` ............................................ FloorController@index  
-  GET   |     `admin/rooms` .............................................. RoomController@index  
-  GET   |     `admin/reservations` ................................ ReservationController@index 
+  GET        |  `admin/register` ..... admin.register › AdminAuth\RegisteredUserController@create  
+  GET        |  `admin/login` ..... admin.login › AdminAuth\AuthenticatedSessionController@create  
+  POST       |  `admin/logout` .. admin.logout › AdminAuth\AuthenticatedSessionController@destroy  
+  GET        |  `admin/dashboard` ............................................... admin.dashboard  
+  GET        |  `admin/managers` ........................................ ManagerController@index  
+  GET        |  `admin/receptionists` .............................. ReceptionistController@index  
+  GET        |  `admin/clients` .......................................... ClientController@index  
+  GET        |  `admin/floors` ............................................ FloorController@index  
+  GET        |  `admin/rooms` .............................................. RoomController@index  
+  GET        |  `admin/reservations` ................................ ReservationController@index 
 - `client` <br />
-  GET        client/register .. client.register › ClientAuth\RegisteredUserController@create  
-  GET        client/login .. client.login › ClientAuth\AuthenticatedSessionController@create  
-  POST            client/logout client.logout › ClientAuth\AuthenticatedSessionController@destroy  
-  GET        client/dashboard ............................................. client.dashboard  
-  GET        client/reservations ............... ReservationController@getClientReservations  
-  GET        clients ................................ clients.index › ClientController@index  
-  PUT             clients/approve/{client} ........... clients.approve › ClientController@approve  
-  GET        clients/{client}/edit .................... clients.edit › ClientController@edit  
-  PUT|PATCH       clients/{client} ..................... clients.update › ClientController@update  
-  DELETE          clients/{client} ................... clients.destroy › ClientController@destroy 
+  GET        |  `client/register` .. client.register › ClientAuth\RegisteredUserController@create  
+  GET        |  `client/login` .. client.login › ClientAuth\AuthenticatedSessionController@create  
+  POST       |  `client/logout` client.logout › ClientAuth\AuthenticatedSessionController@destroy  
+  GET        |  `client/dashboard` ............................................. client.dashboard  
+  GET        |  `client/reservations` ............... ReservationController@getClientReservations  
+  GET        |  `clients` ................................ clients.index › ClientController@index  
+  PUT        |  `clients/approve/{client}` ........... clients.approve › ClientController@approve  
+  GET        |  `clients/{client}/edit` .................... clients.edit › ClientController@edit  
+  PUT|PATCH  |  `clients/{client}` ..................... clients.update › ClientController@update  
+  DELETE     |  `clients/{client}` ................... clients.destroy › ClientController@destroy 
 - `floor` <br />
-  GET        floors ................................... floors.index › FloorController@index  
-  POST            floors ................................... floors.store › FloorController@store  
-  GET        floors/create .......................... floors.create › FloorController@create  
-  GET        floors/{floor}/edit ........................ floors.edit › FloorController@edit  
-  PUT             floors/{floor} ......................... floors.update › FloorController@update  
-  DELETE          floors/{floor} ....................... floors.destroy › FloorController@destroy 
+  GET        |  `floors` ................................... floors.index › FloorController@index  
+  POST       |  `floors` ................................... floors.store › FloorController@store  
+  GET        |  `floors/create` .......................... floors.create › FloorController@create  
+  GET        |  `floors/{floor}/edit` ........................ floors.edit › FloorController@edit  
+  PUT        |  `floors/{floor}` ......................... floors.update › FloorController@update  
+  DELETE     |  `floors/{floor}` ....................... floors.destroy › FloorController@destroy 
 - `manager` <br />
-  GET        manager/dashboard ........................................... manager.dashboard  
-  GET        manager/clients ........................................ ClientController@index  
-  GET        manager/floors .......................................... FloorController@index  
-  GET        manager/receptionists ............................ ReceptionistController@index  
-  GET        manager/receptionists/{receptionist} receptionists.ban › ReceptionistControlle…  
-  GET        manager/reservations .............................. ReservationController@index  
-  GET        manager/rooms ............................................ RoomController@index  
-  GET        managers ............................. managers.index › ManagerController@index  
-  GET        managers/{manager}/edit ................ managers.edit › ManagerController@edit  
-  PUT|PATCH       managers/{manager} ................. managers.update › ManagerController@update  
-  DELETE          managers/{manager} ............... managers.destroy › ManagerController@destroy 
+  GET        |  `manager/dashboard` ........................................... manager.dashboard  
+  GET        |  `manager/clients` ........................................ ClientController@index  
+  GET        |  `manager/floors` .......................................... FloorController@index  
+  GET        |  `manager/receptionists` ............................ ReceptionistController@index  
+  GET        |  `manager/receptionists/{receptionist}` receptionists.ban › ReceptionistControlle…  
+  GET        |  `manager/reservations` .............................. ReservationController@index  
+  GET        |  `manager/rooms` ............................................ RoomController@index  
+  GET        |  `managers` ............................. managers.index › ManagerController@index  
+  GET        |  `managers/{manager}/edit` ................ managers.edit › ManagerController@edit  
+  PUT|PATCH  |  `managers/{manager}` ................. managers.update › ManagerController@update  
+  DELETE     |  `managers/{manager}` ............... managers.destroy › ManagerController@destroy 
 - `receptionist` <br />
-  GET        receptionist/dashboard ................................. receptionist.dashboard  
-  GET        receptionist/clients ....................... ClientController@getNotAcceptedYet  
-  GET        receptionist/my-clients ........................ ClientController@getMyAccepted  
-  GET        receptionist/reservations ReservationController@getAcceptedClientsReservations   
-  GET        receptionists .............. receptionists.index › ReceptionistController@index  
-  GET        receptionists/{receptionist}/edit receptionists.edit › ReceptionistController@…  
-  PUT|PATCH       receptionists/{receptionist} receptionists.update › ReceptionistController@upd…  
-  DELETE          receptionists/{receptionist} receptionists.destroy › ReceptionistController@de… 
+  GET        |   `receptionist/dashboard` ................................. receptionist.dashboard  
+  GET        |   `receptionist/clients` ....................... ClientController@getNotAcceptedYet  
+  GET        |   `receptionist/my-clients` ........................ ClientController@getMyAccepted  
+  GET        |   `receptionist/reservations` ReservationController@getAcceptedClientsReservations   
+  GET        |   `receptionists` .............. receptionists.index › ReceptionistController@index  
+  GET        |   `receptionists/{receptionist}/edit` receptionists.edit › ReceptionistController@…  
+  PUT|PATCH  |   `receptionists/{receptionist}` receptionists.update › ReceptionistController@upd…  
+  DELETE     |   `receptionists/{receptionist}` receptionists.destroy › ReceptionistController@de… 
 - `reservations` <br />
-  GET        reservations ................. reservations.index › ReservationController@index  
-  GET        reservations/success ..... reservations.confirm › ReservationController@confirm 
+  GET        |   `reservations` ................. reservations.index › ReservationController@index  
+  GET        |   `reservations/success` ..... reservations.confirm › ReservationController@confirm 
 - `staff` <br />
-  GET        staff/register/{role} ... staff.register › Auth\RegisteredUserController@create
-  POST            staff/register/{role} ....... staff.store › Auth\RegisteredUserController@store
+  GET        |   `staff/register/{role}` ... staff.register › Auth\RegisteredUserController@create
 - `api` <br />
-  GET        api/staff ........................................... Api\StaffController@index  
-  POST            api/tokens/create .............................................................  
+  POST       |   `api/tokens/create` .............................................................  
+  GET        |   `api/staff` ........................................... Api\StaffController@index  
