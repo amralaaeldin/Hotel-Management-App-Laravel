@@ -31,7 +31,7 @@
 
 ## Endpoints
 - `root` <br />
-  GET   |     `/` .............................................................................   
+  GET   |     `/` ............................................ root welcome page of laravel   
 - `admin` <br />
   GET        |  `admin/register` ..... admin.register › AdminAuth\RegisteredUserController@create  
   GET        |  `admin/login` ..... admin.login › AdminAuth\AuthenticatedSessionController@create  
@@ -55,12 +55,15 @@
   PUT|PATCH  |  `clients/{client}` ..................... clients.update › ClientController@update  
   DELETE     |  `clients/{client}` ................... clients.destroy › ClientController@destroy 
 - `floor` <br />
-  GET        |  `floors` ................................... floors.index › FloorController@index  
-  POST       |  `floors` ................................... floors.store › FloorController@store  
-  GET        |  `floors/create` .......................... floors.create › FloorController@create  
-  GET        |  `floors/{floor}/edit` ........................ floors.edit › FloorController@edit  
-  PUT        |  `floors/{floor}` ......................... floors.update › FloorController@update  
-  DELETE     |  `floors/{floor}` ....................... floors.destroy › FloorController@destroy 
+  GET        |  `floors` ................................. get floors of the hotel  
+  GET        |  `floors/create` .......................... form to create floor  
+  GET        |  `floors/{floor}/edit` .................... form to edit floor  
+  DELETE     |  `floors/{floor}` ......................... form to delete floor 
+- `room` <br />
+  GET        |  `rooms` .................................. get rooms of the hotel  
+  GET        |  `rooms/create` ........................... form to create room  
+  GET        |  `rooms/{room}/edit` ...................... form to edit room  
+  DELETE     |  `rooms/{room}` ........................... form to delete room 
 - `manager` <br />
   GET        |  `manager/dashboard` ........................................... manager.dashboard  
   GET        |  `manager/clients` ........................................ ClientController@index  
@@ -83,10 +86,10 @@
   PUT|PATCH  |   `receptionists/{receptionist}` receptionists.update › ReceptionistController@upd…  
   DELETE     |   `receptionists/{receptionist}` receptionists.destroy › ReceptionistController@de… 
 - `reservations` <br />
-  GET        |   `reservations` ................. reservations.index › ReservationController@index  
-  GET        |   `reservations/success` ..... reservations.confirm › ReservationController@confirm 
+  GET        |   `reservations` ............. gets placed reservations   
 - `staff` <br />
-  GET        |   `staff/register/{role}` ... staff.register › Auth\RegisteredUserController@create
+  GET        |   `staff/register/{role}` .... form to add manager or receptionist
 - `api` <br />
-  POST       |   `api/tokens/create` .............................................................  
-  GET        |   `api/staff` ........................................... Api\StaffController@index  
+  POST       |   `api/tokens/create` ........ receives [email, password, token_name] and generates token to access `api/staff` endpoint
+  - credentials must be of registered staff account   
+  GET        |   `api/staff` ................ gets staff of the hotel  
