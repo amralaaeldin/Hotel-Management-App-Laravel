@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Room;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-use App\Models\Room;
-
 
 class Floor extends Model
 {
@@ -17,8 +16,6 @@ class Floor extends Model
         'number',
         'created_by',
     ];
-
-
 
     public function creator()
     {

@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Floor;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use  App\Models\User;
-use  App\Models\Floor;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-
 
 class Room extends Model
 {
@@ -25,11 +24,10 @@ class Room extends Model
     protected function price(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => $value/100,
-            set: fn ($value) => $value*100,
+            get:fn($value) => $value / 100,
+            set:fn($value) => $value * 100,
         );
     }
-
 
     public function creator()
     {

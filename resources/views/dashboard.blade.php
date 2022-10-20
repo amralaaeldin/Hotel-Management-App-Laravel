@@ -1,15 +1,10 @@
 @php
-// if (Auth::guard('web')->check()) {
-$prefix = Auth::guard('web')
-    ->user()
-    ->getRoleNames()[0];
-if (in_array($prefix, ['manager', 'receptionist'])) {
-    $prefix = 'staff';
-}
-// }
-// if (Auth::guard('client')->check()) {
-//     $prefix = 'client';
-// }
+    $user = Auth::guard('web')->user();
+    $role = $user->getRoleNames()[0];
+    $prefix = $role;
+    if (in_array($role, ['manager', 'receptionist'])) {
+        $prefix = 'staff';
+    }
 @endphp
 
 @extends('layouts.adminlte')
@@ -27,7 +22,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
 @endsection
 
 @section('title')
-    {{ ucfirst(Auth::guard('web')->user()->getRoleNames()[0]) }} - Dashboard
+    {{ ucfirst($role) }} - Dashboard
 @endsection
 @section('navbar')
     <!-- Navbar -->
@@ -52,23 +47,21 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
         <a href="index3.html" class="brand-link">
             <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
                 class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span style="font-size:0.92em;"
-                class="brand-text font-weight-light">{{ ucfirst(Auth::guard('web')->user()->getRoleNames()[0]) }} -
+            <span style="font-size:0.92em;" class="brand-text font-weight-light">{{ ucfirst($role) }} -
                 Dashboard</span>
         </a>
 
         <!-- Sidebar -->
         <div class="sidebar mb-3 mt-2">
             <!-- Sidebar user panel (optional) -->
-            @if (Auth::guard('web')->user()->avatar)
+            @if ($user->avatar)
                 <div class="image">
-                    <img style="width:60px; height:60px; object-fit:center;"
-                        src="{{ asset(Auth::guard('web')->user()->avatar) }}" class="img-circle elevation-2"
-                        alt="User Image">
+                    <img style="width:60px; height:60px; object-fit:center;" src="{{ asset($user->avatar) }}"
+                        class="img-circle elevation-2" alt="User Image">
                 </div>
             @endif
             <div class="info mt-2">
-                <a href="#" class="d-block">{{ Auth::guard('web')->user()->name }}</a>
+                <a href="#" class="d-block">{{ $user->name }}</a>
             </div>
         </div>
 
@@ -80,7 +73,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                 <li class="nav-header">Staff</li>
                 @can('view managers', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/managers" class="nav-link">
+                        <a href="/{{ $role }}/managers" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Managers
@@ -90,7 +83,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                 @endcan
                 @can('view receptionists', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/receptionists" class="nav-link">
+                        <a href="/{{ $role }}/receptionists" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Receptionists
@@ -100,7 +93,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                 @endcan
                 @can('view clients', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/clients" class="nav-link">
+                        <a href="/{{ $role }}/clients" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Clients
@@ -110,7 +103,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                 @endcan
                 @role('receptionist', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/my-clients" class="nav-link">
+                        <a href="/{{ $role }}/my-clients" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 My Clients
@@ -121,7 +114,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                 <li class="nav-header">HOTEL</li>
                 @can('view floors', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/floors" class="nav-link">
+                        <a href="/{{ $role }}/floors" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Floors
@@ -131,7 +124,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                 @endcan
                 @can('view rooms', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/rooms" class="nav-link">
+                        <a href="/{{ $role }}/rooms" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Manage Rooms
@@ -141,7 +134,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                 @endcan
                 @can('view reservations', 'web')
                     <li class="nav-item has-treeview">
-                        <a href="/{{ Auth::guard('web')->user()->getRoleNames()[0] }}/reservations" class="nav-link">
+                        <a href="/{{ $role }}/reservations" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
                             <p>
                                 Client Reservations
@@ -151,8 +144,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                 @endcan
                 @if ($prefix != 'admin')
                     <li style="cursor:pointer; margin-top:auto; bottom:10px; width:100%;" class="nav-item has-treeview">
-                        <a href="{{ route(Auth::guard('web')->user()->getRoleNames()[0] .'s' .'.edit',Auth::guard('web')->user()->id) }}"
-                            class="nav-link">
+                        <a href="{{ route($role . 's' . '.edit', $user->id) }}" class="nav-link">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>
                                 Edit Profile
@@ -411,8 +403,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                                             @endrole
                                             <td style="height:42px;"
                                                 class="d-md-flex align-items-center justify-content-center">
-                                                @if (Auth::guard('web')->user()->id == $receptionist->creator->id ||
-                                                    Auth::guard('web')->user()->getRoleNames()[0] == 'admin')
+                                                @if ($user->id == $receptionist->creator->id || $role == 'admin')
                                                     @can('ban receptionists', 'web')
                                                         <a href="{{ route('receptionists.ban', $receptionist->id) }}"
                                                             style="width:60px;" type="button"
@@ -592,10 +583,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                                             </td>
                                             <td style="height:42px;"
                                                 class="dt-body-right dtr-hidden d-md-flex align-items-center justify-content-center">
-                                                @if (Auth::guard('web')->user()->id == $client->approver?->id ||
-                                                    in_array(
-                                                        Auth::guard('web')->user()->getRoleNames()[0],
-                                                        ['admin', 'manager']))
+                                                @if ($user->id == $client->approver?->id || in_array($role, ['admin', 'manager']))
                                                     @can('edit clients', 'web')
                                                         <a href="{{ route('clients.edit', $client->id) }}" style="width:60px;"
                                                             type="button" class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
@@ -737,8 +725,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                                             @endrole
                                             <td style="height:42px;"
                                                 class="dt-body-right dtr-hidden d-md-flex align-items-center justify-content-center">
-                                                @if (Auth::guard('web')->user()->id == $floor->creator->id ||
-                                                    Auth::guard('web')->user()->getRoleNames()[0] == 'admin')
+                                                @if ($user->id == $floor->creator->id || $role == 'admin')
                                                     @can('edit floors', 'web')
                                                         <a href="{{ route('floors.edit', $floor->number) }}" style="width:60px;"
                                                             type="button" class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
@@ -882,8 +869,7 @@ if (in_array($prefix, ['manager', 'receptionist'])) {
                                             @endrole
                                             <td style="height:42px;"
                                                 class="dt-body-right dtr-hidden d-md-flex align-items-center justify-content-center">
-                                                @if (Auth::guard('web')->user()->id == $room->creator->id ||
-                                                    Auth::guard('web')->user()->getRoleNames()[0] == 'admin')
+                                                @if ($user->id == $room->creator->id || $role == 'admin')
                                                     @can('edit rooms', 'web')
                                                         <a href="{{ route('rooms.edit', $room->id) }}" style="width:60px;"
                                                             type="button" class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>

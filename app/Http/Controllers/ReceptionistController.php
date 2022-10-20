@@ -25,7 +25,7 @@ class ReceptionistController extends Controller
      */
     public function index()
     {
-        return view('dashboard', ['receptionists' => User::role('receptionist')->get(['id', 'name', 'email', 'created_by','banned_at'])]);
+        return view('dashboard', ['receptionists' => User::role('receptionist')->get(['id', 'name', 'email', 'created_by', 'banned_at'])]);
     }
 
     /**

@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Floor;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Validation\Rule;
-
-
 
 class FloorController extends Controller
 {
@@ -24,7 +21,7 @@ class FloorController extends Controller
      */
     public function index()
     {
-        return view('dashboard', ['floors'=> Floor::all(['name', 'number', 'created_by'])]);
+        return view('dashboard', ['floors' => Floor::all(['name', 'number', 'created_by'])]);
     }
 
     /**
@@ -54,7 +51,7 @@ class FloorController extends Controller
             'created_by' => Auth::guard('web')->user()->id,
         ]);
 
-        return redirect('/'.Auth::guard('web')->user()->getRoleNames()[0].'/floors')->with('success', 'Created Successfully!');
+        return redirect('/' . Auth::guard('web')->user()->getRoleNames()[0] . '/floors')->with('success', 'Created Successfully!');
     }
 
     /**
@@ -69,7 +66,7 @@ class FloorController extends Controller
         if ($res[0]) {
             return view('hotel.floor.edit', ['floor' => $res[2]]);
         }
-        return redirect('/'.$res[1]->getRoleNames()[0].'/floors')->with('fail', 'Action is not allowed');
+        return redirect('/' . $res[1]->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
     }
 
     /**
@@ -84,13 +81,13 @@ class FloorController extends Controller
         $res = $this->ensureIsOwner($number);
         if ($res[0]) {
             $res[2]
-            ->update($request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('floors','name')->ignore($number, 'number')],
-            ]));
+                ->update($request->validate([
+                    'name' => ['required', 'string', 'max:255', Rule::unique('floors', 'name')->ignore($number, 'number')],
+                ]));
 
-            return redirect('/'.$res[1]->getRoleNames()[0].'/floors')->with('success', 'Updated Successfully!');
+            return redirect('/' . $res[1]->getRoleNames()[0] . '/floors')->with('success', 'Updated Successfully!');
         }
-        return redirect('/'.$res[1]->getRoleNames()[0].'/floors')->with('fail', 'Action is not allowed');
+        return redirect('/' . $res[1]->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
     }
 
     /**
@@ -105,17 +102,18 @@ class FloorController extends Controller
         if ($res[0]) {
             if (count($res[2]->rooms->values()->all()) === 0) {
                 $res[2]->delete();
-                return redirect('/'.$res[1]->getRoleNames()[0].'/floors')->with('success', 'Deleted Successfully!');
+                return redirect('/' . $res[1]->getRoleNames()[0] . '/floors')->with('success', 'Deleted Successfully!');
             } else {
-                return redirect('/'.$res[1]->getRoleNames()[0].'/floors')->with('fail', 'Can\'t Delete A Floor has Rooms!');
+                return redirect('/' . $res[1]->getRoleNames()[0] . '/floors')->with('fail', 'Can\'t Delete A Floor has Rooms!');
             }
         }
-        return redirect('/'.$res[1]->getRoleNames()[0].'/floors')->with('fail', 'Action is not allowed');
+        return redirect('/' . $res[1]->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
     }
 
-    protected function ensureIsOwner($number) {
+    protected function ensureIsOwner($number)
+    {
         $user = Auth::guard('web')->user();
-        $floor = Floor::where('number',$number)->first();
+        $floor = Floor::where('number', $number)->first();
         if ($user->getRoleNames()[0] == 'manager' && $user->id != $floor->created_by) {
             return [false, $user];
         }

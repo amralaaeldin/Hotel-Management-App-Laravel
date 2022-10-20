@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use  App\Models\Client;
-use  App\Models\Floor;
+use App\Models\Client;
+use App\Models\Floor;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
 {
@@ -39,19 +39,21 @@ class Reservation extends Model
         return $this->belongsTo(Floor::class, 'floor_number', 'number');
     }
 
-    public function getStDate() {
+    public function getStDate()
+    {
         return Carbon::create($this->st_date)->format('l jS \\of F Y h:i:s A');
     }
 
-    public function getEndDate() {
+    public function getEndDate()
+    {
         return Carbon::create($this->end_date)->format('l jS \\of F Y h:i:s A');
     }
 
     protected function pricePaidPerDay(): Attribute
     {
         return new Attribute(
-            get: fn ($value) => $value/100,
-            set: fn ($value) => $value*100,
+            get:fn($value) => $value / 100,
+            set:fn($value) => $value * 100,
         );
     }
 }

@@ -59,7 +59,6 @@ class Client extends Authenticatable implements MustVerifyEmail
         $this->notify(new ResetPasswordNotification($token));
     }
 
-
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmail);
