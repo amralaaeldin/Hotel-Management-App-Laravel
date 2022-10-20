@@ -92,4 +92,4 @@
 - `api` <br />
   POST       |   `api/tokens/create` ........ receives [email, password, token_name] and generates token to access `api/staff` endpoint
   - credentials must be of registered staff account   
-  GET        |   `api/staff` ................ gets staff of the hotel  
+GET        |   `api/staff` ................ gets staff of the hotel  
