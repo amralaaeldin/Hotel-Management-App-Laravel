@@ -10,23 +10,23 @@
 - create an account on [mailtrap.io](`mailtrap`) 
 - create a dev account on [https://dashboard.stripe.com/register](`stripe`) 
 - add env variables in `.env.example` file:
--- add your database host
--- add your database port
+- - add your database host
+- - add your database port
 
--- add your mailtrap port
--- add your mailtrap username
--- add your mailtrap password
+- - add your mailtrap port
+- - add your mailtrap username
+- - add your mailtrap password
 
--- add your stripe publishable key
--- add your stripe secret key
+- - add your stripe publishable key
+- - add your stripe secret key
 
 - change name of `.env.example` file to `.env`
 - install [https://getcomposer.org](composer) and add it to your operating system environment variables
 - open terminal in project folder
--- run command `composer install` 
--- run command `npm install` 
--- run command `npm run dev` 
--- run command `php artisan serve` 
+- - run command `composer install` 
+- - run command `npm install` 
+- - run command `npm run dev` 
+- - run command `php artisan serve` 
 -now you can go to `http://localhost:8000/` 
 
 ## Endpoints
