@@ -33,7 +33,7 @@
 - `root`<br />
 GET   |     `/` .............................................................................   
 <br />
-- `admin`<br />
+- `admin` <br />
 GET   |     `admin/register` ..... admin.register › AdminAuth\RegisteredUserController@create  
 GET   |     `admin/login` ..... admin.login › AdminAuth\AuthenticatedSessionController@create  
 POST  |     `admin/logout` .. admin.logout › AdminAuth\AuthenticatedSessionController@destroy  
@@ -45,7 +45,7 @@ GET   |     `admin/floors` ............................................ FloorCon
 GET   |     `admin/rooms` .............................................. RoomController@index  
 GET   |     `admin/reservations` ................................ ReservationController@index  
 <br />
-- `client`<br />
+- `client` <br />
 GET        client/register .. client.register › ClientAuth\RegisteredUserController@create  
 GET        client/login .. client.login › ClientAuth\AuthenticatedSessionController@create  
 POST            client/logout client.logout › ClientAuth\AuthenticatedSessionController@destroy  
@@ -57,7 +57,7 @@ GET        clients/{client}/edit .................... clients.edit › ClientCon
 PUT|PATCH       clients/{client} ..................... clients.update › ClientController@update  
 DELETE          clients/{client} ................... clients.destroy › ClientController@destroy  
 <br />
-- `floor`<br />
+- `floor` <br />
 GET        floors ................................... floors.index › FloorController@index  
 POST            floors ................................... floors.store › FloorController@store  
 GET        floors/create .......................... floors.create › FloorController@create  
@@ -65,7 +65,7 @@ GET        floors/{floor}/edit ........................ floors.edit › FloorCon
 PUT             floors/{floor} ......................... floors.update › FloorController@update  
 DELETE          floors/{floor} ....................... floors.destroy › FloorController@destroy  
 <br />
-- `manager`<br />
+- `manager` <br />
 GET        manager/dashboard ........................................... manager.dashboard  
 GET        manager/clients ........................................ ClientController@index  
 GET        manager/floors .......................................... FloorController@index  
@@ -78,7 +78,7 @@ GET        managers/{manager}/edit ................ managers.edit › ManagerCon
 PUT|PATCH       managers/{manager} ................. managers.update › ManagerController@update  
 DELETE          managers/{manager} ............... managers.destroy › ManagerController@destroy  
 <br />
-- `receptionist`<br />
+- `receptionist` <br />
 GET        receptionist/dashboard ................................. receptionist.dashboard  
 GET        receptionist/clients ....................... ClientController@getNotAcceptedYet  
 GET        receptionist/my-clients ........................ ClientController@getMyAccepted  
@@ -88,14 +88,14 @@ GET        receptionists/{receptionist}/edit receptionists.edit › Receptionist
 PUT|PATCH       receptionists/{receptionist} receptionists.update › ReceptionistController@upd…  
 DELETE          receptionists/{receptionist} receptionists.destroy › ReceptionistController@de…  
 <br />
-- `reservations`<br />
+- `reservations` <br />
 GET        reservations ................. reservations.index › ReservationController@index  
 GET        reservations/success ..... reservations.confirm › ReservationController@confirm  
 <br />
-- `staff`<br />
+- `staff` <br />
 GET        staff/register/{role} ... staff.register › Auth\RegisteredUserController@create
 POST            staff/register/{role} ....... staff.store › Auth\RegisteredUserController@store
 <br />
-- `api`<br />
+- `api` <br />
 GET        api/staff ........................................... Api\StaffController@index  
 POST            api/tokens/create .............................................................  
