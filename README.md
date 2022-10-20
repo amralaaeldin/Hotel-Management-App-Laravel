@@ -91,5 +91,5 @@
   GET        |   `staff/register/{role}` .... form to add manager or receptionist
 - `api` <br />
   POST       |   `api/tokens/create` ........ receives [email, password, token_name] and generates token to access `api/staff` endpoint
-  - credentials must be of registered staff account <br />   
   GET        |   `api/staff` ................ gets staff of the hotel  
+  - credentials must be of registered staff account  
