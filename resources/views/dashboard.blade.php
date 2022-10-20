@@ -16,7 +16,9 @@
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#myTable').DataTable();
+            $('#myTable').DataTable({
+                scrollX: true,
+            });
         });
     </script>
 @endsection
@@ -189,7 +191,7 @@
         @endif
 
         <!-- /.home -->
-        @if (isset($user))
+        @if (isset($user) && explode('/', Request::url())[4] === 'dashboard')
             <div class="mx-auto card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">{{ $user->name }}</h5>
