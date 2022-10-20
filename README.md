@@ -30,7 +30,7 @@
 -now you can go to `http://localhost:8000/` 
 
 ## Endpoints
-- `root`<br />
+- `root` <br />
 GET   |     `/` .............................................................................   
 <br />
 - `admin` <br />
