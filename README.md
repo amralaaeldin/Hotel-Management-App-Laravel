@@ -30,10 +30,10 @@
 -now you can go to `http://localhost:8000/` 
 
 ## Endpoints
-- `root`
- GET        / .............................................................................   
-
-- `admin`
+- `root`<br />
+GET   |     `/` .............................................................................   
+<br />
+- `admin`<br />
 GET   |     `admin/register` ..... admin.register › AdminAuth\RegisteredUserController@create  
 GET   |     `admin/login` ..... admin.login › AdminAuth\AuthenticatedSessionController@create  
 POST  |     `admin/logout` .. admin.logout › AdminAuth\AuthenticatedSessionController@destroy  
@@ -44,8 +44,8 @@ GET   |     `admin/clients` .......................................... ClientCon
 GET   |     `admin/floors` ............................................ FloorController@index  
 GET   |     `admin/rooms` .............................................. RoomController@index  
 GET   |     `admin/reservations` ................................ ReservationController@index  
-
-- `client`
+<br />
+- `client`<br />
 GET        client/register .. client.register › ClientAuth\RegisteredUserController@create  
 GET        client/login .. client.login › ClientAuth\AuthenticatedSessionController@create  
 POST            client/logout client.logout › ClientAuth\AuthenticatedSessionController@destroy  
@@ -56,16 +56,16 @@ PUT             clients/approve/{client} ........... clients.approve › ClientC
 GET        clients/{client}/edit .................... clients.edit › ClientController@edit  
 PUT|PATCH       clients/{client} ..................... clients.update › ClientController@update  
 DELETE          clients/{client} ................... clients.destroy › ClientController@destroy  
-
-- `floor`
+<br />
+- `floor`<br />
 GET        floors ................................... floors.index › FloorController@index  
 POST            floors ................................... floors.store › FloorController@store  
 GET        floors/create .......................... floors.create › FloorController@create  
 GET        floors/{floor}/edit ........................ floors.edit › FloorController@edit  
 PUT             floors/{floor} ......................... floors.update › FloorController@update  
 DELETE          floors/{floor} ....................... floors.destroy › FloorController@destroy  
-
-- `manager`
+<br />
+- `manager`<br />
 GET        manager/dashboard ........................................... manager.dashboard  
 GET        manager/clients ........................................ ClientController@index  
 GET        manager/floors .......................................... FloorController@index  
@@ -77,8 +77,8 @@ GET        managers ............................. managers.index › ManagerCont
 GET        managers/{manager}/edit ................ managers.edit › ManagerController@edit  
 PUT|PATCH       managers/{manager} ................. managers.update › ManagerController@update  
 DELETE          managers/{manager} ............... managers.destroy › ManagerController@destroy  
-
-- `receptionist`
+<br />
+- `receptionist`<br />
 GET        receptionist/dashboard ................................. receptionist.dashboard  
 GET        receptionist/clients ....................... ClientController@getNotAcceptedYet  
 GET        receptionist/my-clients ........................ ClientController@getMyAccepted  
@@ -87,15 +87,15 @@ GET        receptionists .............. receptionists.index › ReceptionistCont
 GET        receptionists/{receptionist}/edit receptionists.edit › ReceptionistController@…  
 PUT|PATCH       receptionists/{receptionist} receptionists.update › ReceptionistController@upd…  
 DELETE          receptionists/{receptionist} receptionists.destroy › ReceptionistController@de…  
-
-- `reservations`
+<br />
+- `reservations`<br />
 GET        reservations ................. reservations.index › ReservationController@index  
 GET        reservations/success ..... reservations.confirm › ReservationController@confirm  
-
-- `staff`
+<br />
+- `staff`<br />
 GET        staff/register/{role} ... staff.register › Auth\RegisteredUserController@create
 POST            staff/register/{role} ....... staff.store › Auth\RegisteredUserController@store
-
-- `api`
+<br />
+- `api`<br />
 GET        api/staff ........................................... Api\StaffController@index  
 POST            api/tokens/create .............................................................  
