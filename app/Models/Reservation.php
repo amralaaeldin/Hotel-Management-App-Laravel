@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Client;
 use App\Models\Floor;
+use App\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,6 +38,11 @@ class Reservation extends Model
     public function floor()
     {
         return $this->belongsTo(Floor::class, 'floor_number', 'number');
+    }
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class, 'room_number', 'number');
     }
 
     public function getStDate()

@@ -1,16 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\FloorController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\ReceptionistController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\RoomController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\ReceptionistController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\ManagerController;
-use App\Http\Controllers\ReservationController;
-use App\Http\Controllers\FloorController;
-use App\Http\Controllers\RoomController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +20,7 @@ use App\Http\Controllers\RoomController;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return view('welcome');
@@ -51,11 +50,9 @@ Route::middleware(['auth:client'])->group(function () {
     })->name('client.dashboard');
 });
 
-
 Route::prefix('staff')->group(function () {
     require __DIR__ . '/auth.php';
 });
-
 
 Route::prefix('admin')->group(function () {
     require __DIR__ . '/admin-auth.php';
@@ -65,22 +62,23 @@ Route::prefix('client')->group(function () {
     require __DIR__ . '/client-auth.php';
 });
 
-
 Route::get('/redirect', [HomeController::class, 'redirect'])->name('redirect');
 
-Route::resource('rooms', RoomController::class);
-Route::resource('floors', FloorController::class);
-Route::resource('reservations', ReservationController::class)->only(['index', 'store']);
-Route::get('reservations/success', [ReservationController::class, 'confirm'])->name('reservations.confirm');
+Route::resource('rooms', RoomController::class)->except('show');
+Route::resource('floors', FloorController::class)->only('index', 'create', 'store');
+Route::get('floors/{floor:number}/edit', [FloorController::class, 'edit'])->name('floors.edit');
+Route::put('floors/{floor:number}', [FloorController::class, 'update'])->name('floors.update');
+Route::delete('floors/{floor:number}', [FloorController::class, 'destroy'])->name('floors.destroy');
+
+Route::get('reservations', [ReservationController::class, 'index'])->name('reservations.index');
+Route::get('reservations/success', [ReservationController::class, 'confirm'])->name('reservations.confirm')->middleware(['auth:client', 'verified']);
 Route::get('reservations/{room}', [ReservationController::class, 'create'])->name('reservations.create')->middleware(['auth:client', 'verified']);
 Route::post('reservations/{room}', [ReservationController::class, 'store'])->name('reservations.store')->middleware(['auth:client', 'verified']);
-
 
 Route::resource('managers', ManagerController::class)->except(['create', 'store', 'show']);
 Route::resource('receptionists', ReceptionistController::class)->except(['create', 'store', 'show']);
 Route::resource('clients', ClientController::class)->except(['create', 'store', 'show']);
 Route::put('clients/approve/{client}', [ClientController::class, 'approve'])->name('clients.approve');
-
 
 Route::prefix('admin/')->middleware(['auth:web', 'role:admin'])->group(function () {
     Route::get('managers', [ManagerController::class, 'index']);

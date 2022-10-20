@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Middleware\EnsureYourselfOrCanEdit;
 use App\Models\User;
+use App\Traits\OwnershipTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -11,6 +12,8 @@ use Illuminate\Validation\Rule;
 
 class ReceptionistController extends Controller
 {
+    use OwnershipTrait;
+
     public function __construct()
     {
         $this->middleware('auth:web');
@@ -25,7 +28,7 @@ class ReceptionistController extends Controller
      */
     public function index()
     {
-        return view('dashboard', ['receptionists' => User::role('receptionist')->get(['id', 'name', 'email', 'created_by', 'banned_at'])]);
+        return view('dashboard', ['receptionists' => User::with('creator')->role('receptionist')->get(['id', 'name', 'email', 'created_by', 'banned_at'])]);
     }
 
     /**
@@ -110,14 +113,4 @@ class ReceptionistController extends Controller
         }
         return redirect('/' . $res[1]->getRoleNames()[0] . '/receptionists')->with('fail', 'Action is not allowed');
     }
-
-    protected function ensureIsOwner($receptionist)
-    {
-        $user = Auth::guard('web')->user();
-        if ($user->getRoleNames()[0] == 'manager' && $user->id != $receptionist->created_by) {
-            return [false, $user];
-        }
-        return [true, $user, $receptionist];
-    }
-
 }

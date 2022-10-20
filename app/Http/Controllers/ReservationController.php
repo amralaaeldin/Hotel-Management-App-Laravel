@@ -27,7 +27,7 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        return view('dashboard', ['reservations' => Reservation::all('id', 'client_id', 'floor_number', 'room_number', 'duration', 'price_paid_per_day', 'accompany_number')]);
+        return view('dashboard', ['reservations' => Reservation::with('client', 'floor', 'room')->select('id', 'client_id', 'floor_number', 'room_number', 'duration', 'price_paid_per_day', 'accompany_number')->get()]);
     }
 
     public function getClientReservations()

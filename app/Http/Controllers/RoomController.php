@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Floor;
 use App\Models\Room;
+use App\Traits\OwnershipTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class RoomController extends Controller
 {
+    use OwnershipTrait;
+
     public function __construct()
     {
         $this->middleware('auth:web')->except('getUnreservedRooms');
@@ -23,12 +26,12 @@ class RoomController extends Controller
      */
     public function index()
     {
-        return view('dashboard', ['rooms' => Room::all(['id', 'number', 'capacity', 'price', 'created_by', 'floor_number'])]);
+        return view('dashboard', ['rooms' => Room::with('creator', 'floor')->select(['id', 'number', 'capacity', 'price', 'created_by', 'floor_number'])->get()]);
     }
 
     public function getUnreservedRooms()
     {
-        return view('client.dashboard', ['rooms' => Room::where('reserved', false)->get()]);
+        return view('client.dashboard', ['rooms' => Room::where('reserved', false)->select(['id', 'number', 'capacity', 'price', 'floor_number', 'reserved'])->get()]);
     }
 
     /**
@@ -76,9 +79,9 @@ class RoomController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Room $room)
     {
-        $res = $this->ensureIsOwner($id);
+        $res = $this->ensureIsOwner($room);
         if ($res[0]) {
             return view('hotel.room.edit', ['room' => $res[2], 'floors' => Floor::all(['name', 'number'])]);
         }
@@ -92,14 +95,14 @@ class RoomController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Room $room)
     {
-        $res = $this->ensureIsOwner($id);
+        $res = $this->ensureIsOwner($room);
 
         if ($res[0]) {
             $res[2]
                 ->update($request->validate([
-                    'number' => ['required', 'numeric', Rule::unique('rooms', 'number')->ignore($id)],
+                    'number' => ['required', 'numeric', Rule::unique('rooms', 'number')->ignore($room->id)],
                     'floor_number' => ['required', 'numeric', Rule::in(Floor::pluck('number')->all())],
                     'capacity' => ['required', 'numeric', 'max:30'],
                     'price' => ['required', 'numeric', 'lt:1000000'],
@@ -116,9 +119,9 @@ class RoomController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Room $room)
     {
-        $res = $this->ensureIsOwner($id);
+        $res = $this->ensureIsOwner($room);
         if ($res[0]) {
             if (!$res[1]->reserved) {
                 $res[1]->delete();
@@ -128,15 +131,5 @@ class RoomController extends Controller
             }
         }
         return redirect('/' . $res[1]->getRoleNames()[0] . '/rooms')->with('fail', 'Action is not allowed');
-    }
-
-    protected function ensureIsOwner($id)
-    {
-        $user = Auth::guard('web')->user();
-        $room = Room::where('id', $id)->first();
-        if ($user->getRoleNames()[0] == 'manager' && $user->id != $room->created_by) {
-            return [false, $user];
-        }
-        return [true, $user, $room];
     }
 }

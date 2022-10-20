@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Floor;
+use App\Traits\OwnershipTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class FloorController extends Controller
 {
+    use OwnershipTrait;
+
     public function __construct()
     {
         $this->middleware('auth:web');
@@ -21,7 +24,7 @@ class FloorController extends Controller
      */
     public function index()
     {
-        return view('dashboard', ['floors' => Floor::all(['name', 'number', 'created_by'])]);
+        return view('dashboard', ['floors' => Floor::with('creator')->select(['name', 'number', 'created_by'])->get()]);
     }
 
     /**
@@ -60,9 +63,9 @@ class FloorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($number)
+    public function edit(Floor $floor)
     {
-        $res = $this->ensureIsOwner($number);
+        $res = $this->ensureIsOwner($floor);
         if ($res[0]) {
             return view('hotel.floor.edit', ['floor' => $res[2]]);
         }
@@ -76,13 +79,13 @@ class FloorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $number)
+    public function update(Request $request, Floor $floor)
     {
-        $res = $this->ensureIsOwner($number);
+        $res = $this->ensureIsOwner($floor);
         if ($res[0]) {
             $res[2]
                 ->update($request->validate([
-                    'name' => ['required', 'string', 'max:255', Rule::unique('floors', 'name')->ignore($number, 'number')],
+                    'name' => ['required', 'string', 'max:255', Rule::unique('floors', 'name')->ignore($floor->number, 'number')],
                 ]));
 
             return redirect('/' . $res[1]->getRoleNames()[0] . '/floors')->with('success', 'Updated Successfully!');
@@ -96,9 +99,9 @@ class FloorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($number)
+    public function destroy(Floor $floor)
     {
-        $res = $this->ensureIsOwner($number);
+        $res = $this->ensureIsOwner($floor);
         if ($res[0]) {
             if (count($res[2]->rooms->values()->all()) === 0) {
                 $res[2]->delete();
@@ -108,15 +111,5 @@ class FloorController extends Controller
             }
         }
         return redirect('/' . $res[1]->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
-    }
-
-    protected function ensureIsOwner($number)
-    {
-        $user = Auth::guard('web')->user();
-        $floor = Floor::where('number', $number)->first();
-        if ($user->getRoleNames()[0] == 'manager' && $user->id != $floor->created_by) {
-            return [false, $user];
-        }
-        return [true, $user, $floor];
     }
 }
