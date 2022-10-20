@@ -2,37 +2,27 @@
 
 namespace App\Events;
 
-use App\Models\Client;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Mail;
 
 class Registered
 {
     use SerializesModels;
 
     /**
-     * The authenticated client.
+     * The authenticated user.
      *
      * @var \Illuminate\Contracts\Auth\Authenticatable
      */
-    public $client;
+    public $user;
 
     /**
      * Create a new event instance.
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $client
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @return void
      */
-    public function __construct($client)
+    public function __construct($user)
     {
-        $this->client = $client;
-    }
-
-    public function handle()
-    {
-        Mail::send('emails.welcome', ['name' => $this->client->name], function ($message) {
-            $message->to($this->client->email, $this->client->name)->subject('Welcome to our Hotel website');
-        });
+        $this->user = $user;
     }
 }

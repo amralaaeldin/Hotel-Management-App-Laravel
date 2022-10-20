@@ -54,8 +54,6 @@ class RegisteredUserController extends Controller
 
         $user->assignRole(['name' => 'admin']);
 
-        event(new Registered($user));
-
         Auth::guard('web')->login($user);
 
         return redirect(RouteServiceProvider::HOME);

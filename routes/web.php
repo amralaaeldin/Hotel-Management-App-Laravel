@@ -72,8 +72,8 @@ Route::resource('rooms', RoomController::class);
 Route::resource('floors', FloorController::class);
 Route::resource('reservations', ReservationController::class)->only(['index', 'store']);
 Route::get('reservations/success', [ReservationController::class, 'confirm'])->name('reservations.confirm');
-Route::get('reservations/{room}', [ReservationController::class, 'create'])->name('reservations.create');
-Route::post('reservations/{room}', [ReservationController::class, 'store'])->name('reservations.store');
+Route::get('reservations/{room}', [ReservationController::class, 'create'])->name('reservations.create')->middleware(['auth:client', 'verified']);
+Route::post('reservations/{room}', [ReservationController::class, 'store'])->name('reservations.store')->middleware(['auth:client', 'verified']);
 
 
 Route::resource('managers', ManagerController::class)->except(['create', 'store', 'show']);

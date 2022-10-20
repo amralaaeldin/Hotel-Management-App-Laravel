@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\ClientAuth;
 
+use App\Events\Registered;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules; 
 use Illuminate\Validation\Rule;
-use App\Events\Registered;
+use Illuminate\Validation\Rules\Password;
 
 class RegisteredUserController extends Controller
 {
@@ -41,7 +41,7 @@ class RegisteredUserController extends Controller
             'avatar' => ['required', 'image'],
             'gender' => ['required', 'in:M,F'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:clients'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
         $client = Client::create([
@@ -54,7 +54,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        (new Registered($client))->handle();
+        event(new Registered($client));
 
         Auth::guard('client')->login($client);
 

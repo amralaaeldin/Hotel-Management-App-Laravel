@@ -87,7 +87,20 @@
                     </li>
                 @endif
                 @if (Auth::guard('client')->check())
-                    <li style="cursor:pointer; margin-top:auto; bottom:10px; width:100%;" class="nav-item has-treeview">
+                    @if (!Auth::guard('client')->user()->hasVerifiedEmail())
+                        <li style="cursor:pointer; margin-top:auto; bottom:10px; width:100%;" class="nav-item has-treeview">
+                            <a href="{{ route('verification.fire') }}" class="nav-link">
+                                <i class="nav-icon fas fa-check"></i>
+                                <p>
+                                    Verify Email
+                                </p>
+                            </a>
+                        </li>
+                    @endif
+                    <li style="cursor:pointer; 
+                    @if (Auth::guard('client')->user()->hasVerifiedEmail()) margin-top:auto; @endif
+                    bottom:10px; width:100%;"
+                        class="nav-item has-treeview">
                         <a href="{{ route('clients.edit', Auth::guard('client')->user()->id) }}" class="nav-link">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>

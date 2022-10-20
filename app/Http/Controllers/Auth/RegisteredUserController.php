@@ -68,7 +68,6 @@ class RegisteredUserController extends Controller
 
         $user->assignRole(['name' => $role]);
 
-        event(new Registered($user));
 
         return redirect('/'.Auth::guard('web')->user()->getRoleNames()[0].'/'.$role.'s')->with('success', 'Added Successfully!');
     }

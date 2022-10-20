@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Notifications\ClientResetPassword as ResetPasswordNotification;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Models\User;
 use App\Models\Reservation;
+use App\Models\User;
+use App\Notifications\ClientResetPassword as ResetPasswordNotification;
+use App\Notifications\VerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Client extends Authenticatable
+class Client extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -26,13 +27,15 @@ class Client extends Authenticatable
         'avatar',
         'approved',
         'approved_by',
-        'last_login_at'
+        'last_login_at',
     ];
 
-    public function getCountry() {
+    public function getCountry()
+    {
         return countries()["$this->country"]['name'];
     }
-    public function getGender() {
+    public function getGender()
+    {
         return $this->gender === 'M' ? 'Male' : 'Female';
     }
 
@@ -55,4 +58,11 @@ class Client extends Authenticatable
     {
         $this->notify(new ResetPasswordNotification($token));
     }
+
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmail);
+    }
+
 }

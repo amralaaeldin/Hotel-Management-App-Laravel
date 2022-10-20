@@ -53,4 +53,10 @@ Route::middleware('auth:client')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('client.logout');
+
+    Route::get('verify', [EmailVerificationNotificationController::class, 'fire'])
+                ->name('verification.fire');
+
+    Route::get('verification/notice', [EmailVerificationNotificationController::class, 'notice'])
+                ->name('verification.notice');
 });
