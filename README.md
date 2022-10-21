@@ -3,7 +3,7 @@
 ## Description
 `Hotel Management App - Laravel` was the graduation project of some ITI group, instructed by Eng. Ahmed Abd Elftah. <br />
 The project contains authentication and authorization for multi guards and multi roles, reservation system and payment through Stipe gateway, CRUD operations on people, rooms and floors, and provides API endpoint that gets staff working in the hotel. <br />
-It also contains command to create admin, queues & listeners to notify client. <br />
+It also contains command to create admin, queues & listeners to notify client and make some actions. <br />
 It also fulfills all authentication operations, including email verification and password reset and so on.
 
 
