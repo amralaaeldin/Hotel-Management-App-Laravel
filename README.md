@@ -85,3 +85,14 @@
   POST       |   `api/tokens/create` ........ receives [email, password, token_name] and generates token to access `api/staff` endpoint <br />
   GET        |   `api/staff` ................ gets staff of the hotel  
   - credentials must be of registered staff account  
+
+
+## Packages Used 
+- laravel/sanctum
+- spatie/laravel-permission
+- cybercog/laravel-ban
+- nesbot/carbon
+- yajra/laravel-datatables
+- rinvex/countries
+- cartalyst/stripe-laravel
+- guzzlehttp/guzzle
