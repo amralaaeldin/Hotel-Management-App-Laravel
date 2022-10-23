@@ -40,10 +40,10 @@ class ReceptionistController extends Controller
     public function edit(User $receptionist)
     {
         $res = $this->ensureIsOwner($receptionist);
-        if ($res[0]) {
-            return view('receptionist.edit', ['receptionist' => $res[2]]);
+        if ($res['isOwner']) {
+            return view('receptionist.edit', ['receptionist' => $res['model']]);
         }
-        return redirect('/' . $res[1]->getRoleNames()[0] . '/receptionists')->with('fail', 'Action is not allowed');
+        return redirect('/' . $res['user']->getRoleNames()[0] . '/receptionists')->with('fail', 'Action is not allowed');
     }
 
     /**
@@ -59,8 +59,8 @@ class ReceptionistController extends Controller
             Storage::delete("$receptionist->avatar");
         }
         $res = $this->ensureIsOwner($receptionist);
-        if ($res[0]) {
-            $res[2]
+        if ($res['isOwner']) {
+            $res['model']
                 ->update(
                     array_merge($request->validate(
                         [
@@ -71,13 +71,13 @@ class ReceptionistController extends Controller
                         ]), ['avatar' => $request->file('avatar') ? $request->file('avatar')->store('avatars') : $receptionist->avatar]
                     ));
             if (Auth::guard('web')->user()->getRoleNames()[0] !== 'receptionist') {
-                return redirect('/' . $res[1]->getRoleNames()[0] . '/receptionists')->with('success', 'Updated Successfully!');
+                return redirect('/' . $res['user']->getRoleNames()[0] . '/receptionists')->with('success', 'Updated Successfully!');
             } else {
                 return redirect()->route('receptionist.dashboard')->with('success', 'Updated Successfully!');
             }
         }
         if (Auth::guard('web')->user()->getRoleNames()[0] !== 'receptionist') {
-            return redirect('/' . $res[1]->getRoleNames()[0] . '/receptionists')->with('fail', 'Action is not allowed');
+            return redirect('/' . $res['user']->getRoleNames()[0] . '/receptionists')->with('fail', 'Action is not allowed');
         } else {
             return redirect()->route('receptionist.dashboard')->with('fail', 'Action is not allowed');
         }
@@ -92,25 +92,25 @@ class ReceptionistController extends Controller
     public function destroy(User $receptionist)
     {
         $res = $this->ensureIsOwner($receptionist);
-        if ($res[0]) {
-            $res[2]->delete();
-            return redirect('/' . $res[1]->getRoleNames()[0] . '/receptionists')->with('success', 'Deleted Successfully!');
+        if ($res['isOwner']) {
+            $res['model']->delete();
+            return redirect('/' . $res['user']->getRoleNames()[0] . '/receptionists')->with('success', 'Deleted Successfully!');
         }
-        return redirect('/' . $res[1]->getRoleNames()[0] . '/receptionists')->with('fail', 'Action is not allowed');
+        return redirect('/' . $res['user']->getRoleNames()[0] . '/receptionists')->with('fail', 'Action is not allowed');
     }
 
     public function ban(User $receptionist)
     {
         $res = $this->ensureIsOwner($receptionist);
-        if ($res[0]) {
-            if ($res[2]->isBanned()) {
-                $res[2]->unban();
-                return redirect('/' . $res[1]->getRoleNames()[0] . '/receptionists')->with('success', 'Unbanned Successfully!');
+        if ($res['isOwner']) {
+            if ($res['model']->isBanned()) {
+                $res['model']->unban();
+                return redirect('/' . $res['user']->getRoleNames()[0] . '/receptionists')->with('success', 'Unbanned Successfully!');
             } else {
-                $res[2]->ban();
-                return redirect('/' . $res[1]->getRoleNames()[0] . '/receptionists')->with('success', 'Banned Successfully!');
+                $res['model']->ban();
+                return redirect('/' . $res['user']->getRoleNames()[0] . '/receptionists')->with('success', 'Banned Successfully!');
             }
         }
-        return redirect('/' . $res[1]->getRoleNames()[0] . '/receptionists')->with('fail', 'Action is not allowed');
+        return redirect('/' . $res['user']->getRoleNames()[0] . '/receptionists')->with('fail', 'Action is not allowed');
     }
 }

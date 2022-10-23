@@ -12,6 +12,9 @@ trait OwnershipTrait
         if ($user->getRoleNames()[0] == 'manager' && $user->id != $model->created_by) {
             return [false, $user];
         }
-        return [true, $user, $model];
+        return [
+            'isOwner' => true, 
+            'user' => $user, 
+            'model' => $model];
     }
 }

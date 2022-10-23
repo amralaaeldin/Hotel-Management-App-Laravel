@@ -66,10 +66,10 @@ class FloorController extends Controller
     public function edit(Floor $floor)
     {
         $res = $this->ensureIsOwner($floor);
-        if ($res[0]) {
-            return view('hotel.floor.edit', ['floor' => $res[2]]);
+        if ($res['isOwner']) {
+            return view('hotel.floor.edit', ['floor' => $res['model']]);
         }
-        return redirect('/' . $res[1]->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
+        return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
     }
 
     /**
@@ -82,15 +82,15 @@ class FloorController extends Controller
     public function update(Request $request, Floor $floor)
     {
         $res = $this->ensureIsOwner($floor);
-        if ($res[0]) {
-            $res[2]
+        if ($res['isOwner']) {
+            $res['model']
                 ->update($request->validate([
                     'name' => ['required', 'string', 'max:255', Rule::unique('floors', 'name')->ignore($floor->number, 'number')],
                 ]));
 
-            return redirect('/' . $res[1]->getRoleNames()[0] . '/floors')->with('success', 'Updated Successfully!');
+            return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('success', 'Updated Successfully!');
         }
-        return redirect('/' . $res[1]->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
+        return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
     }
 
     /**
@@ -102,14 +102,14 @@ class FloorController extends Controller
     public function destroy(Floor $floor)
     {
         $res = $this->ensureIsOwner($floor);
-        if ($res[0]) {
-            if (count($res[2]->rooms->values()->all()) === 0) {
-                $res[2]->delete();
-                return redirect('/' . $res[1]->getRoleNames()[0] . '/floors')->with('success', 'Deleted Successfully!');
+        if ($res['isOwner']) {
+            if (count($res['model']->rooms->values()->all()) === 0) {
+                $res['model']->delete();
+                return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('success', 'Deleted Successfully!');
             } else {
-                return redirect('/' . $res[1]->getRoleNames()[0] . '/floors')->with('fail', 'Can\'t Delete A Floor has Rooms!');
+                return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('fail', 'Can\'t Delete A Floor has Rooms!');
             }
         }
-        return redirect('/' . $res[1]->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
+        return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
     }
 }
