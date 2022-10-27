@@ -31,7 +31,7 @@ It also fulfills all authentication operations, including email verification and
   - run command `npm install` 
   - run command `npm run dev` 
   - run command `php artisan serve` 
--now you can go to `http://localhost:8000/` 
+- now you can go to `http://localhost:8000/` 
 
 ## Endpoints
 - `root` <br />
