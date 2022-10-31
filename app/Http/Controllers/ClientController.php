@@ -49,7 +49,7 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-        return view('client.edit', ['client' => Client::where('id', $id)->first(), 'countries' => countries()]);
+        return view('client.edit', ['client' => Client::findOrFail($id), 'countries' => countries()]);
     }
 
     /**

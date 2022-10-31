@@ -37,7 +37,7 @@ class ManagerController extends Controller
      */
     public function edit($id)
     {
-        return view('manager.edit', ['manager' => User::where('id', $id)->first()]);
+        return view('manager.edit', ['manager' => User::findOrFail($id)]);
     }
 
     /**
