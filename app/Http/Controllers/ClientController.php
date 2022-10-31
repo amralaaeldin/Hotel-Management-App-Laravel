@@ -79,9 +79,8 @@ class ClientController extends Controller
             );
         if (Auth::guard('web')->check()) {
             return redirect('/' . Auth::guard('web')->user()->getRoleNames()[0] . '/clients')->with('success', 'Updated Successfully!');
-        } else {
-            return redirect()->route('client.dashboard')->with('success', 'Updated Successfully!');
         }
+        return redirect()->route('client.dashboard')->with('success', 'Updated Successfully!');
     }
 
     /**

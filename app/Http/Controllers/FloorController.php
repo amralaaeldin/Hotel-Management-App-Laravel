@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Floor;
-use App\Traits\OwnershipTrait;
+use App\Traits\IsAllowedTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class FloorController extends Controller
 {
-    use OwnershipTrait;
+    use IsAllowedTrait;
 
     public function __construct()
     {
@@ -65,11 +65,11 @@ class FloorController extends Controller
      */
     public function edit(Floor $floor)
     {
-        $res = $this->ensureIsOwner($floor);
-        if ($res['isOwner']) {
-            return view('hotel.floor.edit', ['floor' => $res['model']]);
+        $res = $this->ensureIsAllowed($floor);
+        if (!$res['isAllowed']) {
+            return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
         }
-        return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
+        return view('hotel.floor.edit', ['floor' => $res['model']]);
     }
 
     /**
@@ -81,16 +81,15 @@ class FloorController extends Controller
      */
     public function update(Request $request, Floor $floor)
     {
-        $res = $this->ensureIsOwner($floor);
-        if ($res['isOwner']) {
-            $res['model']
-                ->update($request->validate([
-                    'name' => ['required', 'string', 'max:255', Rule::unique('floors', 'name')->ignore($floor->number, 'number')],
-                ]));
-
-            return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('success', 'Updated Successfully!');
+        $res = $this->ensureIsAllowed($floor);
+        if (!$res['isAllowed']) {
+            return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
         }
-        return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
+        $res['model']
+            ->update($request->validate([
+                'name' => ['required', 'string', 'max:255', Rule::unique('floors', 'name')->ignore($floor->number, 'number')],
+            ]));
+        return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('success', 'Updated Successfully!');
     }
 
     /**
@@ -101,15 +100,14 @@ class FloorController extends Controller
      */
     public function destroy(Floor $floor)
     {
-        $res = $this->ensureIsOwner($floor);
-        if ($res['isOwner']) {
-            if (count($res['model']->rooms->values()->all()) === 0) {
-                $res['model']->delete();
-                return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('success', 'Deleted Successfully!');
-            } else {
-                return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('fail', 'Can\'t Delete A Floor has Rooms!');
-            }
+        $res = $this->ensureIsAllowed($floor);
+        if (!$res['isAllowed']) {
+            return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
         }
-        return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('fail', 'Action is not allowed');
+        if (count($res['model']->rooms->values()->all()) !== 0) {
+            return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('fail', 'Can\'t Delete A Floor has Rooms!');
+        }
+        $res['model']->delete();
+        return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('success', 'Deleted Successfully!');
     }
 }

@@ -66,9 +66,8 @@ class ManagerController extends Controller
 
         if (Auth::guard('web')->user()->getRoleNames()[0] !== 'manager') {
             return redirect('/' . Auth::guard('web')->user()->getRoleNames()[0] . '/managers')->with('success', 'Updated Successfully!');
-        } else {
-            return redirect()->route('manager.dashboard')->with('success', 'Updated Successfully!');
         }
+        return redirect()->route('manager.dashboard')->with('success', 'Updated Successfully!');
     }
 
     /**
@@ -79,7 +78,7 @@ class ManagerController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
+        User::findOrFail($id)->delete();
         return redirect('/' . Auth::guard('web')->user()->getRoleNames()[0] . '/managers')->with('success', 'Deleted Successfully!');
     }
 }

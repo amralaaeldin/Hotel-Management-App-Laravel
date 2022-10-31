@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Floor;
 use App\Models\Room;
-use App\Traits\OwnershipTrait;
+use App\Traits\IsAllowedTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class RoomController extends Controller
 {
-    use OwnershipTrait;
+    use IsAllowedTrait;
 
     public function __construct()
     {
@@ -81,11 +81,11 @@ class RoomController extends Controller
      */
     public function edit(Room $room)
     {
-        $res = $this->ensureIsOwner($room);
-        if ($res['isOwner']) {
-            return view('hotel.room.edit', ['room' => $res['model'], 'floors' => Floor::all(['name', 'number'])]);
+        $res = $this->ensureIsAllowed($room);
+        if (!$res['isAllowed']) {
+            return redirect('/' . $res['user']->getRoleNames()[0] . '/rooms')->with('fail', 'Action is not allowed');
         }
-        return redirect('/' . $res['user']->getRoleNames()[0] . '/rooms')->with('fail', 'Action is not allowed');
+        return view('hotel.room.edit', ['room' => $res['model'], 'floors' => Floor::all(['name', 'number'])]);
     }
 
     /**
@@ -97,20 +97,20 @@ class RoomController extends Controller
      */
     public function update(Request $request, Room $room)
     {
-        $res = $this->ensureIsOwner($room);
+        $res = $this->ensureIsAllowed($room);
 
-        if ($res['isOwner']) {
-            $res['model']
-                ->update($request->validate([
-                    'number' => ['required', 'numeric', Rule::unique('rooms', 'number')->ignore($room->id)],
-                    'floor_number' => ['required', 'numeric', Rule::in(Floor::pluck('number')->all())],
-                    'capacity' => ['required', 'numeric', 'max:30'],
-                    'price' => ['required', 'numeric', 'lt:1000000'],
-                ]));
-
-            return redirect('/' . $res['user']->getRoleNames()[0] . '/rooms')->with('success', 'Updated Successfully!');
+        if (!$res['isAllowed']) {
+            return redirect('/' . $res['user']->getRoleNames()[0] . '/rooms')->with('fail', 'Action is not allowed');
         }
-        return redirect('/' . $res['user']->getRoleNames()[0] . '/rooms')->with('fail', 'Action is not allowed');
+        $res['model']
+            ->update($request->validate([
+                'number' => ['required', 'numeric', Rule::unique('rooms', 'number')->ignore($room->id)],
+                'floor_number' => ['required', 'numeric', Rule::in(Floor::pluck('number')->all())],
+                'capacity' => ['required', 'numeric', 'max:30'],
+                'price' => ['required', 'numeric', 'lt:1000000'],
+            ]));
+
+        return redirect('/' . $res['user']->getRoleNames()[0] . '/rooms')->with('success', 'Updated Successfully!');
     }
 
     /**
@@ -121,15 +121,14 @@ class RoomController extends Controller
      */
     public function destroy(Room $room)
     {
-        $res = $this->ensureIsOwner($room);
-        if ($res['isOwner']) {
-            if (!$res['user']->reserved) {
-                $res['user']->delete();
-                return redirect('/' . $res['user']->getRoleNames()[0] . '/rooms')->with('success', 'Deleted Successfully!');
-            } else {
-                return redirect('/' . $res['user']->getRoleNames()[0] . '/rooms')->with('fail', 'Can\'t Delete Reserved Room!');
-            }
+        $res = $this->ensureIsAllowed($room);
+        if (!$res['isAllowed']) {
+            return redirect('/' . $res['user']->getRoleNames()[0] . '/rooms')->with('fail', 'Action is not allowed');
         }
-        return redirect('/' . $res['user']->getRoleNames()[0] . '/rooms')->with('fail', 'Action is not allowed');
+        if ($res['model']->reserved) {
+            return redirect('/' . $res['user']->getRoleNames()[0] . '/rooms')->with('fail', 'Can\'t Delete Reserved Room!');
+        }
+        $res['model']->delete();
+        return redirect('/' . $res['user']->getRoleNames()[0] . '/rooms')->with('success', 'Deleted Successfully!');
     }
 }
