@@ -144,8 +144,8 @@
                         </a>
                     </li>
                 @endcan
+                <li class="nav-header" style="margin-top:auto;">SETTINGS</li>
                 @if ($prefix != 'admin')
-                    <li class="nav-header" style="margin-top:auto;">Settings</li>
                     <li style="cursor:pointer; bottom:10px; width:100%;" class="nav-item has-treeview">
                         <a href="{{ route($role . 's' . '.edit', $user->id) }}" class="nav-link">
                             <i class="nav-icon fas fa-cog"></i>

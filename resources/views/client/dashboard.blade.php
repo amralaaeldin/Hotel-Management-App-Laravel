@@ -86,7 +86,7 @@
                         </a>
                     </li>
                 @endif
-                <li class="nav-header" style="margin-top:auto;">Settings</li>
+                <li class="nav-header" style="margin-top:auto;">SETTINGS</li>
                 @if (Auth::guard('client')->check())
                     @if (!Auth::guard('client')->user()->hasVerifiedEmail())
                         <li style="cursor:pointer; bottom:10px; width:100%;" class="nav-item has-treeview">
