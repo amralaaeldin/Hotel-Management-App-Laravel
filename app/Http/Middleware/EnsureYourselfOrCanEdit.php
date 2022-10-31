@@ -17,20 +17,27 @@ class EnsureYourselfOrCanEdit
      */
     public function handle(Request $request, Closure $next)
     {
+        // get the affected role from url
         $url = explode('/', $request->getRequestUri());
         $reqRole = rtrim($url[1], "s");
-        $role = Auth::guard('web')->user()?->getRoleNames()[0] ?? (Auth::guard('client')->check() ? 'client' : null);
-        $id = Auth::guard('web')->user()?->id ?? Auth::guard('client')->user()?->id;
+        // get the affected id
         $reqId = $url[2];
+        // get the authenticated user role
+        $role = Auth::guard('web')->user()?->getRoleNames()[0] ?? (Auth::guard('client')->check() ? 'client' : null);
+        // get the authenticated user id
+        $id = Auth::guard('web')->user()?->id ?? Auth::guard('client')->user()?->id;
 
+        // check if admin will affect manager
         if (in_array($role, ['admin']) && $reqRole === 'manager') {
             return $next($request);
         }
 
+        // check if admin or manager will affect receptionist
         if (in_array($role, ['admin', 'manager']) && $reqRole === 'receptionist') {
             return $next($request);
         }
 
+        // check if receptionist will affect himself
         if (($reqRole === $role && $reqId == $id)) {
             return $next($request);
         }
