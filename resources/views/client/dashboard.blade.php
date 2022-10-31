@@ -86,9 +86,10 @@
                         </a>
                     </li>
                 @endif
+                <li class="nav-header" style="margin-top:auto;">Settings</li>
                 @if (Auth::guard('client')->check())
                     @if (!Auth::guard('client')->user()->hasVerifiedEmail())
-                        <li style="cursor:pointer; margin-top:auto; bottom:10px; width:100%;" class="nav-item has-treeview">
+                        <li style="cursor:pointer; bottom:10px; width:100%;" class="nav-item has-treeview">
                             <a href="{{ route('verification.fire') }}" class="nav-link">
                                 <i class="nav-icon fas fa-check"></i>
                                 <p>
@@ -97,10 +98,7 @@
                             </a>
                         </li>
                     @endif
-                    <li style="cursor:pointer; 
-                    @if (Auth::guard('client')->user()->hasVerifiedEmail()) margin-top:auto; @endif
-                    bottom:10px; width:100%;"
-                        class="nav-item has-treeview">
+                    <li style="cursor:pointer; bottom:10px; width:100%;" class="nav-item has-treeview">
                         <a href="{{ route('clients.edit', Auth::guard('client')->user()->id) }}" class="nav-link">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>
@@ -121,7 +119,7 @@
                         </form>
                     </li>
                 @else
-                    <li style="cursor:pointer; bottom:10px; margin-top:auto; width:100%;" class="nav-item has-treeview">
+                    <li style="cursor:pointer; bottom:10px; width:100%;" class="nav-item has-treeview">
                         <a href="/client/login" class="nav-link">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>

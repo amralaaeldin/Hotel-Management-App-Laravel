@@ -72,7 +72,7 @@
             <ul style="position:relative; min-height: 75vh;" class="nav nav-pills nav-sidebar flex-column"
                 data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
-                <li class="nav-header">Staff</li>
+                <li class="nav-header">STAFF</li>
                 @can('view managers', 'web')
                     <li class="nav-item has-treeview">
                         <a href="/{{ $role }}/managers" class="nav-link">
@@ -145,7 +145,8 @@
                     </li>
                 @endcan
                 @if ($prefix != 'admin')
-                    <li style="cursor:pointer; margin-top:auto; bottom:10px; width:100%;" class="nav-item has-treeview">
+                    <li class="nav-header" style="margin-top:auto;">Settings</li>
+                    <li style="cursor:pointer; bottom:10px; width:100%;" class="nav-item has-treeview">
                         <a href="{{ route($role . 's' . '.edit', $user->id) }}" class="nav-link">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>
@@ -154,8 +155,7 @@
                         </a>
                     </li>
                 @endif
-                <li style="cursor:pointer; @if ($prefix === 'admin') margin-top:auto; @endif bottom:10px;  width:100%;"
-                    class="nav-item has-treeview">
+                <li style="cursor:pointer; bottom:10px;  width:100%;" class="nav-item has-treeview">
                     <form action="{{ route($prefix . '.logout') }}" method="POST">
                         @csrf
                         <button class="nav-link" onmouseout="this.style.color='#6c757d'"
@@ -213,9 +213,9 @@
                             <x-slot name="thead">
                                 <thead>
                                     <tr>
-                                        <th class="font-weight-bold sorting sorting_asc" tabindex="0" aria-controls="example"
-                                            rowspan="1" colspan="1" style="width: 105px" aria-sort="ascending"
-                                            aria-label="Name: activate to sort column descending">
+                                        <th class="font-weight-bold sorting sorting_asc" tabindex="0"
+                                            aria-controls="example" rowspan="1" colspan="1" style="width: 105px"
+                                            aria-sort="ascending" aria-label="Name: activate to sort column descending">
                                             #
                                         </th>
                                         <th class="sorting sorting_asc" tabindex="0" aria-controls="example"
