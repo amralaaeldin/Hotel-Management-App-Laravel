@@ -91,7 +91,7 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        Client::find($id)->delete();
+        Client::findOrFail($id)->delete();
         return redirect('/' . Auth::guard('web')->user()->getRoleNames()[0] . '/clients')->with('success', 'Deleted Successfully!');
     }
 
