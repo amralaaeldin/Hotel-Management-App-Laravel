@@ -17,7 +17,7 @@
         <label for="name">Floor Name</label>
         <select required id="name" name="floor_id" class="form-control">
             @foreach ($floors as $floor)
-                <option value="{{ $floor->number }}">{{ $floor->name }}</option>
+                <option value="{{ $floor->id }}">{{ $floor->name }}</option>
             @endforeach
         </select>
     </div>

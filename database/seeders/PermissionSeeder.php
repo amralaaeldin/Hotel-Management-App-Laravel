@@ -108,6 +108,8 @@ class PermissionSeeder extends Seeder
         ]);
 
         $admin1 = User::create([
+            'name' => 'Admin1',
+            'national_id' => '12345678901233',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('12345678')
         ]);
@@ -115,15 +117,21 @@ class PermissionSeeder extends Seeder
         $admin1->assignRole($admin);
 
         $manager1 = User::create([
+            'name' => 'Manager1',
+            'national_id' => '12345678901234',
             'email' => 'manager@gmail.com',
-            'password' => bcrypt('12345678')
+            'password' => bcrypt('12345678'),
+            'created_by' => $admin1->id
         ]);
 
         $manager1->assignRole($manager);
 
         $receptionist1 = User::create([
+            'name' => 'Receptionist1',
+            'national_id' => '12345678901235',
             'email' => 'receptionist@gmail.com',
-            'password' => bcrypt('12345678')
+            'password' => bcrypt('12345678'),
+            'created_by' => $admin1->id
         ]);
 
         $receptionist1->assignRole($receptionist);

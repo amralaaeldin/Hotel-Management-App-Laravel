@@ -37,7 +37,7 @@
         </ul>
 
         <!-- Right navbar links -->
-        <ul class="navbar-nav ml-auto">
+        <ul class="ml-auto navbar-nav">
         </ul>
     </nav>
     <!-- /.navbar -->
@@ -46,7 +46,7 @@
     <!-- Main Sidebar Container -->
     <aside style="min-width:fit-content;" class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link">
+        <a href="/home" class="brand-link">
             <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
                 class="brand-image img-circle elevation-3" style="opacity: .8">
             <span style="font-size:0.92em;" class="brand-text font-weight-light">{{ ucfirst($role) }} -
@@ -54,7 +54,7 @@
         </a>
 
         <!-- Sidebar -->
-        <div class="sidebar mb-3 mt-2">
+        <div class="mt-2 mb-3 sidebar">
             <!-- Sidebar user panel (optional) -->
             @if ($user->avatar)
                 <div class="image">
@@ -62,7 +62,7 @@
                         class="img-circle elevation-2" alt="User Image">
                 </div>
             @endif
-            <div class="info mt-2">
+            <div class="mt-2 info">
                 <a href="#" class="d-block">{{ $user->name }}</a>
             </div>
         </div>
@@ -175,16 +175,16 @@
     </aside>
 @endsection
 @section('content')
-    <div class="content-wrapper pt-4">
+    <div class="pt-4 content-wrapper">
         @if (session('success'))
             <div class="container">
-                <div class="alert alert-success mb-4">
+                <div class="mb-4 alert alert-success">
                     {{ session('success') }}
                 </div>
             </div>
         @elseif (session('fail'))
             <div class="container">
-                <div class="alert alert-danger mb-4">
+                <div class="mb-4 alert alert-danger">
                     {{ session('fail') }}
                 </div>
             </div>
@@ -195,7 +195,7 @@
             <div class="mx-auto card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">{{ $user->name }}</h5>
-                    <h6 style="margin-top:22px;" class="card-subtitle mb-2 text-muted">{{ $user->getRoleNames()[0] }}</h6>
+                    <h6 style="margin-top:22px;" class="mb-2 card-subtitle text-muted">{{ $user->getRoleNames()[0] }}</h6>
                     <p class="card-text">{{ $user->email }}</p>
                 </div>
             </div>
@@ -207,7 +207,7 @@
             @if (isset($managers))
                 <div class="container">
                     <a href="{{ route('staff.register', 'manager') }}" type="button"
-                        class="mr-1 btn m-0 mb-4 btn-success btn-lg">Add Manager</a>
+                        class="m-0 mb-4 mr-1 btn btn-success btn-lg">Add Manager</a>
                     @if (!empty($managers))
                         <x-data-table>
                             <x-slot name="thead">
@@ -268,11 +268,11 @@
                                                 class="d-md-flex align-items-center justify-content-center">
                                                 @can('edit managers', 'web')
                                                     <a href="{{ route('managers.edit', $manager->id) }}" style="width:60px;"
-                                                        type="button" class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
+                                                        type="button" class="m-0 mr-1 btn btn-block btn-info btn-xs">Edit</a>
                                                 @endcan
                                                 @can('delete managers', 'web')
                                                     <button type="button" style="width:60px;"
-                                                        class="mr-1 btn btn-block m-0 btn-xs btn-danger" data-toggle="modal"
+                                                        class="m-0 mr-1 btn btn-block btn-xs btn-danger" data-toggle="modal"
                                                         data-target="#modal{{ $manager->id }}">
                                                         Delete
                                                     </button>
@@ -300,7 +300,7 @@
                                                                         @csrf
                                                                         @method('DELETE')
                                                                         <button type="submit"
-                                                                            class="btn btn-block m-0 btn-danger">Delete</button>
+                                                                            class="m-0 btn btn-block btn-danger">Delete</button>
                                                                     </form>
                                                                 </div>
                                                             </div>
@@ -347,7 +347,7 @@
             @if (isset($receptionists))
                 <div class="container">
                     <a href="{{ route('staff.register', 'receptionist') }}" type="button"
-                        class="mr-1 btn m-0 mb-4 btn-success btn-lg">Add Receptionist</a>
+                        class="m-0 mb-4 mr-1 btn btn-success btn-lg">Add Receptionist</a>
                     @if (!empty($receptionists))
                         <x-data-table>
                             <x-slot name="thead">
@@ -409,7 +409,7 @@
                                                     @can('ban receptionists', 'web')
                                                         <a href="{{ route('receptionists.ban', $receptionist->id) }}"
                                                             style="width:60px;" type="button"
-                                                            class="mr-1 btn btn-block m-0 btn-dark btn-xs">
+                                                            class="m-0 mr-1 btn btn-block btn-dark btn-xs">
                                                             @if ($receptionist->banned_at)
                                                                 Unban
                                                             @else
@@ -420,11 +420,11 @@
                                                     @can('edit receptionists', 'web')
                                                         <a href="{{ route('receptionists.edit', $receptionist->id) }}"
                                                             style="width:60px;" type="button"
-                                                            class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
+                                                            class="m-0 mr-1 btn btn-block btn-info btn-xs">Edit</a>
                                                     @endcan
                                                     @can('delete receptionists', 'web')
                                                         <button type="button" style="width:60px;"
-                                                            class="mr-1 btn btn-block m-0 btn-xs btn-danger" data-toggle="modal"
+                                                            class="m-0 mr-1 btn btn-block btn-xs btn-danger" data-toggle="modal"
                                                             data-target="#modal{{ $receptionist->id }}">
                                                             Delete
                                                         </button>
@@ -452,7 +452,7 @@
                                                                             @csrf
                                                                             @method('DELETE')
                                                                             <button type="submit"
-                                                                                class="btn btn-block m-0 btn-danger">Delete</button>
+                                                                                class="m-0 btn btn-block btn-danger">Delete</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>
@@ -588,11 +588,11 @@
                                                 @if ($user->id == $client->approver?->id || in_array($role, ['admin', 'manager']))
                                                     @can('edit clients', 'web')
                                                         <a href="{{ route('clients.edit', $client->id) }}" style="width:60px;"
-                                                            type="button" class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
+                                                            type="button" class="m-0 mr-1 btn btn-block btn-info btn-xs">Edit</a>
                                                     @endcan
                                                     @can('delete clients', 'web')
                                                         <button type="button" style="width:60px;"
-                                                            class="mr-1 btn btn-block m-0 btn-xs btn-danger" data-toggle="modal"
+                                                            class="m-0 mr-1 btn btn-block btn-xs btn-danger" data-toggle="modal"
                                                             data-target="#modal{{ $client->id }}">
                                                             Delete
                                                         </button>
@@ -620,7 +620,7 @@
                                                                             @csrf
                                                                             @method('DELETE')
                                                                             <button type="submit"
-                                                                                class="btn btn-block m-0 btn-danger">Delete</button>
+                                                                                class="m-0 btn btn-block btn-danger">Delete</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>
@@ -676,7 +676,7 @@
         @can('view floors', 'web')
             @if (isset($floors))
                 <div class="container">
-                    <a href="{{ route('floors.create') }}" type="button" class="mr-1 btn m-0 mb-4 btn-success btn-lg">Add
+                    <a href="{{ route('floors.create') }}" type="button" class="m-0 mb-4 mr-1 btn btn-success btn-lg">Add
                         Floor</a>
                     @if (!empty($floors))
                         <x-data-table>
@@ -719,7 +719,7 @@
                                         <tr class="{{ $loop->index % 2 === 0 ? 'odd' : 'even' }}">
                                             <td class="font-weight-bold">{{ $loop->index + 1 }}</td>
                                             <td class="dtr-control sorting_1" tabindex="1">{{ $floor->name }}</td>
-                                            <td>{{ $floor->number }}</td>
+                                            <td>{{ $floor->id }}</td>
                                             @role('admin', 'web')
                                                 <td>
                                                     {{ $floor->creator->name }}
@@ -729,16 +729,16 @@
                                                 class="dt-body-right dtr-hidden d-md-flex align-items-center justify-content-center">
                                                 @if ($user->id == $floor->creator->id || $role == 'admin')
                                                     @can('edit floors', 'web')
-                                                        <a href="{{ route('floors.edit', $floor->number) }}" style="width:60px;"
-                                                            type="button" class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
+                                                        <a href="{{ route('floors.edit', $floor->id) }}" style="width:60px;"
+                                                            type="button" class="m-0 mr-1 btn btn-block btn-info btn-xs">Edit</a>
                                                     @endcan
                                                     @can('delete floors', 'web')
                                                         <button type="button" style="width:60px;"
-                                                            class="mr-1 btn btn-block m-0 btn-xs btn-danger" data-toggle="modal"
-                                                            data-target="#modal{{ $floor->number }}">
+                                                            class="m-0 mr-1 btn btn-block btn-xs btn-danger" data-toggle="modal"
+                                                            data-target="#modal{{ $floor->id }}">
                                                             Delete
                                                         </button>
-                                                        <div class="modal fade" id="modal{{ $floor->number }}"
+                                                        <div class="modal fade" id="modal{{ $floor->id }}"
                                                             style="display: none; padding-right: 14px;" aria-modal="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
@@ -757,12 +757,12 @@
                                                                         <button type="button" class="btn btn-default"
                                                                             data-dismiss="modal">Close</button>
                                                                         <form style="display: inline"
-                                                                            action="{{ route('floors.destroy', $floor->number) }}"
+                                                                            action="{{ route('floors.destroy', $floor->id) }}"
                                                                             method="POST">
                                                                             @csrf
                                                                             @method('DELETE')
                                                                             <button type="submit"
-                                                                                class="btn btn-block m-0 btn-danger">Delete</button>
+                                                                                class="m-0 btn btn-block btn-danger">Delete</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>
@@ -808,7 +808,7 @@
         @can('view rooms', 'web')
             @if (isset($rooms))
                 <div class="container">
-                    <a href="{{ route('rooms.create') }}" type="button" class="mr-1 btn m-0 mb-4 btn-success btn-lg">Add
+                    <a href="{{ route('rooms.create') }}" type="button" class="m-0 mb-4 mr-1 btn btn-success btn-lg">Add
                         Room</a>
                     @if (!empty($rooms))
                         <x-data-table>
@@ -874,11 +874,11 @@
                                                 @if ($user->id == $room->creator->id || $role == 'admin')
                                                     @can('edit rooms', 'web')
                                                         <a href="{{ route('rooms.edit', $room->id) }}" style="width:60px;"
-                                                            type="button" class="mr-1 btn btn-block m-0 btn-info btn-xs">Edit</a>
+                                                            type="button" class="m-0 mr-1 btn btn-block btn-info btn-xs">Edit</a>
                                                     @endcan
                                                     @can('delete rooms', 'web')
                                                         <button type="button" style="width:60px;"
-                                                            class="mr-1 btn btn-block m-0 btn-xs btn-danger" data-toggle="modal"
+                                                            class="m-0 mr-1 btn btn-block btn-xs btn-danger" data-toggle="modal"
                                                             data-target="#modal{{ $room->id }}">
                                                             Delete
                                                         </button>
@@ -906,7 +906,7 @@
                                                                             @csrf
                                                                             @method('DELETE')
                                                                             <button type="submit"
-                                                                                class="btn btn-block m-0 btn-danger">Delete</button>
+                                                                                class="m-0 btn btn-block btn-danger">Delete</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>

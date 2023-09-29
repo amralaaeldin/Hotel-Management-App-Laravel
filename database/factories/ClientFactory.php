@@ -23,7 +23,7 @@ class ClientFactory extends Factory
                 'password' => bcrypt('12345678'),
                 'gender' => fake()->randomElement(['M', 'F']),
                 'mobile' => fake()->phoneNumber,
-                'country' => fake()->country,
+                'country' => strtolower(fake()->countryCode()),
                 'avatar' => '/avatars/clients/clients_default_avatar.png',
                 'approved' => fake()->boolean,
                 'approved_by' => 1,
