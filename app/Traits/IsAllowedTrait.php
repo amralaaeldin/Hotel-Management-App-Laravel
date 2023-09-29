@@ -10,11 +10,15 @@ trait IsAllowedTrait
     {
         $user = Auth::guard('web')->user();
         if ($user->getRoleNames()[0] == 'manager' && $user->id != $model->created_by) {
-            return [false, $user];
+            return [
+                'isAllowed' => false,
+                'user' => $user
+            ];
         }
         return [
             'isAllowed' => true,
             'user' => $user,
-            'model' => $model];
+            'model' => $model
+        ];
     }
 }
