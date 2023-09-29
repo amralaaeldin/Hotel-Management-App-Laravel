@@ -20,7 +20,7 @@ class Reservation extends Model
         'floor_id',
         'duration',
         'price_paid_per_day',
-        'accompany_id',
+        'accompany_number',
         'st_date',
         'end_date',
     ];

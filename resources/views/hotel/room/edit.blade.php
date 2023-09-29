@@ -13,7 +13,7 @@
 
     <div class="form-group">
         <label for="number">Room Number</label>
-        <input required type="number" value="{{ $room->number ?? '' }}" class="form-control" id="number" name="number"
+        <input required type="number" value="{{ $room->id ?? '' }}" class="form-control" id="number" name="number"
             placeholder="Enter Unique Number">
     </div>
     <div class="form-group">

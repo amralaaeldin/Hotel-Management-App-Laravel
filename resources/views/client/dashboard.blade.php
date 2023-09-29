@@ -208,7 +208,7 @@
                                 @foreach ($rooms as $room)
                                     <tr class="{{ $loop->index % 2 === 0 ? 'odd' : 'even' }}">
                                         <td class="font-weight-bold">{{ $loop->index + 1 }}</td>
-                                        <td class="dtr-control sorting_1" tabindex="1">{{ $room->number }}</td>
+                                        <td class="dtr-control sorting_1" tabindex="1">{{ $room->id }}</td>
                                         <td>{{ $room->floor->name }}</td>
                                         <td>{{ $room->capacity }}</td>
                                         <td>{{ $room->price }}</td>
@@ -264,17 +264,12 @@
                                     <th class="sorting sorting_asc" tabindex="0" aria-controls="example"
                                         rowspan="1" colspan="1" style="width: 105px" aria-sort="ascending"
                                         aria-label="Name: activate to sort column descending">
-                                        Client
-                                    </th>
-                                    <th class="sorting sorting_asc" tabindex="0" aria-controls="example"
-                                        rowspan="1" colspan="1" style="width: 105px" aria-sort="ascending"
-                                        aria-label="Name: activate to sort column descending">
                                         Room Number
                                     </th>
                                     <th class="sorting sorting_asc" tabindex="0" aria-controls="example"
                                         rowspan="1" colspan="1" style="width: 105px" aria-sort="ascending"
                                         aria-label="Name: activate to sort column descending">
-                                        Floor Number
+                                        Floor Name
                                     </th>
                                     <th class="sorting sorting_asc" tabindex="0" aria-controls="example"
                                         rowspan="1" colspan="1" style="width: 105px" aria-sort="ascending"
@@ -309,9 +304,7 @@
                                 @foreach ($reservations as $reservation)
                                     <tr class="{{ $loop->index % 2 === 0 ? 'odd' : 'even' }}">
                                         <td class="font-weight-bold">{{ $loop->index + 1 }}</td>
-                                        <td class="dtr-control sorting_1" tabindex="1">
-                                            {{ $reservation->client->name }}</td>
-                                        <td>{{ $reservation->room_number }}</td>
+                                        <td>{{ $reservation->room->id }}</td>
                                         <td>{{ $reservation->floor->name }}</td>
                                         <td>{{ $reservation->duration }}</td>
                                         <td>{{ $reservation->price_paid_per_day }}</td>
@@ -327,10 +320,9 @@
                             <tfoot>
                                 <tr>
                                     <th class="font-weight-bold" rowspan="1" colspan="1">#</th>
-                                    <th rowspan="1" colspan="1">Client</th>
                                     <th rowspan="1" colspan="1">Room Number</th>
                                     <th class="dt-body-right dtr-hidden" rowspan="1" colspan="1"">
-                                        Floor Number
+                                        Floor Name
                                     </th>
                                     <th class="dt-body-right dtr-hidden" rowspan="1" colspan="1"">
                                         Duration

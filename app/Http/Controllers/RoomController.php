@@ -26,12 +26,16 @@ class RoomController extends Controller
      */
     public function index()
     {
-        return view('dashboard', ['rooms' => Room::with('creator', 'floor')->select(['id', 'id', 'capacity', 'price', 'created_by', 'floor_id'])->get()]);
+        return view('dashboard', ['rooms' => Room::with('creator', 'floor')->select(['id', 'capacity', 'price', 'created_by', 'floor_id'])->get()]);
     }
 
     public function getUnreservedRooms()
     {
-        return view('client.dashboard', ['rooms' => Room::where('reserved', false)->select(['id', 'id', 'capacity', 'price', 'floor_id', 'reserved'])->get()]);
+        return view('client.dashboard', [
+            'rooms' => Room::with('floor')->where('reserved', false)
+                ->select(['id', 'capacity', 'price', 'floor_id', 'reserved'])->get(),
+            'user' => Auth::guard('client')->user()
+        ]);
     }
 
     /**
