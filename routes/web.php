@@ -91,6 +91,7 @@ Route::prefix('admin/')->middleware(['auth:web', 'role:admin'])->group(function 
 });
 
 Route::prefix('manager/')->middleware(['auth:web', 'role:manager'])->group(function () {
+    Route::get('receptionists', [ReceptionistController::class, 'index']);
     Route::get('receptionists/{receptionist}', [ReceptionistController::class, 'ban'])->name('receptionists.ban');
     Route::get('clients', [ClientController::class, 'index']);
     Route::get('floors', [FloorController::class, 'index']);
