@@ -24,7 +24,7 @@
         </ul>
 
         <!-- Right navbar links -->
-        <ul class="navbar-nav ml-auto">
+        <ul class="ml-auto navbar-nav">
         </ul>
     </nav>
     <!-- /.navbar -->
@@ -40,16 +40,15 @@
         </a>
 
         <!-- Sidebar -->
-        <div class="sidebar mb-3 mt-2">
+        <div class="mt-2 mb-3 sidebar">
             <!-- Sidebar user panel (optional) -->
-            @if (Auth::guard('client')->check())
+            @if ($user)
                 <div class="image">
-                    <img style="width:60px; height:60px; object-fit:center;"
-                        src="{{ asset(Auth::guard('client')->user()->avatar) }}" class="img-circle elevation-2"
-                        alt="User Image">
+                    <img style="width:60px; height:60px; object-fit:center;" src="{{ asset($user->avatar) }}"
+                        class="img-circle elevation-2" alt="User Image">
                 </div>
-                <div class="info mt-2">
-                    <a href="#" class="d-block">{{ Auth::guard('client')->user()->name }}</a>
+                <div class="mt-2 info">
+                    <a href="#" class="d-block">{{ $user->name }}</a>
                 </div>
             @else
                 <div class="image">
@@ -57,7 +56,7 @@
                         src="{{ asset('avatars/clients/clients_default_avatar.png') }}" class="img-circle elevation-2"
                         alt="User Image">
                 </div>
-                <div class="info mt-2">
+                <div class="mt-2 info">
                     <a href="#" class="d-block">Guest</a>
                 </div>
             @endif
@@ -76,7 +75,7 @@
                         </p>
                     </a>
                 </li>
-                @if (Auth::guard('client')->check())
+                @if ($user)
                     <li class="nav-item has-treeview">
                         <a href="/client/reservations" class="nav-link">
                             <i class="nav-icon fas fa-circle"></i>
@@ -87,8 +86,8 @@
                     </li>
                 @endif
                 <li class="nav-header" style="margin-top:auto;">SETTINGS</li>
-                @if (Auth::guard('client')->check())
-                    @if (!Auth::guard('client')->user()->hasVerifiedEmail())
+                @if ($user)
+                    @if (!$user->hasVerifiedEmail())
                         <li style="cursor:pointer; bottom:10px; width:100%;" class="nav-item has-treeview">
                             <a href="{{ route('verification.fire') }}" class="nav-link">
                                 <i class="nav-icon fas fa-check"></i>
@@ -99,7 +98,7 @@
                         </li>
                     @endif
                     <li style="cursor:pointer; bottom:10px; width:100%;" class="nav-item has-treeview">
-                        <a href="{{ route('clients.edit', Auth::guard('client')->user()->id) }}" class="nav-link">
+                        <a href="{{ route('clients.edit', $user->id) }}" class="nav-link">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>
                                 Edit Profile
@@ -137,16 +136,16 @@
 
 @endsection
 @section('content')
-    <div class="content-wrapper pt-4">
+    <div class="pt-4 content-wrapper">
         @if (session('success'))
             <div class="container">
-                <div class="alert alert-success mb-4">
+                <div class="mb-4 alert alert-success">
                     {{ session('success') }}
                 </div>
             </div>
         @elseif (session('fail'))
             <div class="container">
-                <div class="alert alert-danger mb-4">
+                <div class="mb-4 alert alert-danger">
                     {{ session('fail') }}
                 </div>
             </div>
@@ -157,12 +156,11 @@
             <div class="mx-auto card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">{{ $user->name }}</h5>
-                    <h6 style="margin-top:22px;" class="card-subtitle mb-2 text-muted">Client</h6>
+                    <h6 style="margin-top:22px;" class="mb-2 card-subtitle text-muted">Client</h6>
                     <p class="card-text">{{ $user->email }}</p>
                 </div>
             </div>
         @endif
-
 
         <!-- /.rooms -->
         @if (isset($rooms))
@@ -218,7 +216,7 @@
                                             class="dt-body-right dtr-hidden d-md-flex align-items-center justify-content-start">
                                             <a href="{{ route('reservations.create', $room->id) }}"
                                                 style="width:fit-content;" type="button"
-                                                class="mr-1 btn btn-block m-0 btn-info btn-xs">Make Reservation</a>
+                                                class="m-0 mr-1 btn btn-block btn-info btn-xs">Make Reservation</a>
                                         </td>
                                     </tr>
                                 @endforeach
