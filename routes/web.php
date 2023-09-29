@@ -26,6 +26,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', [HomeController::class, 'redirect']);
+
 Route::middleware(['auth:web', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('dashboard', ['user' => Auth::guard('web')->user()]);
@@ -66,9 +68,9 @@ Route::get('/redirect', [HomeController::class, 'redirect'])->name('redirect');
 
 Route::resource('rooms', RoomController::class)->except('show');
 Route::resource('floors', FloorController::class)->only('index', 'create', 'store');
-Route::get('floors/{floor:number}/edit', [FloorController::class, 'edit'])->name('floors.edit');
-Route::put('floors/{floor:number}', [FloorController::class, 'update'])->name('floors.update');
-Route::delete('floors/{floor:number}', [FloorController::class, 'destroy'])->name('floors.destroy');
+Route::get('floors/{floor}/edit', [FloorController::class, 'edit'])->name('floors.edit');
+Route::put('floors/{floor}', [FloorController::class, 'update'])->name('floors.update');
+Route::delete('floors/{floor}', [FloorController::class, 'destroy'])->name('floors.destroy');
 
 Route::get('reservations/success', [ReservationController::class, 'confirm'])->name('reservations.confirm')->middleware(['auth:client', 'verified']);
 Route::get('reservations/{room}', [ReservationController::class, 'create'])->name('reservations.create')->middleware(['auth:client', 'verified']);
