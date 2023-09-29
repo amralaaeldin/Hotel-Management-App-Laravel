@@ -13,17 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-            Schema::create('rooms', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedSmallInteger('number')->unique();
-            $table->unsignedMediumInteger('floor_number');
+        Schema::create('rooms', function (Blueprint $table) {
+            $table->smallIncrements('id')->unique();
+            $table->unsignedMediumInteger('floor_id');
             $table->unsignedTinyInteger('capacity');
-            $table->unsignedDecimal('price', $precision = 9, $scale = 2);
+            $table->unsignedDecimal('price', 12, 2);
             $table->unsignedBigInteger('created_by');
             $table->boolean('reserved')->default(false);
             $table->timestamps();
 
-            $table->foreign('floor_number')->references('number')->on('floors');
+            $table->foreign('floor_id')->references('id')->on('floors');
             $table->foreign('created_by')->references('id')->on('users');
         });
     }

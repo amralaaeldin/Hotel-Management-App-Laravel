@@ -68,9 +68,14 @@ class PermissionSeeder extends Seeder
             Permission::create(['name' => $permission]);
         }
 
-        $admin = Role::create(['name' => 'admin']);
-        $receptionist = Role::create(['name' => 'receptionist']);
-        $manager = Role::create(['name' => 'manager']);
+        $roles = [
+            'admin',
+            'receptionist',
+            'manager',
+        ];
+        foreach ($roles as $role) {
+            $$role = Role::create(['name' => $role]);
+        }
 
         $admin->syncPermissions($permissions);
         $receptionist->syncPermissions([

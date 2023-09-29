@@ -16,11 +16,11 @@ class Reservation extends Model
 
     protected $fillable = [
         'client_id',
-        'room_number',
-        'floor_number',
+        'room_id',
+        'floor_id',
         'duration',
         'price_paid_per_day',
-        'accompany_number',
+        'accompany_id',
         'st_date',
         'end_date',
     ];
@@ -37,12 +37,12 @@ class Reservation extends Model
 
     public function floor()
     {
-        return $this->belongsTo(Floor::class, 'floor_number', 'number');
+        return $this->belongsTo(Floor::class, 'floor_id', 'id');
     }
 
     public function room()
     {
-        return $this->belongsTo(Room::class, 'room_number', 'number');
+        return $this->belongsTo(Room::class, 'room_id', 'id');
     }
 
     public function getStDate()
@@ -58,8 +58,8 @@ class Reservation extends Model
     protected function pricePaidPerDay(): Attribute
     {
         return new Attribute(
-            get:fn($value) => $value / 100,
-            set:fn($value) => $value * 100,
+            get: fn ($value) => $value / 100,
+            set: fn ($value) => $value * 100,
         );
     }
 }

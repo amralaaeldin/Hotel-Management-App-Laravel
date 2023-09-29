@@ -26,12 +26,12 @@ class RoomController extends Controller
      */
     public function index()
     {
-        return view('dashboard', ['rooms' => Room::with('creator', 'floor')->select(['id', 'number', 'capacity', 'price', 'created_by', 'floor_number'])->get()]);
+        return view('dashboard', ['rooms' => Room::with('creator', 'floor')->select(['id', 'id', 'capacity', 'price', 'created_by', 'floor_id'])->get()]);
     }
 
     public function getUnreservedRooms()
     {
-        return view('client.dashboard', ['rooms' => Room::where('reserved', false)->select(['id', 'number', 'capacity', 'price', 'floor_number', 'reserved'])->get()]);
+        return view('client.dashboard', ['rooms' => Room::where('reserved', false)->select(['id', 'id', 'capacity', 'price', 'floor_id', 'reserved'])->get()]);
     }
 
     /**
@@ -41,7 +41,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        return view('hotel.room.create', ['floors' => Floor::all(['name', 'number'])]);
+        return view('hotel.room.create', ['floors' => Floor::all(['name', 'id'])]);
     }
 
     /**
@@ -56,15 +56,15 @@ class RoomController extends Controller
         $request->flash();
 
         $request->validate([
-            'number' => ['required', 'numeric', 'unique:rooms'],
-            'floor_number' => ['required', 'numeric', Rule::in(Floor::pluck('number')->all())],
+            'id' => ['required', 'numeric', 'unique:rooms'],
+            'floor_id' => ['required', 'numeric', Rule::in(Floor::pluck('id')->all())],
             'capacity' => ['required', 'numeric', 'max:30'],
             'price' => ['required', 'numeric', 'lt:1000000'],
         ]);
 
         Room::create([
-            'number' => $request->number,
-            'floor_number' => $request->floor_number,
+            'id' => $request->id,
+            'floor_id' => $request->floor_id,
             'capacity' => $request->capacity,
             'price' => $request->price,
             'created_by' => Auth::guard('web')->user()->id,
@@ -85,7 +85,7 @@ class RoomController extends Controller
         if (!$res['isAllowed']) {
             return redirect('/' . $res['user']->getRoleNames()[0] . '/rooms')->with('fail', 'Action is not allowed');
         }
-        return view('hotel.room.edit', ['room' => $res['model'], 'floors' => Floor::all(['name', 'number'])]);
+        return view('hotel.room.edit', ['room' => $res['model'], 'floors' => Floor::all(['name', 'id'])]);
     }
 
     /**
@@ -104,8 +104,8 @@ class RoomController extends Controller
         }
         $res['model']
             ->update($request->validate([
-                'number' => ['required', 'numeric', Rule::unique('rooms', 'number')->ignore($room->id)],
-                'floor_number' => ['required', 'numeric', Rule::in(Floor::pluck('number')->all())],
+                'id' => ['required', 'numeric', Rule::unique('rooms', 'id')->ignore($room->id)],
+                'floor_id' => ['required', 'numeric', Rule::in(Floor::pluck('id')->all())],
                 'capacity' => ['required', 'numeric', 'max:30'],
                 'price' => ['required', 'numeric', 'lt:1000000'],
             ]));

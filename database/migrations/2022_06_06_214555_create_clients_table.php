@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-            Schema::create('clients', function (Blueprint $table) {
+        Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('gender', ['M', 'F']);
-            $table->bigInteger('mobile');
+            $table->string('mobile');
             $table->string('country');
-            $table->string('avatar');
+            $table->string('avatar')->default('/avatars/clients/clients_default_avatar.png');
             $table->boolean('approved')->default(false);
             $table->unsignedBigInteger('approved_by')->nullable();
             $table->timestamps();

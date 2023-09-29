@@ -18,7 +18,7 @@
     </div>
     <div class="form-group">
         <label for="name">Floor Name</label>
-        <select required name="floor_number" id="name" class="form-control">
+        <select required name="floor_id" id="name" class="form-control">
             @foreach ($floors as $floor)
                 <option {{ $floor->number === $room->floor->number ? 'selected' : '' }} value="{{ $floor->number }}">
                     {{ $floor->name }}</option>
@@ -27,8 +27,8 @@
     </div>
     <div class="form-group">
         <label for="capacity">Capacity</label>
-        <input required value="{{ $room->capacity ?? '' }}" type="number" class="form-control" id="capacity" name="capacity"
-            placeholder="Enter capacity">
+        <input required value="{{ $room->capacity ?? '' }}" type="number" class="form-control" id="capacity"
+            name="capacity" placeholder="Enter capacity">
     </div>
     <div class="form-group">
         <label for="price">Price Per Day (In Dollars)</label>

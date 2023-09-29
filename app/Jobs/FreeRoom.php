@@ -24,22 +24,22 @@ class FreeRoom implements ShouldQueue
     {
         $limit = Carbon::now('+02:00')->subDays(35);
 
-        $lastMonthReservations = Reservation::select('room_number', 'st_date', 'end_date')
+        $lastMonthReservations = Reservation::select('room_id', 'st_date', 'end_date')
             ->orderByDesc('st_date')
             ->where('st_date', '>', "$limit->year-$limit->month-$limit->day")
             ->get();
 
-        $unique = $lastMonthReservations->unique('room_number')->values();
+        $unique = $lastMonthReservations->unique('room_id')->values();
 
         $filtered = $unique->filter(function ($value, $key) {
             $now = date('Y-m-d 01:00');
             return date("$value->end_date 00:00") < $now;
         });
 
-        $rooms = $filtered->pluck('room_number');
+        $rooms = $filtered->pluck('room_id');
 
         DB::table('rooms')
-            ->whereIn('number', $rooms->all())
+            ->whereIn('id', $rooms->all())
             ->update(['reserved' => false]);
     }
 }

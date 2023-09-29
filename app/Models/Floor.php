@@ -13,7 +13,6 @@ class Floor extends Model
 
     protected $fillable = [
         'name',
-        'number',
         'created_by',
     ];
 
@@ -24,7 +23,6 @@ class Floor extends Model
 
     public function rooms()
     {
-        return $this->hasMany(Room::class, 'floor_number', 'number');
+        return $this->hasMany(Room::class, 'floor_id', 'id');
     }
-
 }

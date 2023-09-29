@@ -27,7 +27,7 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        return view('dashboard', ['reservations' => Reservation::with('client', 'floor', 'room')->select('id', 'client_id', 'floor_number', 'room_number', 'duration', 'price_paid_per_day', 'accompany_number')->get()]);
+        return view('dashboard', ['reservations' => Reservation::with('client', 'floor', 'room')->select('id', 'client_id', 'floor_id', 'room_id', 'duration', 'price_paid_per_day', 'accompany_id')->get()]);
     }
 
     public function getClientReservations()
@@ -60,7 +60,7 @@ class ReservationController extends Controller
     {
         $request->validate([
             'duration' => ['required', 'numeric', 'max:30'],
-            'accompany_number' => ['required', 'numeric', 'min:1', 'max:30', "lte:$room->capacity"],
+            'accompany_id' => ['required', 'numeric', 'min:1', 'max:30', "lte:$room->capacity"],
             'st_date' => ['required', 'date', new FutureDate],
             'price_paid_per_day' => ['required', 'numeric', "size:$room->price"],
             "total_price" => ['required', 'numeric', "size:" . $room->price * $request->duration . ""],
@@ -73,7 +73,7 @@ class ReservationController extends Controller
         }
 
         $content = [
-            "accompany_number" => $request->accompany_number,
+            "accompany_id" => $request->accompany_id,
             "st_date" => $request->st_date,
             "duration" => $request->duration,
             "end_date" => Carbon::createFromFormat('Y-m-d H', $request->st_date . ' 14')->addDays($request->duration)->toDateTimeString(),
@@ -91,10 +91,11 @@ class ReservationController extends Controller
                 'description' => 'Reservation',
                 'receipt_email' => Auth::guard('client')->user()->email,
                 'metadata' => [
-                    'name' => "Room no. $room->number in Floor {$room->floor->name}",
+                    'name' => "Room no. $room->id in Floor {$room->floor->name}",
                     'name_on_card' => $request->name_on_card,
                     'contents' => json_encode(
-                        array_merge($content, ["total_price" => $room->price * $request->duration])),
+                        array_merge($content, ["total_price" => $room->price * $request->duration])
+                    ),
                 ],
             ]);
 
@@ -104,8 +105,8 @@ class ReservationController extends Controller
                 $content,
                 [
                     'client_id' => Auth::guard('client')->user()->id,
-                    'room_number' => $room->number,
-                    'floor_number' => $room->floor_number,
+                    'room_id' => $room->id,
+                    'floor_id' => $room->floor_id,
                 ]
             ));
 

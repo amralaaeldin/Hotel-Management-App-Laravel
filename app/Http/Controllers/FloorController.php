@@ -24,7 +24,7 @@ class FloorController extends Controller
      */
     public function index()
     {
-        return view('dashboard', ['floors' => Floor::with('creator')->select(['name', 'number', 'created_by'])->get()]);
+        return view('dashboard', ['floors' => Floor::with('creator')->select(['name', 'id', 'created_by'])->get()]);
     }
 
     /**
@@ -87,7 +87,7 @@ class FloorController extends Controller
         }
         $res['model']
             ->update($request->validate([
-                'name' => ['required', 'string', 'max:255', Rule::unique('floors', 'name')->ignore($floor->number, 'number')],
+                'name' => ['required', 'string', 'max:255', Rule::unique('floors', 'name')->ignore($floor->id, 'id')],
             ]));
         return redirect('/' . $res['user']->getRoleNames()[0] . '/floors')->with('success', 'Updated Successfully!');
     }

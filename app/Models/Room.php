@@ -13,8 +13,7 @@ class Room extends Model
     use HasFactory;
 
     protected $fillable = [
-        'number',
-        'floor_number',
+        'floor_id',
         'capacity',
         'price',
         'created_by',
@@ -24,8 +23,8 @@ class Room extends Model
     protected function price(): Attribute
     {
         return new Attribute(
-            get:fn($value) => $value / 100,
-            set:fn($value) => $value * 100,
+            get: fn ($value) => $value / 100,
+            set: fn ($value) => $value * 100,
         );
     }
 
@@ -36,6 +35,6 @@ class Room extends Model
 
     public function floor()
     {
-        return $this->belongsTo(Floor::class, 'floor_number', 'number');
+        return $this->belongsTo(Floor::class, 'floor_id', 'id');
     }
 }

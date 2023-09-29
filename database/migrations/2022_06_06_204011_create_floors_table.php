@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-            Schema::create('floors', function (Blueprint $table) {
-                $table->string('name')->unique();
-                $table->mediumIncrements('number')->from(1000)->unique();
-                $table->unsignedBigInteger('created_by');
-                $table->timestamps();
+        Schema::create('floors', function (Blueprint $table) {
+            $table->mediumIncrements('id')->from(1000)->unique();
+            $table->string('name')->unique();
+            $table->unsignedBigInteger('created_by');
+            $table->timestamps();
 
-                $table->foreign('created_by')->references('id')->on('users');
-            });
+            $table->foreign('created_by')->references('id')->on('users');
+        });
     }
 
     /**

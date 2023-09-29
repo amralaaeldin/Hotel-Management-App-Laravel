@@ -14,8 +14,8 @@
         <input required type="number" class="form-control" id="number" name="number" placeholder="Enter Unique Number">
     </div>
     <div class="form-group">
-        <label for="name" >Floor Name</label>
-        <select required id="name" name="floor_number" class="form-control">
+        <label for="name">Floor Name</label>
+        <select required id="name" name="floor_id" class="form-control">
             @foreach ($floors as $floor)
                 <option value="{{ $floor->number }}">{{ $floor->name }}</option>
             @endforeach
@@ -27,8 +27,7 @@
     </div>
     <div class="form-group">
         <label for="price">Price Per Day (In Dollars)</label>
-        <input required class="form-control" id="price" name="price"
-            placeholder="Enter Price Per Day (In Dollars)">
+        <input required class="form-control" id="price" name="price" placeholder="Enter Price Per Day (In Dollars)">
     </div>
 @endsection
 @section('submit-word', 'Create')

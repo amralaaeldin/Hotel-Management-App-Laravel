@@ -70,7 +70,7 @@
                         </div>
 
                         <button type="submit" id="complete-order" class="btn btn-info">Proceed to Payment</button>
-                        <div class='form-row mt-3'>
+                        <div class='mt-3 form-row'>
                         </div>
                     </div>
                 </form>
@@ -80,7 +80,7 @@
 @else
     @section('content')
         <div class="content-wrapper d-flex justify-content-center">
-            <div style="height:fit-content;" class="card mt-5">
+            <div style="height:fit-content;" class="mt-5 card">
                 <div class="card-header">
                     Pending Approval
                 </div>
