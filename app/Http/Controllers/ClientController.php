@@ -33,12 +33,17 @@ class ClientController extends Controller
 
     public function getNotAcceptedYet()
     {
-        return view('dashboard', ['clients' => Client::where('approved', false)->get()]);
+        return view('dashboard', [
+            'clients' => Client::where('approved', false)
+            ->with('approver')->get()]);
     }
 
     public function getMyAccepted()
     {
-        return view('dashboard', ['clients' => Client::where('approved_by', Auth::guard('web')->user()->id)->get()]);
+        return view('dashboard', [
+            'clients' => Client::where('approved_by', Auth::guard('web')->user()->id)
+                ->with('approver')->get()
+        ]);
     }
 
     /**

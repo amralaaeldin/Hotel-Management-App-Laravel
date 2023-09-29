@@ -585,7 +585,9 @@
                                             </td>
                                             <td style="height:42px;"
                                                 class="dt-body-right dtr-hidden d-md-flex align-items-center justify-content-center">
-                                                @if ($user->id == $client->approver?->id || in_array($role, ['admin', 'manager']))
+                                                @if (
+                                                    !in_array($role, ['receptionist']) &&
+                                                        ($user->id == $client->approver?->id || in_array($role, ['admin', 'manager'])))
                                                     @can('edit clients', 'web')
                                                         <a href="{{ route('clients.edit', $client->id) }}" style="width:60px;"
                                                             type="button" class="m-0 mr-1 btn btn-block btn-info btn-xs">Edit</a>
@@ -632,7 +634,6 @@
                                                 @else
                                                     No actions allowed
                                                 @endif
-
                                             </td>
                                         </tr>
                                     @endforeach
