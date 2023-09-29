@@ -11,9 +11,7 @@ class HomeController extends Controller
     {
         if (Auth::guard('web')->check()) {
             return Auth::guard('web')->user()->getRoleNames()[0];
-        }
-
-        if (Auth::guard('client')->check()) {
+        } else {
             return 'client';
         }
     }
@@ -22,5 +20,4 @@ class HomeController extends Controller
     {
         return redirect()->route($this->getPrefix() . '.dashboard');
     }
-
 }
